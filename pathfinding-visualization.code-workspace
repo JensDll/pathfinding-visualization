@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "./pathfinding-vue"
+		},
+		{
+			"path": "./pathfinding"
+		}
+	],
+	"settings": {
+		"editor.tabSize": 2,
+		"editor.insertSpaces": true
+	},
+	"extensions": {
+		"recommendations": [
+			"esbenp.prettier-vscode",
+			"octref.vetur",
+			"dbaeumer.vscode-eslint",
+			"ms-dotnettools.csharp",
+			"bradlc.vscode-tailwindcss"
+		]
+	}
+}
