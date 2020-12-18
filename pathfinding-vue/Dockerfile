@@ -1,15 +1,10 @@
-FROM alpine:3
-
+FROM node:15 as build
 LABEL maintainer="Jens Doellmann"
-
-RUN apk add --update nodejs npm
-
-COPY . /app
-
 WORKDIR /app
+COPY package.json package-lock.json docker-entrypoint.sh ./
 
-RUN npm install
-
-EXPOSE 3000
-
+FROM build as dev
+ENTRYPOINT ["sh", "docker-entrypoint.sh"]
 CMD ["npm", "run", "dev"]
+
+#TODO: build step production

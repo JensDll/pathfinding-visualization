@@ -17,7 +17,8 @@
 			"octref.vetur",
 			"dbaeumer.vscode-eslint",
 			"ms-dotnettools.csharp",
-			"bradlc.vscode-tailwindcss"
+			"bradlc.vscode-tailwindcss",
+			"ms-azuretools.vscode-docker"
 		]
 	}
 }
