@@ -13,10 +13,13 @@ services:
   backend:
     build: 
       context: ./pathfinding
-    environment: 
-      ASPNETCORE_ENVIRONMENT: Development
+      target: dev
     user: development-user
     volumes:
-      - ./pathfinding:/app
+      - type: bind
+        source: ./pathfinding
+        target: /app
+    environment: 
+      ASPNETCORE_ENVIRONMENT: Development
     ports:
       - 5000:5000

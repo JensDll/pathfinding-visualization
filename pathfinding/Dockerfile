@@ -1,4 +1,10 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0
+FROM mcr.microsoft.com/dotnet/sdk:5.0 as build
+WORKDIR /app
+COPY *.sln ./
+COPY Pathfinding/*.csproj ./Pathfinding/
+RUN dotnet restore
+
+FROM build as dev
 
 # https://github.com/dotnet/dotnet-docker/issues/2430#issuecomment-742048902
 RUN useradd -ms /bin/bash -u 1000 development-user
@@ -9,7 +15,9 @@ RUN apt-get update \
   procps \
   && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-COPY . .
+# This folder has a different owner because of the restore in build
+RUN chown -R development-user:development-user /tmp/NuGetScratch/
+
+EXPOSE 5000
 WORKDIR /app/Pathfinding
-ENTRYPOINT dotnet watch run --urls=http://+:5000
+ENTRYPOINT ["dotnet", "watch", "run", "--urls=http://+:5000"]

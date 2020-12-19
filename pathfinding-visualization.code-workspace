@@ -1,15 +1,157 @@
 {
 	"folders": [
 		{
-			"path": "./pathfinding-vue"
+			"path": "pathfinding-vue"
 		},
 		{
-			"path": "./pathfinding"
+			"path": "pathfinding"
+		},
+		{
+			"path": "docs"
 		}
 	],
 	"settings": {
 		"editor.tabSize": 2,
-		"editor.insertSpaces": true
+		"editor.insertSpaces": true,
+		"latex-workshop.latex.tools": [
+			{
+				"name": "latexmk",
+				"command": "latexmk.exe",
+				"args": [
+					"-synctex=1",
+					"-interaction=nonstopmode",
+					"-file-line-error",
+					"-pdf"
+				],
+				"env": {}
+			},
+			{
+				"name": "lualatexmk",
+				"command": "latexmk",
+				"args": [
+					"-synctex=1",
+					"-interaction=nonstopmode",
+					"-file-line-error",
+					"-lualatex",
+					"-outdir=%OUTDIR%",
+					"%DOC%"
+				],
+				"env": {}
+			},
+			{
+				"name": "latexmk_rconly",
+				"command": "latexmk",
+				"args": [
+					"%DOC%"
+				],
+				"env": {}
+			},
+			{
+				"name": "pdflatex",
+				"command": "pdflatex.exe",
+				"args": [
+					"-synctex=1",
+					"-interaction=nonstopmode",
+					"-file-line-error",
+					"%DOC%"
+				],
+				"env": {}
+			},
+			{
+				"name": "bibtex",
+				"command": "bibtex.exe",
+				"args": [
+					"%DOCFILE%"
+				],
+				"env": {}
+			},
+			{
+				"name": "rnw2tex",
+				"command": "Rscript",
+				"args": [
+					"-e",
+					"knitr::opts_knit$set(concordance = TRUE); knitr::knit('%DOCFILE_EXT%')"
+				],
+				"env": {}
+			},
+			{
+				"name": "jnw2tex",
+				"command": "julia",
+				"args": [
+					"-e",
+					"using Weave; weave(\"%DOC_EXT%\", doctype=\"tex\")"
+				],
+				"env": {}
+			},
+			{
+				"name": "jnw2texmintex",
+				"command": "julia",
+				"args": [
+					"-e",
+					"using Weave; weave(\"%DOC_EXT%\", doctype=\"texminted\")"
+				],
+				"env": {}
+			},
+			{
+				"name": "tectonic",
+				"command": "tectonic",
+				"args": [
+					"--synctex",
+					"--keep-logs",
+					"%DOC%.tex"
+				],
+				"env": {}
+			}
+		],
+		"latex-workshop.latex.recipes": [
+			{
+				"name": "latexmk 🔃",
+				"tools": [
+					"latexmk"
+				]
+			},
+			{
+				"name": "latexmk (latexmkrc)",
+				"tools": [
+					"latexmk_rconly"
+				]
+			},
+			{
+				"name": "latexmk (lualatex)",
+				"tools": [
+					"lualatexmk"
+				]
+			},
+			{
+				"name": "pdflatex ➞ bibtex ➞ pdflatex × 2",
+				"tools": [
+					"pdflatex",
+					"bibtex",
+					"pdflatex",
+					"pdflatex"
+				]
+			},
+			{
+				"name": "Compile Rnw files",
+				"tools": [
+					"rnw2tex",
+					"latexmk"
+				]
+			},
+			{
+				"name": "Compile Jnw files",
+				"tools": [
+					"jnw2tex",
+					"latexmk"
+				]
+			},
+			{
+				"name": "tectonic",
+				"tools": [
+					"tectonic"
+				]
+			}
+		]
 	},
 	"extensions": {
 		"recommendations": [
@@ -18,7 +160,8 @@
 			"dbaeumer.vscode-eslint",
 			"ms-dotnettools.csharp",
 			"bradlc.vscode-tailwindcss",
-			"ms-azuretools.vscode-docker"
+			"ms-azuretools.vscode-docker",
+			"james-yu.latex-workshop"
 		]
 	}
 }
