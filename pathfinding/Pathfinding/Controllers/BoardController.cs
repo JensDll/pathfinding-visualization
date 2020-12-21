@@ -9,7 +9,13 @@ namespace Pathfinding.Controllers
     [HttpGet]
     public string Get()
     {
-      return "Hello World";
+      return "GET";
+    }
+
+    [HttpPost]
+    public string Create()
+    {
+      return "POST";
     }
   }
 }
