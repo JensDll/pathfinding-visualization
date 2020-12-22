@@ -13,7 +13,7 @@ declare module '@vue/runtime-core' {
 
 declare global {
   interface Window {
-    keyWPressed: boolean;
+    ctrlPressed: boolean;
     mouseIsDown: boolean;
   }
 }

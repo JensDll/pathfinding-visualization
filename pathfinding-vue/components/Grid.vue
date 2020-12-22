@@ -47,13 +47,13 @@ export default defineComponent({
         cursorMove.value = false;
       };
 
-      gridRef.value.onkeydown = async e => {
+      gridRef.value.onkeydown = e => {
         if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
           cursorMove.value = true;
         }
       };
 
-      gridRef.value.onkeyup = async () => {
+      gridRef.value.onkeyup = () => {
         cursorMove.value = false;
       };
     });

@@ -11,19 +11,17 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   components: { TheHeader, TheMain },
   beforeCreate() {
-    window.keyWPressed = false;
+    window.ctrlPressed = false;
     window.mouseIsDown = false;
 
     document.addEventListener('keydown', e => {
-      if (e.code === 'KeyW') {
-        window.keyWPressed = true;
+      if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
+        window.ctrlPressed = true;
       }
     });
 
-    document.addEventListener('keyup', e => {
-      if (e.code === 'KeyW') {
-        window.keyWPressed = false;
-      }
+    document.addEventListener('keyup', () => {
+      window.ctrlPressed = false;
     });
 
     document.addEventListener('mousedown', () => {

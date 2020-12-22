@@ -1,8 +1,8 @@
 <template>
   <td
     :class="['td', node.type]"
-    @mousedown="handleMouseDown"
-    @mouseenter="handleMouseEnter"
+    @mousedown="onMouseDown"
+    @mouseenter="onMouseEnter"
   >
     {{ node.type === 'start' ? 'S' : node.type === 'finish' ? 'F' : null }}
   </td>
@@ -20,11 +20,15 @@ export default defineComponent({
     }
   },
   methods: {
-    handleMouseDown() {
-      this.onClick(this.$props.node.point);
+    onMouseDown() {
+      if (!window.ctrlPressed) {
+        this.nodeOnClick(this.$props.node.point);
+      }
     },
-    handleMouseEnter() {
-      this.onMouseEnter(this.$props.node.point);
+    onMouseEnter() {
+      if (!window.ctrlPressed) {
+        this.nodeOnMouseEnter(this.$props.node.point);
+      }
     },
     ...gridModuleActions
   }

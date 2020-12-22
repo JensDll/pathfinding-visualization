@@ -8,6 +8,8 @@ export type Node = {
 
 export type GridModuleState = {
   grid: Node[][];
+  startPoint: Point;
+  finishPoint: Point;
   lastClicked: {
     type: Node['type'];
     point: Point;
@@ -82,9 +84,11 @@ export const mutations: Module<GridModuleState, RootState>['mutations'] = {
     }
   },
   [MUTATIONS.SET_START](state, { row, col }: Point) {
+    state.startPoint = { row, col };
     state.grid[row][col].type = 'start';
   },
   [MUTATIONS.SET_FINISH](state, { row, col }: Point) {
+    state.finishPoint = { row, col };
     state.grid[row][col].type = 'finish';
   },
   [MUTATIONS.SET_DEFAULT](state, { row, col }: Point) {
@@ -116,23 +120,34 @@ export const mutations: Module<GridModuleState, RootState>['mutations'] = {
 };
 
 export const actions: Module<GridModuleState, RootState>['actions'] = {
-  setRows({ commit }, rows: number) {
+  setRows({ commit, state }, rows: number) {
     if (rows >= 5 && rows <= 25) {
+      if (state.startPoint.row >= rows) {
+        commit(MUTATIONS.SET_START, { row: 0, col: 0 });
+      }
+      if (state.finishPoint.row >= rows) {
+        commit(MUTATIONS.SET_FINISH, { row: 0, col: 1 });
+      }
       commit(MUTATIONS.SET_ROWS, rows);
     }
   },
-  setCols({ commit }, cols: number) {
+  setCols({ commit, state }, cols: number) {
     if (cols >= 5 && cols <= 50) {
+      if (state.startPoint.col >= cols) {
+        commit(MUTATIONS.SET_START, { row: 0, col: 0 });
+      }
+      if (state.finishPoint.col >= cols) {
+        commit(MUTATIONS.SET_FINISH, { row: 0, col: 1 });
+      }
       commit(MUTATIONS.SET_COLS, cols);
     }
   },
-  onClick({ commit }, point: Point) {
+  nodeOnClick({ commit }, point: Point) {
     commit(MUTATIONS.SET_LAST_CLICKED, point);
     commit(MUTATIONS.SET_LAST_ENTERED, point);
-
     commit(MUTATIONS.SET_WALL, point);
   },
-  onMouseEnter({ commit, state }, point: Point) {
+  nodeOnMouseEnter({ commit, state }, point: Point) {
     const type = state.grid[point.row][point.col].type;
 
     if (type === 'start' || type === 'finish' || !window.mouseIsDown) {
@@ -168,8 +183,9 @@ export const getters: Module<GridModuleState, RootState>['getters'] = {
 export const gridModuleActions = mapActions('gridModule', {
   setRows: (dispatch, rows: number) => dispatch('setRows', rows),
   setCols: (dispatch, cols: number) => dispatch('setCols', cols),
-  onClick: (dispatch, point: Point) => dispatch('onClick', point),
-  onMouseEnter: (dispatch, point: Point) => dispatch('onMouseEnter', point)
+  nodeOnClick: (dispatch, point: Point) => dispatch('nodeOnClick', point),
+  nodeOnMouseEnter: (dispatch, point: Point) =>
+    dispatch('nodeOnMouseEnter', point)
 });
 
 export const gridModuleState = mapState<
@@ -187,7 +203,9 @@ export const gridModuleState = mapState<
 >('gridModule', {
   grid: state => state.grid,
   lastClicked: state => state.lastClicked,
-  lastEntered: state => state.lastEntered
+  lastEntered: state => state.lastEntered,
+  startPoint: state => state.startPoint,
+  finishPoint: state => state.finishPoint
 });
 
 export function gridModuleFactory(
@@ -204,11 +222,13 @@ export function gridModuleFactory(
 
   return {
     namespaced: true,
-    state() {
+    state(): GridModuleState {
       return {
         grid: INIT_GRID,
         lastClicked: INIT_GRID[0][0],
-        lastEntered: INIT_GRID[0][0]
+        lastEntered: INIT_GRID[0][0],
+        startPoint: START_POINT,
+        finishPoint: FINISH_POINT
       };
     },
     mutations,
