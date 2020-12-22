@@ -5,7 +5,6 @@ COPY Pathfinding/*.csproj ./Pathfinding/
 RUN dotnet restore
 
 FROM build as dev
-
 # https://github.com/dotnet/dotnet-docker/issues/2430#issuecomment-742048902
 RUN useradd -ms /bin/bash -u 1000 development-user
 

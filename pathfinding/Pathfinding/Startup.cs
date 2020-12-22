@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Pathfinding.Algorithm;
 
 namespace Pathfinding
 {
@@ -26,15 +29,22 @@ namespace Pathfinding
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddSingleton<IAlgorithmService, AlgorithmService>();
+      services.AddSingleton<IBreadthFirstSearch, BreadthFirstSearch>();
+
       services.AddCors(options =>
       {
         options.AddDefaultPolicy(builder =>
         {
-          builder.WithOrigins().AllowAnyOrigin();
+          builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
         });
       });
 
-      services.AddControllers();
+      services.AddControllers().AddJsonOptions(options =>
+      {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+      });
+
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pathfinding", Version = "v1" });
@@ -51,7 +61,7 @@ namespace Pathfinding
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pathfinding v1"));
       }
 
-      app.UseHttpsRedirection();
+      // app.UseHttpsRedirection();
 
       app.UseRouting();
 
