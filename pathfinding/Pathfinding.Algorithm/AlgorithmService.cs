@@ -34,7 +34,7 @@ namespace Pathfinding.Algorithm
       int lastRow = grid.Length - 1;
       int lastCol = grid[0].Length - 1;
 
-      var neighbors = new List<GridNode>(GetNeighbors(grid, point));
+      var neighbors = GetNeighbors(grid, point);
 
       // Top Left 
       if (row > 0 && col > 0) neighbors.Add(grid[row - 1][col - 1]);
@@ -49,6 +49,13 @@ namespace Pathfinding.Algorithm
       if (row < lastRow && col > 0) neighbors.Add(grid[row + 1][col - 1]);
 
       return neighbors;
+    }
+
+    public void ConstructShortestPath(in GridNode node, in List<GridNode> shortestPath)
+    {
+      if (node == null) return;
+      ConstructShortestPath(node.PreviousGridNode, shortestPath);
+      shortestPath.Add(node);
     }
   }
 }

@@ -8,6 +8,7 @@ namespace Pathfinding.Test
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddTransient<IAlgorithmService, AlgorithmService>();
+      services.AddTransient<IBreadthFirstSearch, BreadthFirstSearch>();
     }
   }
 }

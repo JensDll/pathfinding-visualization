@@ -6,42 +6,61 @@ namespace Pathfinding.Shared
 {
   public class Mapper : IMapper
   {
-    public bool TransformGrid(GridNodeDomain[][] grid, out ((int row, int col) start, (int row, int col) finish, GridNode[][] grid) gridData)
+    public bool TryTransformGrid(
+      GridNodeDto[][] grid,
+      out (int row, int col) start,
+      out (int row, int col) finish,
+      out GridNode[][] transformedGrid)
     {
-      (int row, int col) start = (-1, -1);
-      (int row, int col) finish = (-1, -1);
+      (int row, int col) startPos = (-1, -1);
+      (int row, int col) finishPos = (-1, -1);
 
-      gridData = (start, finish, null);
+      start = startPos;
+      finish = finishPos;
 
-      var transformedGrid = grid.Select((row, rowIndex) => row.Select((node, colIndex) =>
+      transformedGrid = grid.Select((row, rowIndex) => row.Select((node, colIndex) =>
       {
-        if (node.Type == GridNodeType.Start)
+        if (node.Type == GridNodeTypeDto.Start)
         {
-          start = (row: rowIndex, col: colIndex);
+          startPos = (row: rowIndex, col: colIndex);
         }
 
-        if (node.Type == GridNodeType.Finish)
+        if (node.Type == GridNodeTypeDto.Finish)
         {
-          finish = (row: rowIndex, col: colIndex);
+          finishPos = (row: rowIndex, col: colIndex);
         }
 
         return new GridNode
         {
           Type = node.Type,
-          Visited = false,
-          Weight = 0,
           Position = (row: rowIndex, col: colIndex)
         };
       }).ToArray()).ToArray();
 
-      if (start == (-1, -1) || finish == (-1, -1))
+      if (startPos == (-1, -1) || finishPos == (-1, -1))
       {
         return false;
       }
 
-      gridData = (start, finish, transformedGrid);
+      start = startPos;
+      finish = finishPos;
 
       return true;
     }
+
+    public PathfindingResponseDto MapPathfindingResult(PathfindingResult result) =>
+      new PathfindingResponseDto
+      {
+        VisitedPositions = result.VisitedNodes.Select(node => new PositionDto
+        {
+          Row = node.Position.row,
+          Col = node.Position.col
+        }).ToList(),
+        ShortestPath = result.ShortestPath.Select(node => new PositionDto
+        {
+          Row = node.Position.row,
+          Col = node.Position.col
+        }).ToList()
+      };
   }
 }

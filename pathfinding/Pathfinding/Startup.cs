@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Pathfinding.Algorithm;
+using Pathfinding.Shared;
 
 namespace Pathfinding
 {
@@ -31,6 +32,7 @@ namespace Pathfinding
     {
       services.AddSingleton<IAlgorithmService, AlgorithmService>();
       services.AddSingleton<IBreadthFirstSearch, BreadthFirstSearch>();
+      services.AddSingleton<IMapper, Mapper>();
 
       services.AddCors(options =>
       {
@@ -42,7 +44,8 @@ namespace Pathfinding
 
       services.AddControllers().AddJsonOptions(options =>
       {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+        options.JsonSerializerOptions.Converters.Add(
+          new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.CamelCase));
       });
 
       services.AddSwaggerGen(c =>
