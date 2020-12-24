@@ -1,6 +1,6 @@
 <template>
   <td
-    :class="['td', node.type]"
+    :class="['td', node.type, node.className]"
     @mousedown="onMouseDown"
     @mouseenter="onMouseEnter"
   >
@@ -37,7 +37,7 @@ export default defineComponent({
 
 <style scoped>
 .td {
-  @apply border border-blue-100 bg-white text-center;
+  @apply relative border border-blue-100 bg-white text-center;
   width: 2.5rem;
   height: 2.5rem;
   min-width: 2.5rem;
@@ -46,7 +46,33 @@ export default defineComponent({
   user-select: none;
 }
 
+@keyframes fade-in-visited {
+  0% {
+    @apply bg-green-300;
+  }
+  100% {
+    @apply bg-blue-300;
+  }
+}
+
+@keyframes fade-in-path {
+  0% {
+    @apply bg-red-200 border-red-200;
+  }
+  100% {
+    @apply bg-yellow-300 border-yellow-300;
+  }
+}
+
 .wall {
-  @apply bg-gray-700 border-gray-700;
+  @apply border-gray-700 bg-gray-700;
+}
+
+.visited {
+  animation: fade-in-visited 1.2s ease-in forwards;
+}
+
+.path {
+  @apply bg-yellow-300 border-yellow-300;
 }
 </style>

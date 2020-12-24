@@ -5,29 +5,41 @@
     :class="{ 'cursor-move': cursorMove }"
     tabindex="0"
   >
-    <label>
-      Rows
-      <input
-        v-model.number="rows"
-        class="block"
-        type="range"
-        min="5"
-        max="25"
-      />
-    </label>
-    <div>{{ rows }}</div>
-    <label>
-      Columns
-      <input
-        v-model.number="cols"
-        class="block"
-        type="range"
-        min="5"
-        max="50"
-      />
-    </label>
-    <div>{{ cols }}</div>
-    <BaseButton type="primary" @click="shortestPath">Go!</BaseButton>
+    <div class="flex mb-4">
+      <div class="mr-4">
+        <label>
+          <div class="mb-2">Rows</div>
+          <input v-model.number="rows" type="range" min="5" max="25" />
+        </label>
+        <div>{{ rows }}</div>
+      </div>
+      <div>
+        <label>
+          <div class="mb-2">Columns</div>
+          <input v-model.number="cols" type="range" min="5" max="50" />
+        </label>
+        <div>{{ cols }}</div>
+      </div>
+    </div>
+    <div class="flex items-end">
+      <label>
+        <div class="mb-2">Algorihtm</div>
+        <select v-model="algorihtm" class="border outline-none p-2 algorithms">
+          <option value="Breadth-First-Search">Breadth-First-Search</option>
+          <option value="Dijkstra">Dijkstra</option>
+        </select>
+      </label>
+      <BaseButton
+        type="primary"
+        class="ml-4"
+        :disabled="animating"
+        @click="startAnimate"
+      >
+        {{ algorihtm }}
+      </BaseButton>
+      <BaseButton @click="resetGrid">Reset All</BaseButton>
+      <BaseButton @click="resetGridWithoutWalls">Reset</BaseButton>
+    </div>
   </div>
 </template>
 
@@ -38,6 +50,7 @@ import {
   gridModuleActions,
   gridModuleState
 } from '../store/modules/gridModule';
+import { pathfindingService } from '../services/pathfindingService';
 import BaseButton from '../components/BaseButton.vue';
 
 export default defineComponent({
@@ -47,6 +60,10 @@ export default defineComponent({
   setup() {
     const controls = ref() as Ref<HTMLElement>;
     const cursorMove = ref(false);
+    const animating = ref(false);
+    const algorihtm = ref<'Breadth-First-Search' | 'Dijkstra'>(
+      'Breadth-First-Search'
+    );
 
     onMounted(() => {
       const { onMouseDown } = useDraggable(controls.value, 30);
@@ -79,7 +96,10 @@ export default defineComponent({
 
     return {
       controls,
-      cursorMove
+      cursorMove,
+      algorihtm,
+      animating,
+      ...pathfindingService.breadthFirstSearch()
     };
   },
   computed: {
@@ -102,19 +122,22 @@ export default defineComponent({
     ...gridModuleState
   },
   methods: {
-    async shortestPath() {
-      const res = await fetch(
-        'http://localhost:5000/api/grid/breath-first-search',
-        {
-          method: 'Post',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ grid: this.grid }, null, 2)
-        }
-      );
-      const data = await res.json();
-      console.log(data);
+    async startAnimate() {
+      this.animating = true;
+
+      switch (this.algorihtm) {
+        case 'Breadth-First-Search':
+          await this.shortestPath(this.grid);
+          if (this.pathfindingResponse) {
+            await this.animate(this.pathfindingResponse);
+          }
+          break;
+        case 'Dijkstra':
+          // TODO
+          break;
+      }
+
+      this.animating = false;
     },
     ...gridModuleActions
   }
@@ -129,5 +152,10 @@ export default defineComponent({
   margin: 30px;
   background: white;
   box-shadow: 0 0 0 20px white, 0 0 0 30px theme('colors.blue.50');
+}
+
+.algorithms:focus {
+  @apply border-blue-500;
+  box-shadow: 0 0 3px theme('colors.blue.500');
 }
 </style>

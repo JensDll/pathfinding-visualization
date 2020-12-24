@@ -1,8 +1,10 @@
 import { mapActions, mapState, Module } from 'vuex';
 import { RootState } from '../store';
+import { PathfindingResponse } from '../../services/pathfindingService';
 
 export type Node = {
-  type: 'wall' | 'start' | 'finish' | '';
+  type: 'wall' | 'start' | 'finish' | 'default';
+  className: 'visited' | 'path' | '';
   point: Point;
 };
 
@@ -28,11 +30,12 @@ export const getDefaultNodes = (
   howMany: number
 ) =>
   Array.from<undefined, Node>({ length: howMany }, (_, i) => ({
-    type: '',
+    type: 'default',
     point: {
       row,
       col: i + startCol
-    }
+    },
+    className: ''
   }));
 
 enum MUTATIONS {
@@ -44,7 +47,11 @@ enum MUTATIONS {
   SET_FINISH = 'setFinish',
   SET_TYPE = 'setType',
   SET_LAST_CLICKED = 'setLastClicked',
-  SET_LAST_ENTERED = 'setLastEntered'
+  SET_LAST_ENTERED = 'setLastEntered',
+  SET_CLASS_VISITED = 'setVisited',
+  SET_CLASS_PATH = 'setPath',
+  RESET_GRID = 'resetGrid',
+  RESET_GRID_WITHOUT_WALL = 'resetGridWithoutWalls'
 }
 
 export const mutations: Module<GridModuleState, RootState>['mutations'] = {
@@ -74,12 +81,39 @@ export const mutations: Module<GridModuleState, RootState>['mutations'] = {
       });
     }
   },
+  [MUTATIONS.RESET_GRID](state) {
+    const grid = state.grid.map(row =>
+      row.map<Node>(node => ({
+        type:
+          node.type === 'start'
+            ? 'start'
+            : node.type === 'finish'
+            ? 'finish'
+            : 'default',
+        point: { ...node.point },
+        className: ''
+      }))
+    );
+
+    state.grid = grid;
+  },
+  [MUTATIONS.RESET_GRID_WITHOUT_WALL](state) {
+    const grid = state.grid.map(row =>
+      row.map<Node>(node => ({
+        type: node.type,
+        point: { ...node.point },
+        className: ''
+      }))
+    );
+
+    state.grid = grid;
+  },
   [MUTATIONS.SET_WALL](state, { row, col }: Point) {
     const type = state.grid[row][col].type;
 
     if (type === 'wall') {
-      state.grid[row][col].type = '';
-    } else if (type === '') {
+      state.grid[row][col].type = 'default';
+    } else if (type === 'default') {
       state.grid[row][col].type = 'wall';
     }
   },
@@ -92,7 +126,13 @@ export const mutations: Module<GridModuleState, RootState>['mutations'] = {
     state.grid[row][col].type = 'finish';
   },
   [MUTATIONS.SET_DEFAULT](state, { row, col }: Point) {
-    state.grid[row][col].type = '';
+    state.grid[row][col].type = 'default';
+  },
+  [MUTATIONS.SET_CLASS_VISITED](state, { row, col }: Point) {
+    state.grid[row][col].className = 'visited';
+  },
+  [MUTATIONS.SET_CLASS_PATH](state, { row, col }: Point) {
+    state.grid[row][col].className = 'path';
   },
   [MUTATIONS.SET_TYPE](
     state,
@@ -110,9 +150,9 @@ export const mutations: Module<GridModuleState, RootState>['mutations'] = {
     state.lastEntered = {
       type:
         state.grid[row][col].type === 'start'
-          ? ''
+          ? 'default'
           : state.grid[row][col].type === 'finish'
-          ? ''
+          ? 'default'
           : state.grid[row][col].type,
       point: { row, col }
     };
@@ -142,6 +182,12 @@ export const actions: Module<GridModuleState, RootState>['actions'] = {
       commit(MUTATIONS.SET_COLS, cols);
     }
   },
+  resetGrid({ commit }) {
+    commit(MUTATIONS.RESET_GRID);
+  },
+  resetGridWithoutWalls({ commit }) {
+    commit(MUTATIONS.RESET_GRID_WITHOUT_WALL);
+  },
   nodeOnClick({ commit }, point: Point) {
     commit(MUTATIONS.SET_LAST_CLICKED, point);
     commit(MUTATIONS.SET_LAST_ENTERED, point);
@@ -168,6 +214,16 @@ export const actions: Module<GridModuleState, RootState>['actions'] = {
       default:
         commit(MUTATIONS.SET_WALL, point);
     }
+  },
+  async animate({ commit }, pathfindingResponse: PathfindingResponse) {
+    for (const point of pathfindingResponse.visitedPositions) {
+      await new Promise<void>(r => setTimeout(r, 5));
+      commit(MUTATIONS.SET_CLASS_VISITED, point);
+    }
+    for (const point of pathfindingResponse.shortestPath) {
+      await new Promise<void>(r => setTimeout(r, 5));
+      commit(MUTATIONS.SET_CLASS_PATH, point);
+    }
   }
 };
 
@@ -185,7 +241,11 @@ export const gridModuleActions = mapActions('gridModule', {
   setCols: (dispatch, cols: number) => dispatch('setCols', cols),
   nodeOnClick: (dispatch, point: Point) => dispatch('nodeOnClick', point),
   nodeOnMouseEnter: (dispatch, point: Point) =>
-    dispatch('nodeOnMouseEnter', point)
+    dispatch('nodeOnMouseEnter', point),
+  animate: (dispatch, pathfindingResponse: PathfindingResponse) =>
+    dispatch('animate', pathfindingResponse),
+  resetGrid: dispatch => dispatch('resetGrid'),
+  resetGridWithoutWalls: dispatch => dispatch('resetGridWithoutWalls')
 });
 
 export const gridModuleState = mapState<

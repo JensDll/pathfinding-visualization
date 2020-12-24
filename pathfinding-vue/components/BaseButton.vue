@@ -1,5 +1,12 @@
 <template>
-  <button :class="['button', type, { disabled }]" :type="htmlType">
+  <button
+    :class="[
+      'button',
+      type,
+      { disabled: $attrs.disabled || $attrs.disabled === '' }
+    ]"
+    :type="htmlType"
+  >
     <slot />
   </button>
 </template>
@@ -20,9 +27,6 @@ export default defineComponent({
       default: 'default',
       validator: (type: string) =>
         ['default', 'primary', 'danger'].includes(type)
-    },
-    disabled: {
-      type: Boolean
     }
   }
 });
@@ -40,24 +44,24 @@ export default defineComponent({
 }
 
 .default:hover {
-  @apply border-green-500;
+  @apply border-blue-500;
 }
 
 .default:focus {
-  @apply border-green-500;
+  @apply border-blue-500;
   box-shadow: 0 0 3px theme('colors.green.500');
 }
 
 .primary {
-  @apply border-green-500 bg-green-50;
+  @apply border-blue-500 bg-blue-50;
 }
 
 .primary:hover {
-  @apply bg-green-100;
+  @apply bg-blue-100;
 }
 
 .primary:focus {
-  box-shadow: 0 0 3px theme('colors.green.500');
+  box-shadow: 0 0 3px theme('colors.blue.500');
 }
 
 .danger {
