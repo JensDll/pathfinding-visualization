@@ -32,6 +32,7 @@ namespace Pathfinding.Algorithm
         if (currentNode.Type == GridNodeTypeDto.Finish)
         {
           algorithmService.ConstructShortestPath(currentNode, shortestPath);
+          break;
         }
 
         var neighbors = algorithmService.GetNeighbors(grid, currentNode.Position);

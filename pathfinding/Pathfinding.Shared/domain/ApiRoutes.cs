@@ -6,7 +6,7 @@ namespace Pathfinding.Shared.Domain
 
     public static class GridRoutes
     {
-      public const string BreadthFirstSearch = Base + "/grid/breath-first-search";
+      public const string BreadthFirstSearch = Base + "/grid/breadth-first-search";
 
       public const string Dijkstra = Base + "/grid/dijkstra";
     }
