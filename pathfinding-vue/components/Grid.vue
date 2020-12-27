@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, Ref, ref } from 'vue';
 import { useDraggable } from '../composables/useDraggable';
-import { gridModuleState } from '../store/modules/gridModule';
+import { gridModuleState } from '../store/modules/gridModule/gridModule';
 import Node from './Node.vue';
 
 export default defineComponent({
@@ -71,7 +71,7 @@ export default defineComponent({
 
 <style scoped>
 #grid {
-  top: 400px;
+  top: 500px;
   position: absolute;
   overflow: auto;
   resize: both;
