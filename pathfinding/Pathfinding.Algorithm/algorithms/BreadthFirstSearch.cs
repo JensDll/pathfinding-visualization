@@ -15,8 +15,8 @@ namespace Pathfinding.Algorithm
 
     public PathfindingResult ShortestPath((int row, int col) start, GridNode[][] grid)
     {
-      var vistedNodes = new List<GridNode>();
-      vistedNodes.Add(grid[start.row][start.col]);
+      var visitedNodes = new List<GridNode>();
+      visitedNodes.Add(grid[start.row][start.col]);
       var shortestPath = new List<GridNode>();
 
       var queue = new Queue<GridNode>();
@@ -29,12 +29,6 @@ namespace Pathfinding.Algorithm
 
         currentNode.Visited = true;
 
-        if (currentNode.Type == GridNodeTypeDto.Finish)
-        {
-          algorithmService.ConstructShortestPath(currentNode, shortestPath);
-          break;
-        }
-
         var neighbors = algorithmService.GetNeighbors(grid, currentNode.Position);
 
         foreach (var neighbor in neighbors)
@@ -43,15 +37,26 @@ namespace Pathfinding.Algorithm
           {
             neighbor.Visited = true;
             neighbor.PreviousGridNode = currentNode;
-            vistedNodes.Add(neighbor);
+            visitedNodes.Add(neighbor);
             queue.Enqueue(neighbor);
+
+            if (neighbor.Type == GridNodeTypeDto.Finish)
+            {
+              algorithmService.ConstructShortestPath(neighbor, shortestPath);
+
+              return new PathfindingResult
+              {
+                VisitedNodes = visitedNodes,
+                ShortestPath = shortestPath
+              };
+            }
           }
         }
       }
 
       return new PathfindingResult
       {
-        VisitedNodes = vistedNodes,
+        VisitedNodes = visitedNodes,
         ShortestPath = shortestPath
       };
     }
