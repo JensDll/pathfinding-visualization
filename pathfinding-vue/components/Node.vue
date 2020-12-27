@@ -1,33 +1,57 @@
 <template>
   <td
-    :class="['td', node.type, node.className]"
+    :class="[
+      'td',
+      node.type,
+      node.className,
+      { 'font-bold': node.type === 'start' || node.type === 'finish' }
+    ]"
     @mousedown="onMouseDown"
     @mouseenter="onMouseEnter"
   >
-    {{ node.type === 'start' ? 'S' : node.type === 'finish' ? 'F' : null }}
+    {{ nodeText }}
   </td>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { gridModuleActions, Node } from '../store/modules/gridModule';
+import {
+  gridModuleActions,
+  gridModuleState,
+  GridNode
+} from '../store/modules/gridModule/gridModule';
 
 export default defineComponent({
   props: {
     node: {
-      type: Object as PropType<Node>,
+      type: Object as PropType<GridNode>,
       required: true
     }
+  },
+  computed: {
+    nodeText(): string | null | number {
+      switch (this.node.type) {
+        case 'start':
+          return 'S';
+        case 'finish':
+          return 'F';
+        case 'default':
+          return this.weight.hidden ? null : this.node.weight;
+        default:
+          return null;
+      }
+    },
+    ...gridModuleState
   },
   methods: {
     onMouseDown() {
       if (!window.ctrlPressed) {
-        this.nodeOnClick(this.$props.node.point);
+        this.nodeOnClick(this.$props.node.position);
       }
     },
     onMouseEnter() {
       if (!window.ctrlPressed) {
-        this.nodeOnMouseEnter(this.$props.node.point);
+        this.nodeOnMouseEnter(this.$props.node.position);
       }
     },
     ...gridModuleActions
@@ -55,21 +79,12 @@ export default defineComponent({
   }
 }
 
-@keyframes fade-in-path {
-  0% {
-    @apply bg-red-200 border-red-200;
-  }
-  100% {
-    @apply bg-yellow-300 border-yellow-300;
-  }
+.visited {
+  animation: fade-in-visited 1.2s ease-in forwards;
 }
 
 .wall {
   @apply border-gray-700 bg-gray-700;
-}
-
-.visited {
-  animation: fade-in-visited 1.2s ease-in forwards;
 }
 
 .path {

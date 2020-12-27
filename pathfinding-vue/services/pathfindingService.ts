@@ -1,9 +1,9 @@
 import { useFetch } from '../composables/useFetch';
-import { Node, Point } from '../store/modules/gridModule';
+import { GridNode, Position } from '../store/modules/gridModule/gridModule';
 
 export type PathfindingResponse = {
-  visitedPositions: Point[];
-  shortestPath: Point[];
+  visitedPositions: Position[];
+  shortestPath: Position[];
 };
 
 const baseUri = 'http://localhost:5000/api';
@@ -15,7 +15,7 @@ export const pathfindingService = {
     return {
       pathfindingResponse: json,
       loading,
-      shortestPath: (grid: Node[][]) =>
+      shortestPath: (grid: GridNode[][]) =>
         exec(
           new Request(`${baseUri}/grid/breadth-first-search`, {
             method: 'POST',

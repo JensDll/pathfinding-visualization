@@ -1,5 +1,8 @@
-import { createStore, Module } from 'vuex';
-import { GridModuleState, gridModuleFactory } from './modules/gridModule';
+import { createLogger, createStore, Module } from 'vuex';
+import {
+  GridModuleState,
+  gridModuleFactory
+} from './modules/gridModule/gridModule';
 
 export type RootState = {
   gridModule: GridModuleState;
@@ -7,11 +10,20 @@ export type RootState = {
 
 export const store = createStore({
   modules: {
-    gridModule: gridModuleFactory(5, 5, { row: 1, col: 1 }, { row: 3, col: 3 })
+    gridModule: gridModuleFactory(5, 10, { row: 2, col: 2 }, { row: 2, col: 7 })
   },
   strict: true,
   devtools: true,
-  plugins: []
+  plugins: [
+    // createLogger({
+    //   actionFilter(action) {
+    //     if (action.type === 'gridModule/nodeOnMouseEnter') {
+    //       return false;
+    //     }
+    //     return true;
+    //   }
+    // })
+  ]
 });
 
 export const storeFactory = (gridModule: Module<GridModuleState, RootState>) =>

@@ -6,39 +6,74 @@
     tabindex="0"
   >
     <div class="flex mb-4">
-      <div class="mr-4">
-        <label>
-          <div class="mb-2">Rows</div>
-          <input v-model.number="rows" type="range" min="5" max="25" />
-        </label>
-        <div>{{ rows }}</div>
-      </div>
-      <div>
-        <label>
-          <div class="mb-2">Columns</div>
-          <input v-model.number="cols" type="range" min="5" max="50" />
-        </label>
-        <div>{{ cols }}</div>
-      </div>
+      <label class="mr-6">
+        <div class="mb-2">Rows</div>
+        <input v-model.number="$rows" type="range" min="5" max="25" />
+        <div>{{ $rows }}</div>
+      </label>
+      <label>
+        <div class="mb-2">Columns</div>
+        <input v-model.number="$cols" type="range" min="5" max="50" />
+        <div>{{ $cols }}</div>
+      </label>
+    </div>
+    <div class="flex mb-4">
+      <label class="mr-6">
+        <div class="mb-2 flex justify-between items-end">
+          <span>Weight</span>
+          <input v-model="$weightActive" class="mb-1" type="checkbox" />
+        </div>
+        <input
+          v-model.number="$weight"
+          type="range"
+          min="1"
+          max="99"
+          :disabled="!$weightActive"
+        />
+        <div>{{ $weight }}</div>
+      </label>
+      <label>
+        <div class="mb-2">
+          {{ $weightHidden ? 'Show Weights' : 'Hide Weights' }}
+        </div>
+        <input v-model="$weightHidden" type="checkbox" />
+      </label>
+    </div>
+    <div class="flex mb-8">
+      <BaseButton class="px-4 py-1 mr-2" @click="resetGridClassnames">
+        Reset
+      </BaseButton>
+      <BaseButton class="px-4 py-1 mr-2" @click="resetGridWeights">
+        Reset Weights
+      </BaseButton>
+      <BaseButton class="px-4 py-1" type="danger" @click="resetGridAll">
+        Reset All
+      </BaseButton>
     </div>
     <div class="flex items-end">
       <label>
-        <div class="mb-2">Algorihtm</div>
-        <select v-model="algorihtm" class="border outline-none p-2 algorithms">
-          <option value="Breadth-First-Search">Breadth-First-Search</option>
-          <option value="Dijkstra">Dijkstra</option>
+        <div class="mb-2">Algorithm</div>
+        <select
+          v-model="selectedAlgorithm"
+          class="border outline-none p-2 algorithms"
+        >
+          <option
+            v-for="(algorithm, index) in algorithms"
+            :key="index"
+            :value="algorithm"
+          >
+            {{ algorithm.name }}
+          </option>
         </select>
       </label>
       <BaseButton
         type="primary"
-        class="ml-4"
+        class="px-8 py-2 ml-4"
         :disabled="animating"
         @click="startAnimate"
       >
-        {{ algorihtm }}
+        {{ selectedAlgorithm.name }}
       </BaseButton>
-      <BaseButton @click="resetGrid">Reset All</BaseButton>
-      <BaseButton @click="resetGridWithoutWalls">Reset</BaseButton>
     </div>
   </div>
 </template>
@@ -49,9 +84,27 @@ import { useDraggable } from '../composables/useDraggable';
 import {
   gridModuleActions,
   gridModuleState
-} from '../store/modules/gridModule';
+} from '../store/modules/gridModule/gridModule';
 import { pathfindingService } from '../services/pathfindingService';
 import BaseButton from '../components/BaseButton.vue';
+
+type Algorithm = {
+  name: 'Breadth-First-Search' | 'Dijkstra';
+  weighted: boolean;
+};
+
+const algorithms: Algorithm[] = [
+  {
+    name: 'Breadth-First-Search',
+    weighted: false
+  },
+  {
+    name: 'Dijkstra',
+    weighted: true
+  }
+];
+
+const selectedAlgorithm = algorithms[0];
 
 export default defineComponent({
   components: {
@@ -60,10 +113,6 @@ export default defineComponent({
   setup() {
     const controls = ref() as Ref<HTMLElement>;
     const cursorMove = ref(false);
-    const animating = ref(false);
-    const algorihtm = ref<'Breadth-First-Search' | 'Dijkstra'>(
-      'Breadth-First-Search'
-    );
 
     onMounted(() => {
       const { onMouseDown } = useDraggable(controls.value, 30);
@@ -97,35 +146,71 @@ export default defineComponent({
     return {
       controls,
       cursorMove,
-      algorihtm,
-      animating,
       ...pathfindingService.breadthFirstSearch()
     };
   },
+  data() {
+    return {
+      selectedAlgorithm,
+      algorithms,
+      animating: false
+    };
+  },
   computed: {
-    rows: {
+    $rows: {
       get(): number {
         return this.$store.getters['gridModule/getRows'];
       },
       set(row: number) {
-        this.setRows(row);
+        this.updateRows(row);
       }
     },
-    cols: {
+    $cols: {
       get(): number {
         return this.$store.getters['gridModule/getCols'];
       },
       set(cols: number) {
-        this.setCols(cols);
+        this.updateCols(cols);
+      }
+    },
+    $weight: {
+      get(): number {
+        return this.$store.state.gridModule.weight.value;
+      },
+      set(weight: number) {
+        this.updateWeight(weight);
+      }
+    },
+    $weightActive: {
+      get(): boolean {
+        return this.$store.state.gridModule.weight.active;
+      },
+      set() {
+        this.toggleWeightActive();
+      }
+    },
+    $weightHidden: {
+      get(): boolean {
+        return this.$store.state.gridModule.weight.hidden;
+      },
+      set() {
+        this.toggleWeightHidden();
       }
     },
     ...gridModuleState
+  },
+  watch: {
+    selectedAlgorithm(algorithm: Algorithm) {
+      if (this.weight.hidden === algorithm.weighted) {
+        this.toggleWeightHidden();
+      }
+    }
   },
   methods: {
     async startAnimate() {
       this.animating = true;
 
-      switch (this.algorihtm) {
+      switch (this.selectedAlgorithm.name) {
         case 'Breadth-First-Search':
           await this.shortestPath(this.grid);
           if (this.pathfindingResponse) {
