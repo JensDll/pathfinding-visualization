@@ -146,7 +146,8 @@ export default defineComponent({
     return {
       controls,
       cursorMove,
-      ...pathfindingService.breadthFirstSearch()
+      ...pathfindingService.breadthFirstSearch(),
+      ...pathfindingService.dijkstra()
     };
   },
   data() {
@@ -212,13 +213,16 @@ export default defineComponent({
 
       switch (this.selectedAlgorithm.name) {
         case 'Breadth-First-Search':
-          await this.shortestPath(this.grid);
-          if (this.pathfindingResponse) {
-            await this.animate(this.pathfindingResponse);
+          await this.execBfs(this.grid);
+          if (this.bfsResponse) {
+            await this.animate(this.bfsResponse);
           }
           break;
         case 'Dijkstra':
-          // TODO
+          await this.execDijkstra(this.grid);
+          if (this.dijkstraResponse) {
+            await this.animate(this.dijkstraResponse);
+          }
           break;
       }
 

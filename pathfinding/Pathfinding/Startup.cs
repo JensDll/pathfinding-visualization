@@ -32,6 +32,7 @@ namespace Pathfinding
     {
       services.AddSingleton<IAlgorithmService, AlgorithmService>();
       services.AddSingleton<IBreadthFirstSearch, BreadthFirstSearch>();
+      services.AddSingleton<IDijkstra, Dijkstra>();
       services.AddSingleton<IMapper, Mapper>();
 
       services.AddCors(options =>

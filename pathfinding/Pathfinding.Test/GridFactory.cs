@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Pathfinding.Shared;
-using Pathfinding.Shared.Domain;
 
 namespace Pathfinding.Test
 {
@@ -42,10 +41,10 @@ namespace Pathfinding.Test
           {
             Type = c switch
             {
-              'W' => GridNodeTypeDto.Wall,
-              'S' => GridNodeTypeDto.Start,
-              'F' => GridNodeTypeDto.Finish,
-              _ => GridNodeTypeDto.Default
+              'W' => GridNodeType.Wall,
+              'S' => GridNodeType.Start,
+              'F' => GridNodeType.Finish,
+              _ => GridNodeType.Default
             },
             Visited = false,
             Weight = 0,

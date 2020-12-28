@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using Pathfinding.Shared;
-using Pathfinding.Shared.Domain;
 
 namespace Pathfinding.Algorithm
 {
-  public class BreadthFirstSearch : IBreadthFirstSearch
+  public class Dijkstra : IDijkstra
   {
     private readonly IAlgorithmService algorithmService;
 
-    public BreadthFirstSearch(IAlgorithmService algorithmService)
+    public Dijkstra(IAlgorithmService algorithmService)
     {
       this.algorithmService = algorithmService;
     }
@@ -18,13 +17,27 @@ namespace Pathfinding.Algorithm
       var startNode = grid[start.row][start.col];
       startNode.Visited = true;
 
-      var visitedNodes = new List<GridNode> { startNode };
+      var visitedNodes = new List<GridNode>();
       var shortestPath = new List<GridNode>();
-      var queue = new Queue<GridNode>(new[] { startNode });
+      var queue = new List<GridNode> { startNode }; // TODO: Replace with Min-Heap
 
       while (queue.Count != 0)
       {
-        var currentNode = queue.Dequeue();
+        var currentNode = queue[0];
+        queue.RemoveAt(0);
+
+        visitedNodes.Add(currentNode);
+
+        if (currentNode.Type == GridNodeType.Finish)
+        {
+          algorithmService.ConstructShortestPath(currentNode, shortestPath);
+
+          return new PathfindingResult
+          {
+            VisitedNodes = visitedNodes,
+            ShortestPath = shortestPath
+          };
+        }
 
         currentNode.Visited = true;
 
@@ -34,23 +47,14 @@ namespace Pathfinding.Algorithm
         {
           if (!neighbor.Visited && neighbor.Type != GridNodeType.Wall)
           {
+            queue.Add(neighbor);
             neighbor.Visited = true;
+            neighbor.TotalWeight += neighbor.Weight + currentNode.TotalWeight;
             neighbor.PreviousGridNode = currentNode;
-            visitedNodes.Add(neighbor);
-            queue.Enqueue(neighbor);
-
-            if (neighbor.Type == GridNodeType.Finish)
-            {
-              algorithmService.ConstructShortestPath(neighbor, shortestPath);
-
-              return new PathfindingResult
-              {
-                VisitedNodes = visitedNodes,
-                ShortestPath = shortestPath
-              };
-            }
           }
         }
+
+        queue.Sort((n1, n2) => n1.TotalWeight - n2.TotalWeight);
       }
 
       return new PathfindingResult

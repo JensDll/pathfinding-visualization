@@ -32,8 +32,12 @@ namespace Pathfinding.Shared
 
         return new GridNode
         {
-          Type = node.Type,
-          Position = (row: rowIndex, col: colIndex)
+          Type = (GridNodeType)node.Type,
+          Visited = false,
+          Weight = node.Weight,
+          TotalWeight = 0,
+          Position = (row: rowIndex, col: colIndex),
+          PreviousGridNode = null
         };
       }).ToArray()).ToArray();
 
@@ -55,12 +59,12 @@ namespace Pathfinding.Shared
         {
           Row = node.Position.row,
           Col = node.Position.col
-        }).ToList(),
+        }),
         ShortestPath = result.ShortestPath.Select(node => new PositionDto
         {
           Row = node.Position.row,
           Col = node.Position.col
-        }).ToList()
+        })
       };
   }
 }

@@ -11,15 +11,17 @@ namespace Pathfinding.Controllers
 {
   [ApiController]
   [Produces("application/json")]
-  public class GridController : ControllerBase
+  public class AlgorithmController : ControllerBase
   {
     private readonly IMapper mapper;
     private readonly IBreadthFirstSearch bfs;
+    private readonly IDijkstra dijkstra;
 
-    public GridController(IMapper mapper, IBreadthFirstSearch bfs)
+    public AlgorithmController(IMapper mapper, IBreadthFirstSearch bfs, IDijkstra dijkstra)
     {
       this.mapper = mapper;
       this.bfs = bfs;
+      this.dijkstra = dijkstra;
     }
 
     [HttpPost(ApiRoutes.GridRoutes.BreadthFirstSearch)]
@@ -42,9 +44,21 @@ namespace Pathfinding.Controllers
 
 
     [HttpPost(ApiRoutes.GridRoutes.Dijkstra)]
+    [ProducesResponseType(typeof(PathfindingResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public IActionResult Dijkstra(GridNodeDto[][] grid)
     {
-      return Ok(new { row = 1 });
+      if (mapper.TryTransformGrid(grid, out (int, int) start, out _, out var transformedGrid))
+      {
+        var result = dijkstra.ShortestPath(start, transformedGrid);
+
+        return Ok(mapper.MapPathfindingResult(result));
+      }
+
+      return BadRequest(new ValidationErrorDto
+      {
+        Message = "No start or finish position found"
+      });
     }
   }
 }
