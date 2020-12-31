@@ -9,7 +9,7 @@ export type PathfindingResponse = {
 const baseUri =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000/api'
-    : 'http://localhost:8000/api';
+    : 'http://localhost:8001/api';
 
 export const pathfindingService = {
   breadthFirstSearch() {
