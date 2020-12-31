@@ -17,7 +17,7 @@ namespace Pathfinding.Test
 
       var grid = new GridNode[rows][];
       var startPos = (row: -1, col: -1);
-      var finishPos = (rows: -1, col: -1);
+      var finishPos = (row: -1, col: -1);
 
       for (int row = 0; row < rows; row++)
       {
