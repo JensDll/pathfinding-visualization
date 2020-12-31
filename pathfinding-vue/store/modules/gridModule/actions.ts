@@ -24,6 +24,9 @@ export const gridActions: GridModule['actions'] = {
 
     commit(GRID_MUTATIONS.UPDATE_COLS, cols);
   },
+  randomWeights({ commit }) {
+    commit(GRID_MUTATIONS.RANDOM_WEIGHTS);
+  },
   resetGridClassnames({ commit }) {
     commit(GRID_MUTATIONS.RESET_GRID_CLASSNAMES);
   },
@@ -92,12 +95,15 @@ export const nodeActions: GridModule['actions'] = {
         }
     }
   },
-  async animate({ commit }, pathfindingResponse: PathfindingResponse) {
-    for (const position of pathfindingResponse.visitedPositions) {
+  async animate(
+    { commit },
+    { visitedPositions, shortestPath }: PathfindingResponse
+  ) {
+    for (const position of visitedPositions) {
       await new Promise<void>(r => setTimeout(r, 0));
       commit(NODE_MUTATIONS.SET_CLASS_VISITED, position);
     }
-    for (const position of pathfindingResponse.shortestPath) {
+    for (const position of shortestPath) {
       await new Promise<void>(r => setTimeout(r, 0));
       commit(NODE_MUTATIONS.SET_CLASS_PATH, position);
     }

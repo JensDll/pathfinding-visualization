@@ -1,6 +1,14 @@
 <template>
-  <header class="header font-semibold text-lg px-8 py-8">
-    Pathfinding Visualization
+  <header
+    class="header flex justify-between items-end px-8 py-8 768:px-12 1024:px-16 1280:px-20 1536:px-20"
+  >
+    <div class="text-lg font-semibold">Pathfinding Visualization</div>
+    <a
+      class="text-blue-600 hover:text-blue-400"
+      href="https://github.com/JensD98/pathfinding-visualization"
+    >
+      GitHub
+    </a>
   </header>
 </template>
 

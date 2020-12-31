@@ -112,6 +112,7 @@ export function gridModuleFactory(
 export const gridModuleActions = mapActions('gridModule', {
   updateRows: (dispatch, rows: number) => dispatch('updateRows', rows),
   updateCols: (dispatch, cols: number) => dispatch('updateCols', cols),
+  randomWeights: dispatch => dispatch('randomWeights'),
   resetGridClassnames: dispatch => dispatch('resetGridClassnames'),
   resetGridWeights: dispatch => dispatch('resetGridWeights'),
   resetGridAll: dispatch => dispatch('resetGridAll'),

@@ -33,13 +33,11 @@
         <div>{{ $weight }}</div>
       </label>
       <label>
-        <div class="mb-2">
-          {{ $weightHidden ? 'Show Weights' : 'Hide Weights' }}
-        </div>
+        <div class="mb-2">Weights Hidden</div>
         <input v-model="$weightHidden" type="checkbox" />
       </label>
     </div>
-    <div class="flex mb-8">
+    <div class="flex mb-4">
       <BaseButton class="px-4 py-1 mr-2" @click="resetGridClassnames">
         Reset
       </BaseButton>
@@ -48,6 +46,11 @@
       </BaseButton>
       <BaseButton class="px-4 py-1" type="danger" @click="resetGridAll">
         Reset All
+      </BaseButton>
+    </div>
+    <div class="flex mb-8">
+      <BaseButton class="px-4 py-1 mr-2" @click="randomWeights">
+        Random Weights
       </BaseButton>
     </div>
     <div class="flex items-end">

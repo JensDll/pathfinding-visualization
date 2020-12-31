@@ -1,4 +1,4 @@
-import { createLogger, createStore, Module } from 'vuex';
+import { createStore, Module } from 'vuex';
 import {
   GridModuleState,
   gridModuleFactory
@@ -10,7 +10,7 @@ export type RootState = {
 
 export const store = createStore({
   modules: {
-    gridModule: gridModuleFactory(5, 10, { row: 2, col: 2 }, { row: 2, col: 7 })
+    gridModule: gridModuleFactory(5, 10, { row: 2, col: 1 }, { row: 2, col: 8 })
   },
   strict: true,
   devtools: true,

@@ -1,11 +1,11 @@
 import { Store } from 'vuex';
-import { RootState, storeFactory } from '../../store';
+import { RootState, storeFactory } from '../../../store';
 import {
   Position,
   getDefaultNodes,
   GridNode,
   gridModuleFactory
-} from '../gridModule/gridModule';
+} from '../../gridModule/gridModule';
 
 const nodeFactory = (
   row: number,

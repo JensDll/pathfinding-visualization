@@ -3,6 +3,7 @@ import { getDefaultNodes, GridModule, GridNode, Position } from './gridModule';
 export enum GRID_MUTATIONS {
   UPDATE_ROWS = 'updateRows',
   UPDATE_COLS = 'updateCols',
+  RANDOM_WEIGHTS = 'randomWeights',
   RESET_GRID_CLASSNAMES = 'resetGridClassnames',
   RESET_GRID_WEIGHTS = 'resetGridWeights',
   RESET_GRID_ALL = 'resetGridAll'
@@ -57,6 +58,21 @@ export const gridMutations: GridModule['mutations'] = {
         ];
       });
     }
+  },
+  [GRID_MUTATIONS.RANDOM_WEIGHTS](state) {
+    const randomInt = (min: number, max: number) =>
+      Math.floor(Math.random() * (max - min + 1) + min);
+
+    const grid = state.grid.map(row =>
+      row.map<GridNode>(node => ({
+        type: node.type,
+        position: { ...node.position },
+        className: node.className,
+        weight: randomInt(1, 99)
+      }))
+    );
+
+    state.grid = grid;
   },
   [GRID_MUTATIONS.RESET_GRID_CLASSNAMES](state) {
     const grid = state.grid.map(row =>

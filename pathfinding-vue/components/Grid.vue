@@ -71,12 +71,19 @@ export default defineComponent({
 
 <style scoped>
 #grid {
-  top: 500px;
+  top: 650px;
   position: absolute;
   overflow: auto;
   resize: both;
   outline: none;
   margin: 20px;
   box-shadow: 0 0 0 10px white, 0 0 0 20px theme('colors.blue.50');
+}
+
+@screen 1280 {
+  #grid {
+    top: unset;
+    left: 600px;
+  }
 }
 </style>
