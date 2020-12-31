@@ -39,7 +39,7 @@ namespace Pathfinding
       {
         options.AddDefaultPolicy(builder =>
         {
-          builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+          builder.WithOrigins("http://localhost:3000", "http://localhost:8080").AllowAnyHeader().AllowAnyMethod();
         });
       });
 

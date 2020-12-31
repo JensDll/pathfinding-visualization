@@ -1,22 +1,26 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 as build
-WORKDIR /app
-COPY *.sln ./
+WORKDIR /source
+
+# copy csproj and restore as distinct layers
 COPY Pathfinding/*.csproj ./Pathfinding/
-RUN dotnet restore
+COPY Pathfinding.Algorithm/*csproj ./Pathfinding.Algorithm/
+COPY Pathfinding.Shared/*csproj ./Pathfinding.Shared/
+RUN dotnet restore Pathfinding/Pathfinding.csproj
 
-FROM build as dev
-# https://github.com/dotnet/dotnet-docker/issues/2430#issuecomment-742048902
-RUN useradd -ms /bin/bash -u 1000 development-user
+# copy everything else and build
+COPY Pathfinding ./Pathfinding/
+COPY Pathfinding.Algorithm ./Pathfinding.Algorithm/
+COPY Pathfinding.Shared ./Pathfinding.Shared/
 
-# https://github.com/dotnet/dotnet-docker/issues/2396#issuecomment-728243108
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-  procps \
-  && rm -rf /var/lib/apt/lists/*
+WORKDIR /source/Pathfinding
+RUN dotnet build -c release --no-restore
 
-# This folder has a different owner because of the restore in build
-RUN chown -R development-user:development-user /tmp/NuGetScratch/
+FROM build AS publish
+RUN dotnet publish -c release --no-build -o /app
 
-EXPOSE 5000
-WORKDIR /app/Pathfinding
-ENTRYPOINT ["dotnet", "watch", "run", "--urls=http://+:5000"]
+# final image
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /app
+COPY --from=publish /app ./
+EXPOSE 80
+ENTRYPOINT ["dotnet", "Pathfinding.dll"]

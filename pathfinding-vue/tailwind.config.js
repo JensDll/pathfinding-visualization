@@ -1,5 +1,5 @@
 module.exports = {
-  purge: [],
+  purge: [], // can't get purge to work
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {

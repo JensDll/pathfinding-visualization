@@ -1,25 +1,16 @@
-version: "3.8"
+version: '3.8'
 services:
   vue-app:
-    build:
-      context: ./pathfinding-vue
-      target: dev
-    volumes:
-      - type: bind
-        source: ./pathfinding-vue
-        target: /app
-    ports:
-      - 3000:3000
-  backend:
     build: 
+      context: ./pathfinding-vue
+    ports: 
+      - target: 80
+        published: 8080
+  backend:
+    build:
       context: ./pathfinding
-      target: dev
-    user: development-user
-    volumes:
-      - type: bind
-        source: ./pathfinding
-        target: /app
     environment: 
       ASPNETCORE_ENVIRONMENT: Development
     ports:
-      - 5000:5000
+      - target: 80
+        published: 5000

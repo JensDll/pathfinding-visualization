@@ -1,9 +1,11 @@
 FROM node:15 as build
-LABEL maintainer="Jens Doellmann"
 WORKDIR /app
-COPY package.json package-lock.json docker-entrypoint.sh ./
+COPY package.json package-lock.json ./
+RUN ["npm", "ci"]
+COPY . ./
+RUN ["npm", "run", "build"]
 
-FROM build as dev
-EXPOSE 3000
-ENTRYPOINT ["sh", "docker-entrypoint.sh"]
-CMD ["npm", "run", "dev"]
+# final image
+FROM nginx:1.19
+EXPOSE 80
+COPY --from=build app/dist /usr/share/nginx/html
