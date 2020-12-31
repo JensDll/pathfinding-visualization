@@ -4,8 +4,8 @@
 </template>
 
 <script lang="ts">
-import TheMain from '../components/layout/TheMain.vue';
-import TheHeader from '../components/layout/TheHeader.vue';
+import TheMain from './components/layout/TheMain.vue';
+import TheHeader from './components/layout/TheHeader.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -36,9 +36,9 @@ export default defineComponent({
 </script>
 
 <style>
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 #app {
   overflow-x: hidden;

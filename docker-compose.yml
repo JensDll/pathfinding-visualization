@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   vue-app:
     build: 
@@ -13,4 +13,4 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
     ports:
       - target: 80
-        published: 5000
+        published: 8000

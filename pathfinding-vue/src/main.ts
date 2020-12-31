@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { Store } from 'vuex';
-import { RootState, store } from '../store/store';
+import { RootState, store } from './store/store';
 import App from './App.vue';
 
 createApp(App).use(store).mount('#app');

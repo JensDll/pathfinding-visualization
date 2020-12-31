@@ -6,7 +6,10 @@ export type PathfindingResponse = {
   shortestPath: Position[];
 };
 
-const baseUri = 'http://localhost:5000/api';
+const baseUri =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:5000/api'
+    : 'http://localhost:8000/api';
 
 export const pathfindingService = {
   breadthFirstSearch() {

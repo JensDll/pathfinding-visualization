@@ -5,7 +5,7 @@ import {
   getDefaultNodes,
   GridNode,
   gridModuleFactory
-} from '../../gridModule/gridModule';
+} from '../gridModule';
 
 const nodeFactory = (
   row: number,
