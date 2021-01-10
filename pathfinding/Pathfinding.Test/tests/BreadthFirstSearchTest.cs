@@ -65,9 +65,9 @@ namespace Pathfinding.Test
       var result = sut.ShortestPath(start, grid);
       var positions = result.VisitedNodes.Select(node => node.Position);
 
-      Assert.All(expectedVisitedPositions, p =>
+      Assert.All(expectedVisitedPositions, expectedPosition =>
       {
-        Assert.True(positions.Contains(p));
+        Assert.Contains(expectedPosition, positions);
       });
     }
   }

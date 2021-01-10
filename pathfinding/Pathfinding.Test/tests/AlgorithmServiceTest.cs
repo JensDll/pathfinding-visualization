@@ -100,9 +100,10 @@ namespace Pathfinding.Test
     {
       var data = GridFactory.ProduceGrids(stringGrids);
 
-      for (int i = 0; i < data.Count; i++)
+      int i = 0;
+      foreach (var (grid, start, _) in data)
       {
-        AddRow(data[i].grid, data[i].start, expectedNeighbors[i]);
+        AddRow(grid, start, expectedNeighbors[i++]);
       }
     }
   }

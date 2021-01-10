@@ -27,38 +27,56 @@ namespace Pathfinding.Controllers
     [HttpPost(ApiRoutes.GridRoutes.BreadthFirstSearch)]
     [ProducesResponseType(typeof(PathfindingResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
-    public IActionResult BreadthFirstSearch(GridNodeDto[][] grid)
+    public IActionResult BreadthFirstSearch(GridDto gridDto)
     {
-      if (mapper.TryTransformGrid(grid, out (int, int) start, out _, out var transformedGrid))
+      if (TryGetValidationErrors(gridDto, out var errors))
       {
-        var result = bfs.ShortestPath(start, transformedGrid);
-
-        return Ok(mapper.MapPathfindingResult(result));
+        return BadRequest(errors);
       }
 
-      return BadRequest(new ValidationErrorDto
-      {
-        Message = "No start or finish position found"
-      });
+      var (grid, start, _) = mapper.TransformGrid(gridDto);
+
+      var result = bfs.ShortestPath(start, grid);
+
+      return Ok(mapper.MapPathfindingResult(result));
     }
 
 
     [HttpPost(ApiRoutes.GridRoutes.Dijkstra)]
     [ProducesResponseType(typeof(PathfindingResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
-    public IActionResult Dijkstra(GridNodeDto[][] grid)
+    public IActionResult Dijkstra(GridDto gridDto)
     {
-      if (mapper.TryTransformGrid(grid, out (int, int) start, out _, out var transformedGrid))
+      if (TryGetValidationErrors(gridDto, out var errors))
       {
-        var result = dijkstra.ShortestPath(start, transformedGrid);
-
-        return Ok(mapper.MapPathfindingResult(result));
+        return BadRequest(errors);
       }
 
-      return BadRequest(new ValidationErrorDto
+      var (grid, start, _) = mapper.TransformGrid(gridDto);
+
+      var result = dijkstra.ShortestPath(start, grid);
+
+      return Ok(mapper.MapPathfindingResult(result));
+    }
+
+    private bool TryGetValidationErrors(GridDto gridDto, out ValidationErrorDto validationErrors)
+    {
+      var validator = new GridDtoValidator();
+      var validationResult = validator.Validate(gridDto);
+
+      validationErrors = new();
+
+      if (!validationResult.IsValid)
       {
-        Message = "No start or finish position found"
-      });
+        validationErrors = new ValidationErrorDto
+        {
+          ErrorMessages = validationResult.Errors.Select(e => e.ErrorMessage)
+        };
+
+        return true;
+      }
+
+      return false;
     }
   }
 }

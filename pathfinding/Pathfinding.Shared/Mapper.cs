@@ -1,24 +1,16 @@
 using System.Linq;
-using System.Threading.Tasks;
 using Pathfinding.Shared.Domain;
 
 namespace Pathfinding.Shared
 {
   public class Mapper : IMapper
   {
-    public bool TryTransformGrid(
-      GridNodeDto[][] grid,
-      out (int row, int col) start,
-      out (int row, int col) finish,
-      out GridNode[][] transformedGrid)
+    public (GridNode[][] grid, (int row, int col) startPos, (int row, int col) finishPos) TransformGrid(GridDto gridDto)
     {
-      (int row, int col) startPos = (-1, -1);
-      (int row, int col) finishPos = (-1, -1);
+      (int row, int col) startPos = (0, 0);
+      (int row, int col) finishPos = (0, 0);
 
-      start = startPos;
-      finish = finishPos;
-
-      transformedGrid = grid.Select((row, rowIndex) => row.Select((node, colIndex) =>
+      var grid = gridDto.Grid.Select((row, rowIndex) => row.Select((node, colIndex) =>
       {
         if (node.Type == GridNodeTypeDto.Start)
         {
@@ -41,15 +33,7 @@ namespace Pathfinding.Shared
         };
       }).ToArray()).ToArray();
 
-      if (startPos == (-1, -1) || finishPos == (-1, -1))
-      {
-        return false;
-      }
-
-      start = startPos;
-      finish = finishPos;
-
-      return true;
+      return (grid, startPos, finishPos);
     }
 
     public PathfindingResponseDto MapPathfindingResult(PathfindingResult result) =>

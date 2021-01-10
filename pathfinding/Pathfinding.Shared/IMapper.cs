@@ -5,11 +5,7 @@ namespace Pathfinding.Shared
 {
   public interface IMapper
   {
-    bool TryTransformGrid(
-      GridNodeDto[][] grid,
-      out (int row, int col) start,
-      out (int row, int col) finish,
-      out GridNode[][] transformedGrid);
+    (GridNode[][] grid, (int row, int col) startPos, (int row, int col) finishPos) TransformGrid(GridDto gridDto);
 
     PathfindingResponseDto MapPathfindingResult(PathfindingResult result);
   }

@@ -47,7 +47,7 @@ namespace Pathfinding.Test
               _ => GridNodeType.Default
             },
             Visited = false,
-            Weight = 0,
+            Weight = int.TryParse(c.ToString(), out int weight) ? weight : 0,
             Position = (row, col)
           };
         }

@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace Pathfinding.Shared.Domain
 {
   public class ValidationErrorDto
   {
-    public string Message { get; set; }
+    public IEnumerable<string> ErrorMessages { get; set; }
   }
 }

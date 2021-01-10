@@ -24,7 +24,7 @@ export const pathfindingService = {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(grid)
+            body: JSON.stringify({ grid })
           })
         )
     };
@@ -41,7 +41,7 @@ export const pathfindingService = {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(grid)
+            body: JSON.stringify({ grid })
           })
         )
     };
