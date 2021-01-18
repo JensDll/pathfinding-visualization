@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "docs"
+		},
+		{
+			"path": ".github"
 		}
 	],
 	"settings": {
@@ -161,7 +164,8 @@
 			"ms-dotnettools.csharp",
 			"bradlc.vscode-tailwindcss",
 			"ms-azuretools.vscode-docker",
-			"james-yu.latex-workshop"
+			"james-yu.latex-workshop",
+			"redhat.vscode-yaml"
 		]
 	}
 }

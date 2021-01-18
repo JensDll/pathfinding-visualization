@@ -9,3 +9,7 @@ updates:
     directory: "/pathfinding-vue"
     schedule:
       interval: "daily"
+  - package-ecosystem: "nuget"
+    directory: "/pathfining"
+    schedule:
+      interval: "daily"
