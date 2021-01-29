@@ -1,6 +1,7 @@
 import { PathfindingResponse } from '../../../services/pathfindingService';
-import { GridModule, Position } from './gridModule';
+import { Delay, GridModule, Position } from './gridModule';
 import {
+  ANIMATE_MUTATIONS,
   GRID_MUTATIONS,
   HELPER_MUTATIONS,
   NODE_MUTATIONS,
@@ -94,18 +95,24 @@ export const nodeActions: GridModule['actions'] = {
           commit(NODE_MUTATIONS.SET_WALL, position);
         }
     }
-  },
+  }
+};
+
+export const animateActions: GridModule['actions'] = {
   async animate(
-    { commit },
+    { commit, state },
     { visitedPositions, shortestPath }: PathfindingResponse
   ) {
     for (const position of visitedPositions) {
-      await new Promise<void>(r => setTimeout(r, 0));
+      await new Promise<void>(r => setTimeout(r, state.delay));
       commit(NODE_MUTATIONS.SET_CLASS_VISITED, position);
     }
     for (const position of shortestPath) {
-      await new Promise<void>(r => setTimeout(r, 0));
+      await new Promise<void>(r => setTimeout(r, state.delay));
       commit(NODE_MUTATIONS.SET_CLASS_PATH, position);
     }
+  },
+  updateDelay({ commit }, delay: Delay) {
+    commit(ANIMATE_MUTATIONS.UPDATE_DELAY, delay);
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <header
-    class="header flex justify-between items-end px-8 py-8 768:px-12 1024:px-16 1280:px-20 1536:px-20"
+    class="header flex justify-between items-end px-8 py-8 768:px-12 1024:px-16 1280:px-20 1800:px-32"
   >
     <div class="text-lg font-semibold">Pathfinding Visualization</div>
     <a

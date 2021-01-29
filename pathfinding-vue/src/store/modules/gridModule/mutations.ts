@@ -1,4 +1,10 @@
-import { getDefaultNodes, GridModule, GridNode, Position } from './gridModule';
+import {
+  getDefaultNodes,
+  GridModule,
+  GridNode,
+  Position,
+  Delay
+} from './gridModule';
 
 export enum GRID_MUTATIONS {
   UPDATE_ROWS = 'updateRows',
@@ -30,6 +36,10 @@ export enum NODE_MUTATIONS {
   SET_TYPE = 'setType',
   SET_CLASS_VISITED = 'setVisited',
   SET_CLASS_PATH = 'setPath'
+}
+
+export enum ANIMATE_MUTATIONS {
+  UPDATE_DELAY = 'updateDelay'
 }
 
 export const gridMutations: GridModule['mutations'] = {
@@ -194,5 +204,11 @@ export const nodeMutations: GridModule['mutations'] = {
   },
   [NODE_MUTATIONS.SET_CLASS_PATH](state, { row, col }: Position) {
     state.grid[row][col].className = 'path';
+  }
+};
+
+export const animateMutations: GridModule['mutations'] = {
+  [ANIMATE_MUTATIONS.UPDATE_DELAY](state, delay: Delay) {
+    state.delay = delay;
   }
 };

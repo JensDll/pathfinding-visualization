@@ -5,9 +5,11 @@ import {
   gridMutations,
   weightMutations,
   helperMutations,
-  nodeMutations
+  nodeMutations,
+  animateMutations
 } from './mutations';
 import {
+  animateActions,
   gridActions,
   helperActions,
   nodeActions,
@@ -22,10 +24,13 @@ export type GridNode = {
   weight: number;
 };
 
+export type Delay = number;
+
 export type GridModuleState = {
   grid: GridNode[][];
   startPosition: Position;
   finishPosition: Position;
+  delay: Delay;
   weight: {
     active: boolean;
     hidden: boolean;
@@ -64,12 +69,17 @@ export const getDefaultNodes = (
     weight: 1
   }));
 
-export function gridModuleFactory(
-  INIT_ROWS: number,
-  INIT_COLS: number,
-  START_POSITION: Position,
-  FINISH_POSITION: Position
-): GridModule {
+export function gridModuleFactory({
+  INIT_ROWS,
+  INIT_COLS,
+  START_POSITION,
+  FINISH_POSITION
+}: {
+  INIT_ROWS: number;
+  INIT_COLS: number;
+  START_POSITION: Position;
+  FINISH_POSITION: Position;
+}): GridModule {
   const INIT_GRID = Array.from({ length: INIT_ROWS }, (_, row) =>
     getDefaultNodes(row, 0, INIT_COLS)
   );
@@ -90,20 +100,23 @@ export function gridModuleFactory(
         lastEnteredStart: { type: 'default', position: START_POSITION },
         lastEnteredFinish: { type: 'default', position: FINISH_POSITION },
         startPosition: START_POSITION,
-        finishPosition: FINISH_POSITION
+        finishPosition: FINISH_POSITION,
+        delay: 100
       };
     },
     mutations: {
       ...gridMutations,
       ...nodeMutations,
       ...weightMutations,
-      ...helperMutations
+      ...helperMutations,
+      ...animateMutations
     },
     actions: {
       ...gridActions,
       ...nodeActions,
       ...weightActions,
-      ...helperActions
+      ...helperActions,
+      ...animateActions
     },
     getters
   };
@@ -125,8 +138,10 @@ export const gridModuleActions = mapActions('gridModule', {
     dispatch('nodeOnClick', position),
   nodeOnMouseEnter: (dispatch, position: Position) =>
     dispatch('nodeOnMouseEnter', position),
+
   animate: (dispatch, pathfindingResponse: PathfindingResponse) =>
-    dispatch('animate', pathfindingResponse)
+    dispatch('animate', pathfindingResponse),
+  updateDelay: (dispatch, delay: Delay) => dispatch('updateDelay', delay)
 });
 
 export const gridModuleState = mapState<
@@ -148,5 +163,6 @@ export const gridModuleState = mapState<
   finishPosition: state => state.finishPosition,
   lastClicked: state => state.lastClicked,
   lastEnteredStart: state => state.lastEnteredStart,
-  lastEnteredFinish: state => state.lastEnteredFinish
+  lastEnteredFinish: state => state.lastEnteredFinish,
+  delay: state => state.delay
 });

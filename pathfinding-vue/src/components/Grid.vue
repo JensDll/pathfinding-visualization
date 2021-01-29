@@ -71,7 +71,7 @@ export default defineComponent({
 
 <style scoped>
 #grid {
-  top: 650px;
+  top: 710px;
   position: absolute;
   overflow: auto;
   resize: both;
@@ -84,6 +84,12 @@ export default defineComponent({
   #grid {
     top: unset;
     left: 600px;
+  }
+}
+
+@screen 1800 {
+  #grid {
+    left: 700px;
   }
 }
 </style>

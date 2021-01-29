@@ -35,14 +35,14 @@ const gridFactory = (
 
 let store: Store<RootState>;
 
-const ROWS = 5;
-const COLS = 5;
-const START_POINT = { row: 1, col: 1 };
-const FINISH_POINT = { row: 3, col: 3 };
+const INIT_ROWS = 5;
+const INIT_COLS = 5;
+const START_POSITION = { row: 1, col: 1 };
+const FINISH_POSITION = { row: 3, col: 3 };
 
 beforeEach(() => {
   store = storeFactory(
-    gridModuleFactory(ROWS, COLS, START_POINT, FINISH_POINT)
+    gridModuleFactory({ INIT_ROWS, INIT_COLS, START_POSITION, FINISH_POSITION })
   );
 });
 
@@ -66,54 +66,54 @@ describe('getDefaultNodes', () => {
 
 it('should initialize the correct board', () => {
   expect(store.state.gridModule.grid).toEqual(
-    gridFactory(ROWS, COLS, START_POINT, FINISH_POINT)
+    gridFactory(INIT_ROWS, INIT_COLS, START_POSITION, FINISH_POSITION)
   );
 });
 
 describe('action updateRows', () => {
   it('should add rows to board', async () => {
-    await store.dispatch('gridModule/updateRows', ROWS + 10);
+    await store.dispatch('gridModule/updateRows', INIT_ROWS + 10);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(ROWS + 10, COLS, START_POINT, FINISH_POINT)
+      gridFactory(INIT_ROWS + 10, INIT_COLS, START_POSITION, FINISH_POSITION)
     );
   });
 
   it('should remove rows from board', async () => {
-    await store.dispatch('gridModule/updateRows', ROWS + 10);
+    await store.dispatch('gridModule/updateRows', INIT_ROWS + 10);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(ROWS + 10, COLS, START_POINT, FINISH_POINT)
+      gridFactory(INIT_ROWS + 10, INIT_COLS, START_POSITION, FINISH_POSITION)
     );
 
-    await store.dispatch('gridModule/updateRows', ROWS + 4);
+    await store.dispatch('gridModule/updateRows', INIT_ROWS + 4);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(ROWS + 4, COLS, START_POINT, FINISH_POINT)
+      gridFactory(INIT_ROWS + 4, INIT_COLS, START_POSITION, FINISH_POSITION)
     );
   });
 });
 
 describe('action updateCols', () => {
   it('should add columns to board', async () => {
-    await store.dispatch('gridModule/updateCols', COLS + 10);
+    await store.dispatch('gridModule/updateCols', INIT_COLS + 10);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(ROWS, COLS + 10, START_POINT, FINISH_POINT)
+      gridFactory(INIT_ROWS, INIT_COLS + 10, START_POSITION, FINISH_POSITION)
     );
   });
 
   it('should remove columns from board', async () => {
-    await store.dispatch('gridModule/updateCols', COLS + 10);
+    await store.dispatch('gridModule/updateCols', INIT_COLS + 10);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(ROWS, COLS + 10, START_POINT, FINISH_POINT)
+      gridFactory(INIT_ROWS, INIT_COLS + 10, START_POSITION, FINISH_POSITION)
     );
 
-    await store.dispatch('gridModule/updateCols', COLS + 4);
+    await store.dispatch('gridModule/updateCols', INIT_COLS + 4);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(ROWS, COLS + 4, START_POINT, FINISH_POINT)
+      gridFactory(INIT_ROWS, INIT_COLS + 4, START_POSITION, FINISH_POSITION)
     );
   });
 });

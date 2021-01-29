@@ -53,7 +53,7 @@
         Random Weights
       </BaseButton>
     </div>
-    <div class="flex items-end">
+    <div class="flex items-end mb-4">
       <label>
         <div class="mb-2">Algorithm</div>
         <select
@@ -71,12 +71,36 @@
       </label>
       <BaseButton
         type="primary"
-        class="px-8 py-2 ml-4"
+        class="px-8 py-2 mx-4"
         :disabled="animating"
         @click="startAnimate"
       >
         {{ selectedAlgorithm.name }}
       </BaseButton>
+    </div>
+    <div class="w-60">
+      <label>
+        <div class="mb-2">Speed</div>
+        <input
+          v-model.number="$delay"
+          class="w-full"
+          type="range"
+          min="0"
+          :max="maxDelay"
+          step="0.1"
+        />
+      </label>
+      <div class="flex justify-between">
+        <span
+          v-for="(delayOption, index) in delayOptions"
+          :key="delayOption.delay"
+          class="cursor-pointer hover:text-blue-400"
+          :class="{ 'speed-active': index === delayActive }"
+          @click="$delay = Math.abs(delayOption.delay - maxDelay)"
+        >
+          {{ delayOption.description }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -86,7 +110,8 @@ import { defineComponent, onMounted, ref, Ref } from 'vue';
 import { useDraggable } from '../composables/useDraggable';
 import {
   gridModuleActions,
-  gridModuleState
+  gridModuleState,
+  Delay
 } from '../store/modules/gridModule/gridModule';
 import { pathfindingService } from '../services/pathfindingService';
 import BaseButton from '../components/BaseButton.vue';
@@ -108,6 +133,28 @@ const algorithms: Algorithm[] = [
 ];
 
 const selectedAlgorithm = algorithms[0];
+
+type DelayOption = {
+  delay: 200 | 100 | 0;
+  description: 'Slow' | 'Medium' | 'Fast';
+};
+
+const delayOptions: DelayOption[] = [
+  {
+    description: 'Slow',
+    delay: 200
+  },
+  {
+    description: 'Medium',
+    delay: 100
+  },
+  {
+    description: 'Fast',
+    delay: 0
+  }
+];
+
+const maxDelay = delayOptions[0].delay;
 
 export default defineComponent({
   components: {
@@ -157,10 +204,20 @@ export default defineComponent({
     return {
       selectedAlgorithm,
       algorithms,
+      delayOptions,
+      maxDelay,
       animating: false
     };
   },
   computed: {
+    delayActive(): number {
+      const sections = delayOptions.length;
+      const width = maxDelay / sections;
+
+      const active = Math.trunc(this.$delay < width ? 0 : this.$delay / width);
+
+      return active === sections ? sections - 1 : active;
+    },
     $rows: {
       get(): number {
         return this.$store.getters['gridModule/getRows'];
@@ -199,6 +256,14 @@ export default defineComponent({
       },
       set() {
         this.toggleWeightHidden();
+      }
+    },
+    $delay: {
+      get(): Delay {
+        return Math.abs(this.$store.state.gridModule.delay - maxDelay);
+      },
+      set(delay: Delay) {
+        this.updateDelay(Math.abs(delay - maxDelay));
       }
     },
     ...gridModuleState
@@ -244,6 +309,10 @@ export default defineComponent({
   margin: 30px;
   background: white;
   box-shadow: 0 0 0 20px white, 0 0 0 30px theme('colors.blue.50');
+}
+
+.speed-active {
+  @apply text-blue-500 font-bold;
 }
 
 .algorithms:focus {

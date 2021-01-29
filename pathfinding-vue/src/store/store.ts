@@ -1,4 +1,4 @@
-import { createStore, Module } from 'vuex';
+import { createStore, Module, createLogger } from 'vuex';
 import {
   GridModuleState,
   gridModuleFactory
@@ -10,19 +10,24 @@ export type RootState = {
 
 export const store = createStore({
   modules: {
-    gridModule: gridModuleFactory(5, 10, { row: 2, col: 1 }, { row: 2, col: 8 })
+    gridModule: gridModuleFactory({
+      INIT_ROWS: 5,
+      INIT_COLS: 10,
+      START_POSITION: { row: 2, col: 1 },
+      FINISH_POSITION: { row: 2, col: 8 }
+    })
   },
   strict: true,
   devtools: true,
   plugins: [
-    // createLogger({
-    //   actionFilter(action) {
-    //     if (action.type === 'gridModule/nodeOnMouseEnter') {
-    //       return false;
-    //     }
-    //     return true;
-    //   }
-    // })
+    createLogger({
+      actionFilter(action) {
+        if (action.type === 'gridModule/nodeOnMouseEnter') {
+          return false;
+        }
+        return true;
+      }
+    })
   ]
 });
 
