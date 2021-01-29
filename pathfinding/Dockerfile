@@ -1,4 +1,7 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 as build
+# Certificate issues on the .NET SDK 5.0 image
+# https://github.com/NuGet/Announcements/issues/49
+# https://github.com/NuGet/Home/issues/10491
+FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim as build
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
