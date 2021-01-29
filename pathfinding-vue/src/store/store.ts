@@ -1,4 +1,4 @@
-import { createStore, Module, createLogger } from 'vuex';
+import { createStore, Module } from 'vuex';
 import {
   GridModuleState,
   gridModuleFactory
@@ -20,14 +20,14 @@ export const store = createStore({
   strict: true,
   devtools: true,
   plugins: [
-    createLogger({
-      actionFilter(action) {
-        if (action.type === 'gridModule/nodeOnMouseEnter') {
-          return false;
-        }
-        return true;
-      }
-    })
+    // createLogger({
+    //   actionFilter(action) {
+    //     if (action.type === 'gridModule/nodeOnMouseEnter') {
+    //       return false;
+    //     }
+    //     return true;
+    //   }
+    // })
   ]
 });
 
