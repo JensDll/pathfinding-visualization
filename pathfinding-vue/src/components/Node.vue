@@ -4,7 +4,7 @@
       'td',
       node.type,
       node.className,
-      { 'font-bold': node.type === 'start' || node.type === 'finish' }
+      { 'text-xl': node.type === 'start' || node.type === 'finish' }
     ]"
     @mousedown="onMouseDown"
     @mouseenter="onMouseEnter"
@@ -32,9 +32,9 @@ export default defineComponent({
     nodeText(): string | null | number {
       switch (this.node.type) {
         case 'start':
-          return 'S';
+          return '🚒';
         case 'finish':
-          return 'F';
+          return '🔥';
         case 'default':
           return this.weight.hidden ? null : this.node.weight;
         default:
@@ -62,10 +62,10 @@ export default defineComponent({
 <style scoped>
 .td {
   @apply relative border border-blue-100 bg-white text-center;
-  width: 2.5rem;
-  height: 2.5rem;
-  min-width: 2.5rem;
-  min-height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   cursor: pointer;
   user-select: none;
 }
