@@ -1,7 +1,7 @@
 FROM node:15 as build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN ["npm", "i"]
+RUN ["npm", "install"]
 COPY . ./
 RUN ["npm", "run", "build"]
 
