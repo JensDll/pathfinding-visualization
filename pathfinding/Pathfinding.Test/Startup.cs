@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Pathfinding.Algorithm;
-
+// GitHub action test
 namespace Pathfinding.Test
 {
   public class Startup
