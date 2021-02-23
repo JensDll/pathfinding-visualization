@@ -1,4 +1,4 @@
-name: node.js test
+name: Run pathfinding-vue tests
 
 on:
   push:
