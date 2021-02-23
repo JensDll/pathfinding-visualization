@@ -1,0 +1,15 @@
+name: Build docker images
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build-images:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build vue-app
+      run: docker-compose build --no-cache vue-app
+    - name: Build backend
+      run: docker-compose build --no-cache backend
