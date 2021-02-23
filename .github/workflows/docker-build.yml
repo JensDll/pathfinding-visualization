@@ -11,5 +11,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build vue-app
       run: docker-compose build --no-cache vue-app
-    - name: Build backend
-      run: docker-compose build --no-cache backend
+    - name: Build backend-app
+      run: docker-compose build --no-cache backend-app

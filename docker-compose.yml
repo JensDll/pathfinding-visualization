@@ -6,7 +6,8 @@ services:
     ports: 
       - target: 80
         published: 8000
-  backend:
+
+  backend-app:
     build:
       context: ./pathfinding
     environment: 
