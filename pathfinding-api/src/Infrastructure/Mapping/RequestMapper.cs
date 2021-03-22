@@ -28,7 +28,7 @@ namespace Infrastructure.Mapping
                     {
                         Type = (GridNodeType)nodeDto.Type,
                         Visited = false,
-                        Weight = 0,
+                        Weight = nodeDto.Weight,
                         TotalWeight = 0,
                         Position = postion,
                         PreviousGridNode = null

@@ -40,6 +40,14 @@ namespace PathfindingAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PathfindingAPI", Version = "v1" });
             });
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:8000").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -54,6 +62,8 @@ namespace PathfindingAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

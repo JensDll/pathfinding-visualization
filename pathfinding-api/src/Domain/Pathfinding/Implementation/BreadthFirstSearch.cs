@@ -25,7 +25,7 @@ namespace Domain.Pathfinding.Implementation
             var shortestPath = new List<GridNode>();
             var queue = new Queue<GridNode>(new[] { startNode });
 
-            while (queue.Count != 0)
+            while (queue.Count > 0)
             {
                 var currentNode = queue.Dequeue();
 
@@ -37,10 +37,11 @@ namespace Domain.Pathfinding.Implementation
                 {
                     neighbor.Visited = true;
                     neighbor.PreviousGridNode = currentNode;
+
                     visitedNodes.Add(neighbor);
                     queue.Enqueue(neighbor);
 
-                    if (neighbor.Type == GridNodeType.Finish)
+                    if (neighbor.Type is GridNodeType.Finish)
                     {
                         ConstructShortestPath(neighbor, shortestPath);
 

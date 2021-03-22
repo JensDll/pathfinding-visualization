@@ -44,7 +44,7 @@ namespace PathfindingAPI.Controllers
 
             var (grid, startPosition) = _requestMapper.MapPathfindingRequestDto(pathfindingRequestDto);
 
-            var pathfindingResult =_pathfindingService.BreadthFirstSearch(grid,
+            var pathfindingResult = _pathfindingService.BreadthFirstSearch(grid,
                 startPosition, pathfindingRequestDto.SearchDiagonal);
 
             return Ok(_responseMapper.MapPathfindingResult(pathfindingResult));
