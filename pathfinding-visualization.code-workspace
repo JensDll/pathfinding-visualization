@@ -24,9 +24,7 @@
 			"dbaeumer.vscode-eslint",
 			"ms-dotnettools.csharp",
 			"bradlc.vscode-tailwindcss",
-			"ms-azuretools.vscode-docker",
-			"james-yu.latex-workshop",
-			"redhat.vscode-yaml"
+			"ms-azuretools.vscode-docker"
 		]
 	}
 }

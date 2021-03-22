@@ -10,6 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build vue-app
-      run: docker-compose build --no-cache vue-app
+      run: docker-compose build vue-app
     - name: Build backend-app
-      run: docker-compose build --no-cache backend-app
+      run: docker-compose build backend-app
