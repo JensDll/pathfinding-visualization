@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, Ref, ref } from 'vue';
-import { useDraggable } from '../composables/useDraggable';
+import { useDraggable } from '../composition';
 import { gridModuleState } from '../store/modules/gridModule/gridModule';
 import Node from './Node.vue';
 

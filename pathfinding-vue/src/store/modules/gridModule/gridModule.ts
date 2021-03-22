@@ -1,6 +1,6 @@
 import { mapActions, mapState, Module } from 'vuex';
 import { RootState } from '../../store';
-import { PathfindingResponse } from '../../../services/pathfindingService';
+import { PathfindingResponse } from '../../../api/pathfindingService';
 import {
   gridMutations,
   weightMutations,

@@ -3,7 +3,7 @@
     ref="controls"
     class="controls"
     :class="{ 'cursor-move': cursorMove }"
-    tabindex="0"
+    :tabindex="0"
   >
     <div class="flex mb-4">
       <label class="mr-6">
@@ -107,13 +107,13 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, Ref } from 'vue';
-import { useDraggable } from '../composables/useDraggable';
+import { useDraggable } from '../composition';
 import {
   gridModuleActions,
   gridModuleState,
   Delay
 } from '../store/modules/gridModule/gridModule';
-import { pathfindingService } from '../services/pathfindingService';
+import { pathfindingService } from '../api/pathfindingService';
 import BaseButton from '../components/BaseButton.vue';
 
 type Algorithm = {
@@ -195,9 +195,7 @@ export default defineComponent({
 
     return {
       controls,
-      cursorMove,
-      ...pathfindingService.breadthFirstSearch(),
-      ...pathfindingService.dijkstra()
+      cursorMove
     };
   },
   data() {
@@ -205,7 +203,7 @@ export default defineComponent({
       selectedAlgorithm,
       algorithms,
       delayOptions,
-      maxDelay,
+      maxDelay: delayOptions[0].delay,
       animating: false
     };
   },
@@ -280,18 +278,32 @@ export default defineComponent({
       this.animating = true;
 
       switch (this.selectedAlgorithm.name) {
-        case 'Breadth-First-Search':
-          await this.execBfs(this.grid);
-          if (this.bfsResponse) {
-            await this.animate(this.bfsResponse);
+        case 'Breadth-First-Search': {
+          const { isValid, data } = await pathfindingService.breadthFirstSearch(
+            {
+              grid: this.grid,
+              searchDiagonal: false
+            }
+          );
+          console.log(data.value);
+          if (isValid.value && data.value) {
+            await this.animate(data.value);
           }
+
           break;
-        case 'Dijkstra':
-          await this.execDijkstra(this.grid);
-          if (this.dijkstraResponse) {
-            await this.animate(this.dijkstraResponse);
+        }
+        case 'Dijkstra': {
+          const { isValid, data } = await pathfindingService.dijkstra({
+            grid: this.grid,
+            searchDiagonal: false
+          });
+
+          if (isValid.value && data.value) {
+            await this.animate(data.value);
           }
+
           break;
+        }
       }
 
       this.animating = false;

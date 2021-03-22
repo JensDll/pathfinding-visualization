@@ -6,16 +6,14 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/Pathfinding/bin/Debug/net5.0/Pathfinding.dll",
+      "program": "${workspaceFolder}/src/PathfindingAPI/bin/Debug/net5.0/PathfindingAPI.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/Pathfinding",
+      "cwd": "${workspaceFolder}/src/PathfindingAPI",
       "stopAtEntry": false,
-      // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
       "serverReadyAction": {
         "action": "openExternally",
-        "pattern": "\\bNow listening on:\\s+https?://\\S+:([0-9]+)",
-        "uriFormat": "http://localhost:%s/swagger"
+        "pattern": "\\bNow listening on:\\s+https://\\S+:([0-9]+)",
+        "uriFormat": "https://localhost:%s/swagger"
       },
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"

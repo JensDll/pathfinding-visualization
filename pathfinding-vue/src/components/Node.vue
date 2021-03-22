@@ -1,11 +1,6 @@
 <template>
   <td
-    :class="[
-      'td',
-      node.type,
-      node.className,
-      { 'text-xl': node.type === 'start' || node.type === 'finish' }
-    ]"
+    :class="['td', node.type, node.className]"
     @mousedown="onMouseDown"
     @mouseenter="onMouseEnter"
   >
@@ -59,7 +54,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 .td {
   @apply relative border border-blue-100 bg-white text-center;
   width: 2.75rem;
@@ -80,7 +75,7 @@ export default defineComponent({
 }
 
 .visited {
-  animation: fade-in-visited 1.2s ease-in forwards;
+  @apply bg-blue-300;
 }
 
 .wall {
