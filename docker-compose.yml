@@ -5,13 +5,13 @@ services:
       context: ./pathfinding-vue
     ports: 
       - target: 80
-        published: 8000
+        published: 3000
 
-  backend-app:
+  pathfinding-api:
     build:
-      context: ./pathfinding
+      context: ./pathfinding-api
     environment: 
       ASPNETCORE_ENVIRONMENT: Development
     ports:
       - target: 80
-        published: 8001
+        published: 3001

@@ -1,4 +1,4 @@
-import { PathfindingResponse } from '../../../services/pathfindingService';
+import { PathfindingResponse } from '../../../api/pathfindingService';
 import { Delay, GridModule, Position } from './gridModule';
 import {
   ANIMATE_MUTATIONS,

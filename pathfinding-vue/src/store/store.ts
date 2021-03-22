@@ -19,16 +19,7 @@ export const store = createStore({
   },
   strict: true,
   devtools: true,
-  plugins: [
-    // createLogger({
-    //   actionFilter(action) {
-    //     if (action.type === 'gridModule/nodeOnMouseEnter') {
-    //       return false;
-    //     }
-    //     return true;
-    //   }
-    // })
-  ]
+  plugins: []
 });
 
 export const storeFactory = (gridModule: Module<GridModuleState, RootState>) =>
