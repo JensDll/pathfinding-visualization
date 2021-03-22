@@ -7,7 +7,7 @@ services:
       - target: 80
         published: 3000
 
-  backend:
+  pathfinding-api:
     build:
       context: ./pathfinding-api
     environment: 

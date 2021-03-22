@@ -11,5 +11,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build vue-app
       run: docker-compose build vue-app
-    - name: Build backend-app
-      run: docker-compose build backend-app
+    - name: Build pathfinding-api
+      run: docker-compose build pathfinding-api
