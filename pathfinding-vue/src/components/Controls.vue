@@ -285,7 +285,7 @@ export default defineComponent({
               searchDiagonal: false
             }
           );
-          console.log(data.value);
+
           if (isValid.value && data.value) {
             await this.animate(data.value);
           }

@@ -45,7 +45,7 @@ namespace PathfindingAPI
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:8000").AllowAnyHeader().AllowAnyMethod();
                 });
             });
         }

@@ -99,18 +99,34 @@ export const nodeActions: GridModule['actions'] = {
 };
 
 export const animateActions: GridModule['actions'] = {
-  async animate(
+  animate(
     { commit, state },
     { visitedPositions, shortestPath }: PathfindingResponse
   ) {
-    for (const position of visitedPositions) {
-      await new Promise<void>(r => setTimeout(r, state.delay));
-      commit(NODE_MUTATIONS.SET_CLASS_VISITED, position);
-    }
-    for (const position of shortestPath) {
-      await new Promise<void>(r => setTimeout(r, state.delay));
-      commit(NODE_MUTATIONS.SET_CLASS_PATH, position);
-    }
+    return new Promise<void>(resolve => {
+      let i = 0;
+
+      const animatePath = () => {
+        if (i === shortestPath.length) {
+          resolve();
+        } else {
+          setTimeout(animatePath, state.delay);
+          commit(NODE_MUTATIONS.SET_CLASS_PATH, shortestPath[i++]);
+        }
+      };
+
+      const animateVisited = () => {
+        if (i === visitedPositions.length) {
+          i = 0;
+          animatePath();
+        } else {
+          setTimeout(animateVisited, state.delay);
+          commit(NODE_MUTATIONS.SET_CLASS_VISITED, visitedPositions[i++]);
+        }
+      };
+
+      animateVisited();
+    });
   },
   updateDelay({ commit }, delay: Delay) {
     commit(ANIMATE_MUTATIONS.UPDATE_DELAY, delay);
