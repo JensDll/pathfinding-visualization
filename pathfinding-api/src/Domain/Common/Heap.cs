@@ -12,12 +12,10 @@ namespace Domain.Common
 
         private int next = 0;
         private T[] heap = new T[INIT_SIZE];
-        private readonly Comparison<T> compare;
+        private readonly Comparison<T> compare = Comparer<T>.Default.Compare;
 
         public Heap()
-        {
-            compare = Comparer<T>.Default.Compare;
-        }
+        { }
 
         public Heap(Comparison<T> compare)
         {
@@ -26,7 +24,6 @@ namespace Domain.Common
 
         public Heap(IEnumerable<T> values)
         {
-            compare = Comparer<T>.Default.Compare;
             Heapify(values.ToArray());
         }
 
