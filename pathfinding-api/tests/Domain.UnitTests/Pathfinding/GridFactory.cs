@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Domain.UnitTests.Pathfinding
 {
@@ -13,50 +14,52 @@ namespace Domain.UnitTests.Pathfinding
     {
         public static GridFactoryResult Produce(string[] stringGrid)
         {
-            // Ensure all strings have the same length
-            Contract.ForAll(stringGrid, x => x.Length == stringGrid[0].Length);
+            var grid = stringGrid.Select(row => row.Split(' ', StringSplitOptions.RemoveEmptyEntries)).ToArray();
 
-            int rows = stringGrid.Length;
-            int cols = stringGrid[0].Length;
+            // Ensure all rows have the same length
+            Assert.True(Contract.ForAll(grid, row => row.Length == grid[0].Length), "Bad grid dimensions!!!");
 
-            var grid = new GridNode[rows][];
+            int rows = grid.Length;
+            int cols = grid[0].Length;
+
+            var resultGrid = new GridNode[rows][];
             Position start = null;
             Position finish = null;
 
             for (int row = 0; row < rows; row++)
             {
-                grid[row] = new GridNode[cols];
+                resultGrid[row] = new GridNode[cols];
 
                 for (int col = 0; col < cols; col++)
                 {
-                    char c = stringGrid[row][col];
+                    string type = grid[row][col];
                     var position = new Position(row, col);
 
-                    if (c == 'S') start = position;
-                    if (c == 'F') finish = position;
+                    if (type == "S") start = position;
+                    if (type == "F") finish = position;
 
-                    grid[row][col] = new GridNode
+                    resultGrid[row][col] = new GridNode
                     {
-                        Type = c switch
+                        Type = type switch
                         {
-                            'W' => GridNodeType.Wall,
-                            'S' => GridNodeType.Start,
-                            'F' => GridNodeType.Finish,
+                            "W" => GridNodeType.Wall,
+                            "S" => GridNodeType.Start,
+                            "F" => GridNodeType.Finish,
                             _ => GridNodeType.Default
                         },
                         Visited = false,
-                        Weight = int.TryParse(c.ToString(), out int weight) ? weight : 0,
+                        Weight = int.TryParse(type, out int weight) ? weight : 0,
                         Position = position
                     };
                 }
             }
 
             // Ensure a start position has been marked with 'S'
-            Contract.Assert(start is not null, "No position was marked with 'S'!");
+            Assert.True(start is not null, "No position was marked with 'S'!!!");
             // Ensure a finish position has been marked with 'F'
-            Contract.Assert(finish is not null, "No position was marked with 'F'!");
+            Assert.True(finish is not null, "No position was marked with 'F'!!!");
 
-            return new GridFactoryResult(grid, start, finish);
+            return new GridFactoryResult(resultGrid, start, finish);
         }
 
         public static List<GridFactoryResult> ProduceMultiple(string[][] stringGrids) =>

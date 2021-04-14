@@ -15,9 +15,9 @@ namespace Domain.UnitTests.Pathfinding.Common
         {
             var (grid, _, _) = GridFactory.Produce(new[]
             {
-                "Soo",
-                "oWo",
-                "ooF"
+                "S 1 1",
+                "1 W 1",
+                "1 1 F"
             });
 
             yield return new object[] { grid, new Position(0, 0), new Position[] { new(0, 1), new(1, 0) } };
@@ -35,10 +35,10 @@ namespace Domain.UnitTests.Pathfinding.Common
 
         [Theory]
         [MemberData(nameof(GetNeighborsHorizontalData))]
-        public void GetNeighborsHorizontal_ShouldReturnHorizontalNeghbors(GridNode[][] grid, Position pos, Position[] expectedNeighbors)
+        public void GetNeighborsHorizontal_ShouldReturnHorizontalNeighbors(GridNode[][] grid, Position start, Position[] expectedNeighbors)
         {
             var sut = new GetNeighborsHorizontal();
-            var neighbors = sut.GetNeighbors(grid, pos);
+            var neighbors = sut.GetNeighbors(grid, start);
 
             Assert.Equal(neighbors.Count, expectedNeighbors.Length);
             Assert.All(neighbors, neighbor =>
