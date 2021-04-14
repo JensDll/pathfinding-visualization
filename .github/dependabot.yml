@@ -1,10 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/pathfinding-vue"
+    directory: "/vue"
     schedule:
       interval: "weekly"
   - package-ecosystem: "nuget"
-    directory: "/pathfinding"
+    directory: "/api"
     schedule:
       interval: "weekly"
