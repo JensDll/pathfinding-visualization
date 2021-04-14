@@ -16,7 +16,7 @@ namespace Domain.Common
 
         public Heap()
         {
-            this.compare = Comparer<T>.Default.Compare;
+            compare = Comparer<T>.Default.Compare;
         }
 
         public Heap(Comparison<T> compare)
@@ -26,7 +26,7 @@ namespace Domain.Common
 
         public Heap(IEnumerable<T> values)
         {
-            this.compare = Comparer<T>.Default.Compare;
+            compare = Comparer<T>.Default.Compare;
             Heapify(values.ToArray());
         }
 
