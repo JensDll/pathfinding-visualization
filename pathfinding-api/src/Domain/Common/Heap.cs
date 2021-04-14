@@ -6,27 +6,37 @@ using System.Threading.Tasks;
 
 namespace Domain.Common
 {
-
     public class Heap<T>
     {
         private const int INIT_SIZE = 8;
 
         private int next = 0;
         private T[] heap = new T[INIT_SIZE];
-        private readonly Comparison<T> comparison;
+        private readonly Comparison<T> compare;
 
-        public int Count => next;
-
-        public Heap(Comparison<T> comparison)
+        public Heap()
         {
-            this.comparison = comparison;
+            this.compare = Comparer<T>.Default.Compare;
         }
 
-        public Heap(Comparison<T> comparison, IEnumerable<T> values)
+        public Heap(Comparison<T> compare)
         {
-            this.comparison = comparison;
+            this.compare = compare;
+        }
+
+        public Heap(IEnumerable<T> values)
+        {
+            this.compare = Comparer<T>.Default.Compare;
             Heapify(values.ToArray());
         }
+
+        public Heap(IEnumerable<T> values, Comparison<T> compare)
+        {
+            this.compare = compare;
+            Heapify(values.ToArray());
+        }
+
+        public int Count => next;
 
         public Heap<T> Add(T item)
         {
@@ -72,7 +82,7 @@ namespace Domain.Common
             T current = heap[i];
             T parent = heap[parentIndex];
 
-            if (comparison(current, parent) < 0)
+            if (compare(current, parent) < 0)
             {
                 Swap(i, parentIndex);
                 SiftUp(parentIndex);
@@ -91,7 +101,7 @@ namespace Domain.Common
             {
                 T leftChild = heap[leftChildIndex];
 
-                if (comparison(leftChild, smallest) < 0)
+                if (compare(leftChild, smallest) < 0)
                 {
                     smallestIndex = leftChildIndex;
                     smallest = leftChild;
@@ -102,7 +112,7 @@ namespace Domain.Common
             {
                 T rightChild = heap[rightChildIndex];
 
-                if (comparison(rightChild, smallest) < 0)
+                if (compare(rightChild, smallest) < 0)
                 {
                     smallestIndex = rightChildIndex;
                 }
@@ -145,14 +155,14 @@ namespace Domain.Common
 
         private void DoubleHeapSize()
         {
-            var newHeap = new T[heap.Length * 2];
+            var newHeap = new T[heap.Length << 1];
             heap.CopyTo(newHeap, 0);
             heap = newHeap;
         }
 
         private void BisectHeapSize()
         {
-            int newLength = heap.Length / 2;
+            int newLength = heap.Length >> 1;
             heap = heap[0..newLength];
         }
 
@@ -161,6 +171,5 @@ namespace Domain.Common
         private static int LeftChildIndex(int i) => 2 * i + 1;
 
         private static int RightChildIndex(int i) => 2 * i + 2;
-
     }
 }
