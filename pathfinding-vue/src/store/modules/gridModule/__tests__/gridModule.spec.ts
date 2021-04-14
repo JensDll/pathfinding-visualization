@@ -1,13 +1,20 @@
-import { Store } from 'vuex';
-import { RootState, storeFactory } from '../../../store';
+import { createStore, Store } from 'vuex';
+import { RootState } from '../../../store';
 import {
   Position,
-  getDefaultNodes,
+  createNodes,
   GridNode,
-  gridModuleFactory
+  createGridModule
 } from '../gridModule';
 
-const nodeFactory = (
+const ROWS = 5;
+const COLS = 5;
+const START_POSITION = { row: 1, col: 1 };
+const FINISH_POSITION = { row: 3, col: 3 };
+
+let store: Store<RootState>;
+
+const createNode = (
   row: number,
   col: number,
   type: GridNode['type']
@@ -18,14 +25,14 @@ const nodeFactory = (
   className: ''
 });
 
-const gridFactory = (
+const createGrid = (
   rows: number,
   cols: number,
   startPos: Position,
   finishPos: Position
 ) => {
   const grid = Array.from({ length: rows }, (_, row) =>
-    getDefaultNodes(row, 0, cols)
+    createNodes(row, 0, cols)
   );
   grid[startPos.row][startPos.col].type = 'start';
   grid[finishPos.row][finishPos.col].type = 'finish';
@@ -33,87 +40,88 @@ const gridFactory = (
   return grid;
 };
 
-let store: Store<RootState>;
-
-const INIT_ROWS = 5;
-const INIT_COLS = 5;
-const START_POSITION = { row: 1, col: 1 };
-const FINISH_POSITION = { row: 3, col: 3 };
-
 beforeEach(() => {
-  store = storeFactory(
-    gridModuleFactory({ INIT_ROWS, INIT_COLS, START_POSITION, FINISH_POSITION })
-  );
+  store = createStore({
+    modules: {
+      gridModule: createGridModule({
+        ROWS,
+        COLS,
+        START_POSITION,
+        FINISH_POSITION,
+        WALL_POSITIONS: []
+      })
+    }
+  });
 });
 
-describe('getDefaultNodes', () => {
+describe('createNodes', () => {
   it('should return the correct nodes', () => {
-    expect(getDefaultNodes(0, 1, 3)).toEqual([
-      nodeFactory(0, 1, 'default'),
-      nodeFactory(0, 2, 'default'),
-      nodeFactory(0, 3, 'default')
+    expect(createNodes(0, 1, 3)).toEqual([
+      createNode(0, 1, 'default'),
+      createNode(0, 2, 'default'),
+      createNode(0, 3, 'default')
     ]);
 
-    expect(getDefaultNodes(1, 3, 5)).toEqual([
-      nodeFactory(1, 3, 'default'),
-      nodeFactory(1, 4, 'default'),
-      nodeFactory(1, 5, 'default'),
-      nodeFactory(1, 6, 'default'),
-      nodeFactory(1, 7, 'default')
+    expect(createNodes(1, 3, 5, 'wall')).toEqual([
+      createNode(1, 3, 'wall'),
+      createNode(1, 4, 'wall'),
+      createNode(1, 5, 'wall'),
+      createNode(1, 6, 'wall'),
+      createNode(1, 7, 'wall')
     ]);
   });
 });
 
 it('should initialize the correct board', () => {
   expect(store.state.gridModule.grid).toEqual(
-    gridFactory(INIT_ROWS, INIT_COLS, START_POSITION, FINISH_POSITION)
+    createGrid(ROWS, COLS, START_POSITION, FINISH_POSITION)
   );
 });
 
 describe('action updateRows', () => {
   it('should add rows to board', async () => {
-    await store.dispatch('gridModule/updateRows', INIT_ROWS + 10);
+    await store.dispatch('gridModule/updateRows', ROWS + 10);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(INIT_ROWS + 10, INIT_COLS, START_POSITION, FINISH_POSITION)
+      createGrid(ROWS + 10, COLS, START_POSITION, FINISH_POSITION)
     );
   });
 
   it('should remove rows from board', async () => {
-    await store.dispatch('gridModule/updateRows', INIT_ROWS + 10);
+    await store.dispatch('gridModule/updateRows', ROWS + 10);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(INIT_ROWS + 10, INIT_COLS, START_POSITION, FINISH_POSITION)
+      createGrid(ROWS + 10, COLS, START_POSITION, FINISH_POSITION)
     );
 
-    await store.dispatch('gridModule/updateRows', INIT_ROWS + 4);
+    await store.dispatch('gridModule/updateRows', ROWS + 4);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(INIT_ROWS + 4, INIT_COLS, START_POSITION, FINISH_POSITION)
+      createGrid(ROWS + 4, COLS, START_POSITION, FINISH_POSITION)
     );
   });
 });
 
 describe('action updateCols', () => {
   it('should add columns to board', async () => {
-    await store.dispatch('gridModule/updateCols', INIT_COLS + 10);
+    await store.dispatch('gridModule/updateCols', COLS + 10);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(INIT_ROWS, INIT_COLS + 10, START_POSITION, FINISH_POSITION)
+      createGrid(ROWS, COLS + 10, START_POSITION, FINISH_POSITION)
     );
   });
 
   it('should remove columns from board', async () => {
-    await store.dispatch('gridModule/updateCols', INIT_COLS + 10);
+    await store.dispatch('gridModule/updateCols', COLS + 10);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(INIT_ROWS, INIT_COLS + 10, START_POSITION, FINISH_POSITION)
+      createGrid(ROWS, COLS + 10, START_POSITION, FINISH_POSITION)
     );
 
-    await store.dispatch('gridModule/updateCols', INIT_COLS + 4);
+    await store.dispatch('gridModule/updateCols', COLS + 4);
 
     expect(store.state.gridModule.grid).toEqual(
-      gridFactory(INIT_ROWS, INIT_COLS + 4, START_POSITION, FINISH_POSITION)
+      createGrid(ROWS, COLS + 4, START_POSITION, FINISH_POSITION)
     );
   });
 });

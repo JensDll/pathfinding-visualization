@@ -76,6 +76,7 @@ export default defineComponent({
 
 .visited {
   @apply bg-blue-300;
+  animation: fade-in-visited 0.8s ease-in-out;
 }
 
 .wall {

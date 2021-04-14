@@ -32,9 +32,13 @@
         />
         <div>{{ $weight }}</div>
       </label>
-      <label>
+      <label class="mr-6">
         <div class="mb-2">Weights Hidden</div>
         <input v-model="$weightHidden" type="checkbox" />
+      </label>
+      <label>
+        <div class="mb-2">Search Diagonal</div>
+        <input v-model="searchDiagonal" type="checkbox" />
       </label>
     </div>
     <div class="flex mb-4">
@@ -78,6 +82,7 @@
         {{ selectedAlgorithm.name }}
       </BaseButton>
     </div>
+
     <div class="w-60">
       <label>
         <div class="mb-2">Speed</div>
@@ -154,8 +159,6 @@ const delayOptions: DelayOption[] = [
   }
 ];
 
-const maxDelay = delayOptions[0].delay;
-
 export default defineComponent({
   components: {
     BaseButton
@@ -204,13 +207,14 @@ export default defineComponent({
       algorithms,
       delayOptions,
       maxDelay: delayOptions[0].delay,
-      animating: false
+      animating: false,
+      searchDiagonal: false
     };
   },
   computed: {
     delayActive(): number {
       const sections = delayOptions.length;
-      const width = maxDelay / sections;
+      const width = this.maxDelay / sections;
 
       const active = Math.trunc(this.$delay < width ? 0 : this.$delay / width);
 
@@ -258,10 +262,10 @@ export default defineComponent({
     },
     $delay: {
       get(): Delay {
-        return Math.abs(this.$store.state.gridModule.delay - maxDelay);
+        return Math.abs(this.$store.state.gridModule.delay - this.maxDelay);
       },
       set(delay: Delay) {
-        this.updateDelay(Math.abs(delay - maxDelay));
+        this.updateDelay(Math.abs(delay - this.maxDelay));
       }
     },
     ...gridModuleState
@@ -282,7 +286,7 @@ export default defineComponent({
           const { isValid, data } = await pathfindingService.breadthFirstSearch(
             {
               grid: this.grid,
-              searchDiagonal: false
+              searchDiagonal: this.searchDiagonal
             }
           );
 
@@ -295,7 +299,7 @@ export default defineComponent({
         case 'Dijkstra': {
           const { isValid, data } = await pathfindingService.dijkstra({
             grid: this.grid,
-            searchDiagonal: false
+            searchDiagonal: this.searchDiagonal
           });
 
           if (isValid.value && data.value) {

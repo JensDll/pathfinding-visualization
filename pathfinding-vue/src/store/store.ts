@@ -1,7 +1,7 @@
-import { createStore, Module } from 'vuex';
+import { createStore } from 'vuex';
 import {
   GridModuleState,
-  gridModuleFactory
+  createGridModule
 } from './modules/gridModule/gridModule';
 
 export type RootState = {
@@ -10,21 +10,21 @@ export type RootState = {
 
 export const store = createStore({
   modules: {
-    gridModule: gridModuleFactory({
-      INIT_ROWS: 5,
-      INIT_COLS: 10,
-      START_POSITION: { row: 2, col: 1 },
-      FINISH_POSITION: { row: 2, col: 8 }
+    gridModule: createGridModule({
+      ROWS: 7,
+      COLS: 15,
+      START_POSITION: { row: 3, col: 1 },
+      FINISH_POSITION: { row: 3, col: 13 },
+      WALL_POSITIONS: [
+        { row: 1, col: 8 },
+        { row: 2, col: 8 },
+        { row: 3, col: 8 },
+        { row: 4, col: 8 },
+        { row: 5, col: 8 }
+      ]
     })
   },
   strict: true,
   devtools: true,
   plugins: []
 });
-
-export const storeFactory = (gridModule: Module<GridModuleState, RootState>) =>
-  createStore({
-    modules: {
-      gridModule
-    }
-  });

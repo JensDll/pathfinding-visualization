@@ -14,12 +14,12 @@ namespace Infrastructure.Services
 {
     internal class PathfindingService : IPathfindingService
     {
-        public PathfindingResult BreadthFirstSearch(GridNode[][] grid, Position startPosition, bool searchDiagonal = false)
+        public PathfindingResult BreadthFirstSearch(GridNode[][] grid, Position startPosition, bool searchDiagonal)
         {
             return new BreadthFirstSearch(GetSearchType(searchDiagonal)).ShortestPath(grid, startPosition);
         }
 
-        public PathfindingResult Dijkstra(GridNode[][] grid, Position startPosition, bool searchDiagonal = false)
+        public PathfindingResult Dijkstra(GridNode[][] grid, Position startPosition, bool searchDiagonal)
         {
             return new Dijkstra(GetSearchType(searchDiagonal)).ShortestPath(grid, startPosition);
         }

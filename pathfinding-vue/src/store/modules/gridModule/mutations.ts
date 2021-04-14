@@ -1,5 +1,5 @@
 import {
-  getDefaultNodes,
+  createNodes,
   GridModule,
   GridNode,
   Position,
@@ -51,7 +51,7 @@ export const gridMutations: GridModule['mutations'] = {
       state.grid.length = rows;
     } else {
       for (let i = oldRows; i < rows; i++) {
-        state.grid.push(getDefaultNodes(i, 0, oldCols));
+        state.grid.push(createNodes(i, 0, oldCols));
       }
     }
   },
@@ -64,7 +64,7 @@ export const gridMutations: GridModule['mutations'] = {
       state.grid.forEach((row, i) => {
         state.grid[i] = [
           ...row,
-          ...getDefaultNodes(row[0].position.row, oldCols, cols - oldCols)
+          ...createNodes(row[0].position.row, oldCols, cols - oldCols)
         ];
       });
     }

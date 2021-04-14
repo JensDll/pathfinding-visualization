@@ -54,13 +54,14 @@ export type GridModule = Module<GridModuleState, RootState>;
 
 export type Position = { row: number; col: number };
 
-export const getDefaultNodes = (
+export const createNodes = (
   row: number,
   startCol: number,
-  howMany: number
+  howMany: number,
+  type: GridNode['type'] = 'default'
 ) =>
   Array.from<undefined, GridNode>({ length: howMany }, (_, i) => ({
-    type: 'default',
+    type,
     className: '',
     position: {
       row,
@@ -69,39 +70,48 @@ export const getDefaultNodes = (
     weight: 1
   }));
 
-export function gridModuleFactory({
-  INIT_ROWS,
-  INIT_COLS,
-  START_POSITION,
-  FINISH_POSITION
-}: {
-  INIT_ROWS: number;
-  INIT_COLS: number;
+type CreateGrid = {
+  ROWS: number;
+  COLS: number;
   START_POSITION: Position;
   FINISH_POSITION: Position;
-}): GridModule {
-  const INIT_GRID = Array.from({ length: INIT_ROWS }, (_, row) =>
-    getDefaultNodes(row, 0, INIT_COLS)
+  WALL_POSITIONS: Position[];
+};
+
+export function createGridModule({
+  ROWS,
+  COLS,
+  START_POSITION,
+  FINISH_POSITION,
+  WALL_POSITIONS
+}: CreateGrid): GridModule {
+  const GRID = Array.from({ length: ROWS }, (_, row) =>
+    createNodes(row, 0, COLS)
   );
-  INIT_GRID[START_POSITION.row][START_POSITION.col].type = 'start';
-  INIT_GRID[FINISH_POSITION.row][FINISH_POSITION.col].type = 'finish';
+
+  GRID[START_POSITION.row][START_POSITION.col].type = 'start';
+  GRID[FINISH_POSITION.row][FINISH_POSITION.col].type = 'finish';
+
+  for (const position of WALL_POSITIONS) {
+    GRID[position.row][position.col].type = 'wall';
+  }
 
   return {
     namespaced: true,
     state() {
       return {
-        grid: INIT_GRID,
+        grid: GRID,
         weight: {
           active: false,
           hidden: true,
           value: 1
         },
-        lastClicked: INIT_GRID[0][0],
+        lastClicked: GRID[0][0],
         lastEnteredStart: { type: 'default', position: START_POSITION },
         lastEnteredFinish: { type: 'default', position: FINISH_POSITION },
         startPosition: START_POSITION,
         finishPosition: FINISH_POSITION,
-        delay: 100
+        delay: 0
       };
     },
     mutations: {

@@ -83,13 +83,13 @@ export default defineComponent({
 @screen 1280 {
   #grid {
     top: unset;
-    left: 600px;
+    left: 650px;
   }
 }
 
 @screen 1800 {
   #grid {
-    left: 700px;
+    left: 750px;
   }
 }
 </style>
