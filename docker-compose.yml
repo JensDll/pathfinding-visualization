@@ -2,13 +2,13 @@ version: "3.9"
 services:
   vue:
     build: 
-      context: ./pathfinding-vue
+      context: ./vue
     ports: 
       - target: 80
         published: 8000
   api:
     build:
-      context: ./pathfinding-api
+      context: ./api
     environment: 
       ASPNETCORE_ENVIRONMENT: Development
     ports:

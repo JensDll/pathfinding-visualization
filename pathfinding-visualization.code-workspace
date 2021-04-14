@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "pathfinding-vue"
+			"path": "vue"
 		},
 		{
-			"path": "pathfinding-api"
+			"path": "api"
 		},
 		{
 			"path": "docs"
