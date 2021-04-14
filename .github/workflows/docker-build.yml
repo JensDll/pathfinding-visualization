@@ -8,6 +8,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build vue-app
-      run: docker-compose build vue-app
+      run: docker-compose build vue
     - name: Build pathfinding-api
-      run: docker-compose build pathfinding-api
+      run: docker-compose build api
