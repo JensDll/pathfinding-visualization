@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Mapping
 {
-    internal class RequestMapper : IRequestMapper
+    internal class PathfindingRequestMapper : IPathfindingRequestMapper
     {
         public (GridNode[][] grid, Position startPosition) MapPathfindingRequestDto(PathfindingRequestDto pathfindingRequestDto)
         {

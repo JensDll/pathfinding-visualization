@@ -14,8 +14,8 @@ namespace Infrastructure
             services.AddSingleton<IPathfindingService, PathfindingService>();
 
             // mapping
-            services.AddSingleton<IRequestMapper, RequestMapper>();
-            services.AddSingleton<IResponseMapper, ResponseMapper>();
+            services.AddSingleton<IPathfindingRequestMapper, PathfindingRequestMapper>();
+            services.AddSingleton<IPathfindingResponseMapper, PathfindingResponseMapper>();
         }
     }
 }

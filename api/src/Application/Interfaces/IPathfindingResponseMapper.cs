@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IResponseMapper
+    public interface IPathfindingResponseMapper
     {
         PathfindingResponseDto MapPathfindingResult(PathfindingResult pathfindingResult);
     }

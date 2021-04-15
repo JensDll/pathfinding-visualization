@@ -1,1 +1,11 @@
 \part{Programming Principles}
+Es wurde während der Entwicklung versucht,
+verschiedene \textit{programming principles} einzuhalten.
+Vor allem das Erreichen von geringer Kopplung ist mit
+ASP.NET Core eine leichte Aufgabe.
+Die Funktionsweise von Klassen wird durch Interfaces beschrieben.
+Durch den bereits vorhandenen \textit{dependency injection container} (DI-Container)
+können diese Interfaces der gesamten Anwendung zu Verfügung gestellt werden.
+Im Fall von einer Änderung kann ein Austausch der
+Implementierung jetzt mit minimalem Aufwand (eine Zeile) durchgeführt werden.
+Eine geringe Kopplung wird nach diesem Prinzip auch in diesem Projekt erreicht.

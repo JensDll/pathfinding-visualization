@@ -15,12 +15,12 @@ namespace PathfindingAPI.Controllers
     public class PathfindingController : ControllerBase
     {
         private readonly IPathfindingService _pathfindingService;
-        private readonly IRequestMapper _requestMapper;
-        private readonly IResponseMapper _responseMapper;
+        private readonly IPathfindingRequestMapper _requestMapper;
+        private readonly IPathfindingResponseMapper _responseMapper;
 
         public PathfindingController(IPathfindingService pathfindingService,
-            IRequestMapper requestMapper,
-            IResponseMapper responseMapper)
+            IPathfindingRequestMapper requestMapper,
+            IPathfindingResponseMapper responseMapper)
         {
             _pathfindingService = pathfindingService;
             _requestMapper = requestMapper;

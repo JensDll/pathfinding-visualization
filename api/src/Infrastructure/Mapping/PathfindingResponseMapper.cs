@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Mapping
 {
-    internal class ResponseMapper : IResponseMapper
+    internal class PathfindingResponseMapper : IPathfindingResponseMapper
     {
         public PathfindingResponseDto MapPathfindingResult(PathfindingResult pathfindingResult)
         {
