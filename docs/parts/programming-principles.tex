@@ -3,9 +3,11 @@ Es wurde während der Entwicklung versucht,
 verschiedene \textit{programming principles} einzuhalten.
 Vor allem das Erreichen von geringer Kopplung ist mit
 ASP.NET Core eine leichte Aufgabe.
-Die Funktionsweise von Klassen wird durch Interfaces beschrieben.
-Durch den bereits vorhandenen \textit{dependency injection container} (DI-Container)
-können diese Interfaces der gesamten Anwendung zu Verfügung gestellt werden.
+Die Funktionsweise von Klassen sollte durch Interfaces beschrieben werden.
+Durch den bereits standardmäßig vorhandenen \textit{dependency injection container} (DI-Container)
+können diese Interfaces der gesamten Anwendung zur Verfügung gestellt werden.
 Im Fall von einer Änderung kann ein Austausch der
-Implementierung jetzt mit minimalem Aufwand (eine Zeile) durchgeführt werden.
-Eine geringe Kopplung wird nach diesem Prinzip auch in diesem Projekt erreicht.
+Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
+Eine geringe Kopplung wird nach diesem Prinzip erreicht.
+SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls umgesetzt sein.
+Das Verwenden von DI hilft auch in diesen Bereichen Verstößen vorzubeugen.

@@ -10,12 +10,15 @@ namespace Domain.Pathfinding.Common
 {
     public abstract class PathfindingAlgorithmBase
     {
+        private readonly IGetNeighbors _getNeighbors;
+
         protected PathfindingAlgorithmBase(IGetNeighbors getNeighbors)
         {
-            GetNeighbors = getNeighbors.GetNeighbors;
+            _getNeighbors = getNeighbors;
         }
 
-        protected Func<GridNode[][], Position, List<GridNode>> GetNeighbors;
+        protected List<GridNode> GetNeighbors(GridNode[][] grid, Position position) =>
+            _getNeighbors.GetNeighbors(grid, position);
 
         protected void ConstructShortestPath(in GridNode node, in List<GridNode> shortestPath)
         {
