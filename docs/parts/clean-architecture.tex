@@ -1,0 +1,30 @@
+\part{Clean Architecture}
+Die Ordnerstruktur des API Projekts ist orientiert an den Schichten
+der \textit{Clean Architecture}
+mit Abhän\-gigkeiten von außen nach innen. Die konkret umgesetzten Schichten
+sind in \autoref{fig-clean-architecture} zu sehen.
+
+\input{tikz/clean-architecture.tex}
+
+\noindent
+In der Anwendungsebene werden hauptsächlich Interfaces definiert, welche
+durch die Infrastrukturebene implementiert werden. Das API Projekt
+sollte ausschließlich diese Interfaces verwenden und nie direkt
+ein Objekt der Infrastruktur instanziieren.
+Um diese Einschränkung durchzusetzten, hilft es,
+die Klassen dieser Ebene mit dem Schlüsselwort \texttt{internal} zu markieren.
+Die Domäne enthält anwendungsübergreifende Bausteine, wie
+Datenstrukturen, Entitäten, Enums und die Implementierung der Wegfinde-Algorith\-men.
+Das Domänen Projekt ist unabhängig von den anderen Schichten.
+Es gibt außerdem ein fünftes Projekt mit dem Namen \texttt{Contracts}. Hier
+werden alle Verträge beschrieben, die ein Anwender mit der Schnittstelle
+haben kann. Verträge sind Datentransferobjekte (engl. \textit{data transfer object} (DTO))
+und werden mit dem Suffix \texttt{Dto} gekennzeichnet. Datentransferobjekte
+tauchen nur unmittelbar im Bereich der Schnittstelle auf und
+sollten nie direkt in anderen Teilen der Anwendung verwendet werden.
+Durch Mapping werden DTOs in Objekte der Domäne umgewandelt und umgekehrt:
+\begin{equation*}
+  \text{DTO} \Longrightarrow \text{\textit{domain object}} \Longrightarrow \text{DTO}
+\end{equation*}
+Diese Abbildung sollte immer geschehen, auch wenn sich die Objekte
+sehr ähnlich sehen. Der Mapping Code befindet sich auf der Infrastrukturebene.

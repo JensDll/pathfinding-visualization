@@ -10,6 +10,10 @@
 \usepackage{csquotes}
 \usepackage{setspace}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+
+\usepackage{enumitem}
+\setlist{itemsep=0pt}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -25,41 +29,12 @@
 
 \begin{document}
 \tableofcontents
+
 \newpage
 \onehalfspacing
-\part{Beschreibung des Projekts}
-Der vorliegende Programmentwurf beschäftigt sich mit der
-Visualisierung von Wegfinde-Algo\-rithmen.
-Die Verfahren werden auf einem Gitter durchgeführt und
-verfolgen hierbei das Ziel, den kürzesten Weg zwischen zwei Punkten
-\texttt{S} und \texttt{Z} zu finden.
-Die grundlegende Idee dieser Darstellungsmethode ist in
-\autoref{fig-pathfinding-example} zu sehen.
-Die gelb markieren Koordinaten zeigen den kürzesten Weg und die
-grau eingefärbten Felder stellen ein Hindernis dar.
 
-\input{tikz/pathfinding-example.tex}
-
-\noindent
-Es wird unterschieden zwischen gewichteten und ungewichteten
-Algorithmen. Ein gewichtetes Verfahren kann während der Wegsuche zusätzlich
-Streckenkosten mit einbeziehen (z.\,B. bei einem Stau)
-und somit nicht nur den kürzesten, sondern
-auch den günstigsten Weg finden. Kosten/Gewichte können auf dem Gitter durch
-Zahlen dargestellt werden, wie in \autoref{fig-pathfinding-example-weight}
-zu sehen ist.
-
-\input{tikz/pathfinding-example-weight.tex}
-
-\noindent
-Das Projekt besteht aus zwei Teilen, der API (ASP.NET Core Web API, Ordner \enquote{api})
-und der Benutzeroberfläche (Vue, Ordner \enquote{vue}). Der Quelltext
-zur Anwendung ist zu finden über den folgenden Link.
-\footnote{\url{https://github.com/JensDll/pathfinding-visualization}}
-\newpage
-
-\part{Clean Architecture}
-
-\input{tikz/clean-architecture.tex}
-
+\input{parts/beschreibung.tex}
+\input{parts/clean-architecture.tex}
+\input{parts/domain-driven-design.tex}
+\input{parts/programming-principles.tex}
 \end{document}

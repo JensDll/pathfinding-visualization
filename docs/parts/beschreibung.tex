@@ -1,0 +1,30 @@
+\part{Beschreibung des Projekts}
+Der vorliegende Programmentwurf beschäftigt sich mit der
+Visualisierung von Wegfinde-Algo\-rithmen.
+Die Verfahren werden auf einem Gitter durchgeführt und
+verfolgen hierbei das Ziel, den kürzesten Weg zwischen zwei Punkten
+\texttt{S} und \texttt{Z} zu finden.
+Die grundlegende Idee dieser Darstellungsmethode ist in
+\autoref{fig-pathfinding-example} zu sehen.
+Die gelb markieren Koordinaten zeigen den kürzesten Weg und die
+grau eingefärbten Felder stellen Hindernisse dar.
+
+\input{tikz/pathfinding-example.tex}
+
+\noindent
+Es wird unterschieden zwischen gewichteten und ungewichteten
+Algorithmen. Ein gewichtetes Verfahren kann während der Wegsuche zusätzlich
+Streckenkosten beachten (z.\,B. bei einem Stau)
+und somit nicht nur den kürzesten, sondern
+auch den günstigsten Weg finden. Kosten/Gewichte können auf dem Gitter durch
+Zahlen dargestellt werden, wie in \autoref{fig-pathfinding-example-weight}
+zu sehen ist.
+
+\input{tikz/pathfinding-example-weight.tex}
+
+\noindent
+Das Projekt besteht aus zwei Teilen: Der API
+(ASP.NET Core Web API, im Ordner \enquote{\texttt{api}}) und der Benutzeroberfläche
+(Vue, im Ordner \enquote{\texttt{vue}}). Der Quelltext
+ist über den folgenden Link auf GitHub zu finden.
+\footnote{\url{https://github.com/JensDll/pathfinding-visualization}}

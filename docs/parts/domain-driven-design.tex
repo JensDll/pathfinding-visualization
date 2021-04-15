@@ -1,0 +1,23 @@
+\part{Domain Driven Design}
+Die Domänensprache des Projekts umfasst die folgenden Begriffe:
+\begin{itemize}
+  \item \textbf{Grid} $\sim$ Das Gitter auf dem der kürzeste Weg gesucht und
+        angezeigt wird.
+  \item \textbf{GridNode} $\sim$ Knoten (engl. \textit{node}),
+        welcher eine Position auf dem Gitter beschreibt. Das
+        Gitter besteht aus mehreren Knoten. Ein Knoten hat neben
+        primitiven Werten (wie Gewicht), außerdem die
+        folgenden Eigenschaften:
+        \begin{itemize}[topsep=0pt]
+          \item \textbf{GridNodeType} $\sim$ Der Typ des Knotens mit Werten
+                wie Start, Ziel oder Wand.
+          \item \textbf{Position} $\sim$ Die Koordinate des Knotens in der
+                Form $(Zeile,Spalte)$, engl. $(row,column)$.
+        \end{itemize}
+\end{itemize}
+Die meisten Begriffe wie und \textbf{GridNode} und \textbf{Position}
+werden im Programmcode als Entitäten bezeichnet. Die
+Wegfinde-Algorithmen sind Teil des \textit{abstraction code} auf
+der Domänenebene. Sie werden als Teil eines \textit{service}
+zusammengefasst mit dem Namen \texttt{Path\-findingService} und
+über diesen aufgerufen.
