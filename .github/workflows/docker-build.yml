@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build vue-app
+    - name: Build vue
       run: docker-compose build vue
-    - name: Build pathfinding-api
+    - name: Build api
       run: docker-compose build api
