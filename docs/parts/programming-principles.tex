@@ -1,12 +1,12 @@
 \part{Programming Principles}
-Es wurde während der Entwicklung versucht,
+Es wurde versucht, während der Entwicklung
 verschiedene \textit{programming principles} einzuhalten.
 Vor allem das Erreichen von geringer Kopplung ist mit
 ASP.NET Core eine leichte Aufgabe.
 Die Funktionsweise von Klassen sollte durch Interfaces beschrieben werden.
 Durch den bereits standardmäßig vorhandenen \textit{dependency injection container} (DI-Container)
 können diese Interfaces der gesamten Anwendung zur Verfügung gestellt werden.
-Im Fall von einer Änderung kann ein Austausch der
+Im Fall von einer Änderung kann so ein Austausch der
 Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
 Eine geringe Kopplung wird nach diesem Prinzip erreicht.
 SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls umgesetzt sein.
