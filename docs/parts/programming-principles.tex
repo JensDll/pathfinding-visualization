@@ -9,5 +9,19 @@ können diese Interfaces der gesamten Anwendung zur Verfügung gestellt werden.
 Im Fall von einer Änderung kann so ein Austausch der
 Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
 Eine geringe Kopplung wird nach diesem Prinzip erreicht.
-SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls umgesetzt sein.
+SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls trivial umgesetzt sein.
 Das Verwenden von DI hilft auch in diesen Bereichen Verstößen vorzubeugen.
+Ein Beispiel kann gegeben werden für das \textbf{O} (Open / Closed Principle)
+in S\textbf{O}LID. Die umgesetzten Wegfinde-Algorithmen benötigen eine Methode
+\texttt{GetNeighbors}, welche durch das folgende Interface beschrieben ist:
+
+\begin{lstlisting}[caption={GetNeighbors Interface},label={code:test}]
+public interface IGetNeighbors
+{
+    List<GridNode> GetNeighbors(GridNode[][] grid, Position position);
+}
+\end{lstlisting}
+Es spielt für den Algorithmus keine Rolle, wie diese Knoten berechnet werden.
+Zum Beispiel könnte eine Implementierung die horizontal liegenden Nachbarn liefern,
+eine andere die diagonalen und eine weitere beide. Der Algorithmus muss bei
+einem Austausch nicht verändert werden.

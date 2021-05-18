@@ -10,8 +10,8 @@ namespace Application.Interfaces
 {
     public interface IPathfindingService
     {
-        PathfindingResult BreadthFirstSearch(GridNode[][] grid, Position startPosition, bool searchDiagonal = false);
+        PathfindingResult BreadthFirstSearch(GridNode[][] grid, Position startPosition, bool searchDiagonal);
 
-        PathfindingResult Dijkstra(GridNode[][] grid, Position startPosition, bool searchDiagonal = false);
+        PathfindingResult Dijkstra(GridNode[][] grid, Position startPosition, bool searchDiagonal);
     }
 }

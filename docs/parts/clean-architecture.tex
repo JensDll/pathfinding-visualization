@@ -27,4 +27,8 @@ Durch Mapping werden DTOs in Objekte der Domäne umgewandelt und umgekehrt:
   \text{DTO} \Longrightarrow \text{\textit{domain object}} \Longrightarrow \text{DTO}
 \end{equation*}
 Diese Abbildung sollte immer geschehen, auch wenn sich die Objekte
-sehr ähnlich sehen. Der Mapping Code befindet sich auf der Infrastrukturebene.
+sehr ähnlich sehen.
+Die Domäne und Verträge können sich so unabhängig voneinander weiterentwickeln,
+ohne im Programmcode aufwändige Änderungen vorzunehmen.
+Im optimal Fall muss nur der Mapping Code angepasst werden,
+dieser befindet sich auf der Infrastrukturebene.
