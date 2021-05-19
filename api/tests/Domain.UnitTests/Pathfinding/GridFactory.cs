@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;

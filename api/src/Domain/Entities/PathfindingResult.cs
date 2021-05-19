@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace Domain.Entities
 {
     public class PathfindingResult
     {
-        public IEnumerable<GridNode> VisitedNodes { get; set; }
+        public IEnumerable<GridNode> VisitedNodes { get; init; }
 
-        public IEnumerable<GridNode> ShortestPath { get; set; }
+        public IEnumerable<GridNode> ShortestPath { get; init; }
     }
 }

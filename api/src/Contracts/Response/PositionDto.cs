@@ -6,10 +6,5 @@ using System.Threading.Tasks;
 
 namespace Contracts.Response
 {
-    public class PositionDto
-    {
-        public int Row { get; set; }
-
-        public int Col { get; set; }
-    }
+    public record PositionDto(int Row, int Col);
 }

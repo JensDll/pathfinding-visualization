@@ -11,11 +11,11 @@ Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
 Eine geringe Kopplung wird nach diesem Prinzip erreicht.
 SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls trivial umgesetzt sein.
 Das Verwenden von DI hilft auch in diesen Bereichen Verstößen vorzubeugen.
-Ein Beispiel kann gegeben werden für das \textbf{O} (Open / Closed Principle)
+Ein Beispiel kann gegeben werden für das \textbf{O} (Open\,/\,Closed Principle)
 in S\textbf{O}LID. Die umgesetzten Wegfinde-Algorithmen benötigen eine Methode
-\texttt{GetNeighbors}, welche durch das folgende Interface beschrieben ist:
+\texttt{GetNeighbors}, welche durch das folgende Interface beschrieben ist.
 
-\begin{lstlisting}[caption={GetNeighbors Interface},label={code:test}]
+\begin{lstlisting}[caption={GetNeighbors Interface},label={code:i-get-neighbors}]
 public interface IGetNeighbors
 {
     List<GridNode> GetNeighbors(GridNode[][] grid, Position position);
@@ -24,4 +24,20 @@ public interface IGetNeighbors
 Es spielt für den Algorithmus keine Rolle, wie diese Knoten berechnet werden.
 Zum Beispiel könnte eine Implementierung die horizontal liegenden Nachbarn liefern,
 eine andere die diagonalen und eine weitere beide. Der Algorithmus muss bei
-einem Austausch nicht verändert werden.
+einem Austausch dieser Umsetzungen nicht verändert werden. Ähnliches Verhalten kann
+beobachtet werden, wenn es um die Wegfinde-Verfahren selbst geht.
+Jede Wegfinde-Klasse besitzt eine Methode \texttt{ShortestPath} und
+und muss das folgende Interface implementieren.
+\begin{lstlisting}[caption={Wegfinde-Algorithmus Interface},label={code:i-pathfinding}]
+public interface IPathfindingAlgorithm
+{
+    PathfindingResult ShortestPath(GridNode[][] grid, Position startPosition);
+}
+\end{lstlisting}
+Eine weitere Klasse, die Wegfinde-Funktionalität benötigt, ist dadurch nicht abhängig
+von einer bestimmten Implementierung. Die folgenden zwei Zeilen sind
+äquivalent.
+\begin{lstlisting}[caption={Abstraktion der Wegfinde-Algorithmen}]
+IPathfindingAlgorithm bfs = new BreadthFirstSearch();
+IPathfindingAlgorithm dijkstra = new Dijkstra();
+\end{lstlisting}

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Contracts.Response
 {
-    public class PathfindingResponseDto
+    public record PathfindingResponseDto
     {
-        public IEnumerable<PositionDto> VisitedPositions { get; set; }
+        public IEnumerable<PositionDto> VisitedPositions { get; init; }
 
-        public IEnumerable<PositionDto> ShortestPath { get; set; }
+        public IEnumerable<PositionDto> ShortestPath { get; init; }
     }
 }

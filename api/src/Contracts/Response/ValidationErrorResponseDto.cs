@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Contracts.Response
 {
-    public class ValidationErrorResponseDto
+    public record ValidationErrorResponseDto
     {
-        public IEnumerable<string> ErrorMessages { get; set; }
+        public IEnumerable<string> ErrorMessages { get; init; }
     }
 }

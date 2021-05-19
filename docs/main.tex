@@ -15,8 +15,6 @@
 \usepackage{enumitem}
 \setlist{itemsep=0pt}
 
-
-
 \usepackage{hyperref}
 \hypersetup{
   colorlinks = true,
@@ -30,14 +28,11 @@
 \usetikzlibrary{positioning, calc, arrows.meta, arrows}
 
 \usepackage{listings}
-
-\lstdefinelanguage
-  []{my-language}
-  [Sharp]{C}
+\lstdefinelanguage[]{my-language}[Sharp]{C}
   {
-    keywordstyle={\color{blue}},
-    basicstyle=\ttfamily,
-    stringstyle = \color{red}
+    keywordstyle=\color{blue},
+    basicstyle={\scriptsize\fontencoding{T1}\fontfamily{fvm}\selectfont},
+    stringstyle=\color{red}
   }
   []
 \lstset{
@@ -46,7 +41,7 @@
   emph={[1]PathfindingResult, GridNode, Position},
   emphstyle={[1]\color{PineGreen}},
   emph={[2]IPathfindingAlgorithm, IGetNeighbors},
-  emphstyle={[2]\color{LimeGreen}}
+  emphstyle={[2]\color{DarkOrchid}}
 }
 
 \renewcommand{\lstlistingname}{Quelltext}
@@ -63,7 +58,8 @@
   linewidth=2pt,
   linecolor=lightgray!70,
   backgroundcolor=lightgray!10,
-  innertopmargin=-35pt
+  innertopmargin=-35pt,
+  innerleftmargin=1em
 ]{lstlisting}
 \surroundwithmdframed[
   roundcorner=10pt,
@@ -86,4 +82,5 @@
 \input{parts/clean-architecture.tex}
 \input{parts/domain-driven-design.tex}
 \input{parts/programming-principles.tex}
+\input{parts/refactoring.tex}
 \end{document}

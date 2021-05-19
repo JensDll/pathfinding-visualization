@@ -4,6 +4,7 @@ using Domain.Enums;
 using Domain.Pathfinding.Common;
 using Domain.Pathfinding.Implementation;
 using Domain.Pathfinding.Interfaces;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

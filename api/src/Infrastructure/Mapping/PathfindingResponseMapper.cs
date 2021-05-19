@@ -15,16 +15,10 @@ namespace Infrastructure.Mapping
         {
             return new PathfindingResponseDto
             {
-                ShortestPath = pathfindingResult.ShortestPath.Select(node => new PositionDto
-                {
-                    Row = node.Position.Row,
-                    Col = node.Position.Col
-                }),
-                VisitedPositions = pathfindingResult.VisitedNodes.Select(node => new PositionDto
-                {
-                    Row = node.Position.Row,
-                    Col = node.Position.Col
-                })
+                ShortestPath = pathfindingResult.ShortestPath
+                    .Select(node => new PositionDto(node.Position.Row, node.Position.Col)),
+                VisitedPositions = pathfindingResult.VisitedNodes
+                    .Select(node => new PositionDto(node.Position.Row, node.Position.Col))
             };
         }
     }
