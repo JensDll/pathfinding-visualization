@@ -18,17 +18,17 @@ Datenstrukturen, Entitäten, Enums und die Implementierung der Wegfinde-Algorith
 Das Domänen Projekt ist unabhängig von den anderen Schichten.
 Es gibt außerdem ein fünftes Projekt mit dem Namen \texttt{Contracts}. Hier
 werden alle Verträge beschrieben, die ein Anwender mit der Schnittstelle
-haben kann. Verträge sind Datentransferobjekte (engl. \textit{data transfer object} (DTO))
+haben kann. Verträge sind Datentransferobjekte (engl. \ac{dto})
 und werden mit dem Suffix \texttt{Dto} gekennzeichnet. Datentransferobjekte
 tauchen nur unmittelbar im Bereich der Schnittstelle auf und
 sollten nie direkt in anderen Teilen der Anwendung verwendet werden.
-Durch Mapping werden DTOs in Objekte der Domäne umgewandelt und umgekehrt:
+Durch Mapping werden \acp{dto} in Objekte der Domäne umgewandelt und umgekehrt:
 \begin{equation*}
-  \text{DTO} \Longrightarrow \text{\textit{domain object}} \Longrightarrow \text{DTO}
+  \text{\ac{dto}} \Longrightarrow \text{\textit{domain object}} \Longrightarrow \text{\ac{dto}}
 \end{equation*}
 Diese Abbildung sollte immer geschehen, auch wenn sich die Objekte
 sehr ähnlich sehen.
-Domäne und Verträge können sich so unabhängig voneinander weiterentwickeln,
+Verträge und Domäne können sich so unabhängig voneinander weiterentwickeln,
 ohne im Programmcode aufwändige Änderungen vornehmen zu müssen.
-Im besten Fall muss nur der Mapping Code angepasst werden,
-welcher sich auf der Infrastrukturebene befindet.
+Im besten Fall muss nur der Mapping Code angepasst werden.
+Dieser befindet sich auf der Infrastrukturebene.

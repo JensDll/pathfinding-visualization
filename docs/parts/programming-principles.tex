@@ -4,16 +4,17 @@ verschiedene \textit{programming principles} einzuhalten.
 Vor allem das Erreichen von geringer Kopplung ist mit
 ASP.NET Core eine leichte Aufgabe.
 Die Funktionsweise von Klassen sollte durch Interfaces beschrieben werden.
-Durch den bereits standardmäßig vorhandenen \textit{dependency injection container} (DI-Container)
+Durch den bereits standardmäßig vorhandenen \acl{di} \textit{container} (\acs{di}-Container)
 können diese Interfaces der gesamten Anwendung zur Verfügung gestellt werden.
 Im Fall von einer Änderung kann so ein Austausch der
 Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
 Eine geringe Kopplung wird nach diesem Prinzip erreicht.
 SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls trivial umgesetzt sein.
-Das Verwenden von DI hilft auch in diesen Bereichen Verstößen vorzubeugen.
+Das Verwenden von \acs{di} hilft auch in diesen Bereichen Verstößen vorzubeugen.
 Ein Beispiel kann gegeben werden für das \textbf{O} (Open\,/\,Closed Principle)
 in S\textbf{O}LID. Die umgesetzten Wegfinde-Algorithmen benötigen eine Methode
-\texttt{GetNeighbors}, welche durch das folgende Interface beschrieben ist.
+\texttt{GetNeighbors}, welche durch das folgende
+Interface beschrieben werden kann.
 
 \begin{lstlisting}[caption={GetNeighbors Interface},label={code:i-get-neighbors}]
 public interface IGetNeighbors
@@ -23,10 +24,10 @@ public interface IGetNeighbors
 \end{lstlisting}
 Es spielt für den Algorithmus keine Rolle, wie diese Knoten berechnet werden.
 Zum Beispiel könnte eine Implementierung die horizontal liegenden Nachbarn liefern,
-eine andere die diagonalen und eine weitere beide. Der Algorithmus muss bei
-einem Austausch dieser Umsetzungen nicht verändert werden. Ähnliches Verhalten kann
+eine andere die diagonal liegenden und eine weitere beide. Der Algorithmus muss bei
+einem Austausch dieser Funktion nicht verändert werden. Ähnliches Verhalten kann
 beobachtet werden, wenn es um die Wegfinde-Verfahren selbst geht.
-Jede Wegfinde-Klasse besitzt eine Methode \texttt{ShortestPath} und
+Jede Wegfinde-Klasse besitzt eine Methode \texttt{ShortestPath}
 und muss das folgende Interface implementieren.
 \begin{lstlisting}[caption={Wegfinde-Algorithmus Interface},label={code:i-pathfinding}]
 public interface IPathfindingAlgorithm

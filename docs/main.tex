@@ -30,6 +30,7 @@
 \usepackage{listings}
 \lstdefinelanguage[]{my-language}[Sharp]{C}
   {
+    morekeywords={record},
     keywordstyle=\color{blue},
     basicstyle={\scriptsize\fontencoding{T1}\fontfamily{fvm}\selectfont},
     stringstyle=\color{red}
@@ -68,11 +69,19 @@
   backgroundcolor=lightgray!10,
 ]{code}
 
+\usepackage[shortcuts]{glossaries}
+\glsdisablehyper
+\makenoidxglossaries
+\newacronym{dto}{DTO}{\textit{data transfer object}}
+\newacronym{di}{DI}{\textit{dependency injection}}
+\newacronym{vo}{VO}{\textit{value object}}
+
 \begin{document}
 \pagenumbering{roman}
 \tableofcontents
 \listoffigures
 \lstlistoflistings
+\printnoidxglossaries
 
 \newpage
 \pagenumbering{arabic}

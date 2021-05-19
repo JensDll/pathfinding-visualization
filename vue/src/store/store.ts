@@ -16,11 +16,11 @@ export const store = createStore({
       START_POSITION: { row: 3, col: 1 },
       FINISH_POSITION: { row: 3, col: 13 },
       WALL_POSITIONS: [
-        { row: 1, col: 8 },
-        { row: 2, col: 8 },
-        { row: 3, col: 8 },
-        { row: 4, col: 8 },
-        { row: 5, col: 8 }
+        { row: 1, col: 6 },
+        { row: 2, col: 3 },
+        { row: 3, col: 5 },
+        { row: 3, col: 10 },
+        { row: 5, col: 3 }
       ]
     })
   },
