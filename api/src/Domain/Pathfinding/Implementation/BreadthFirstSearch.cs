@@ -14,8 +14,12 @@ namespace Domain.Pathfinding.Implementation
 {
     public class BreadthFirstSearch : PathfindingAlgorithmBase, IPathfindingAlgorithm
     {
-        public BreadthFirstSearch(IGetNeighbors getNeighbors) : base(getNeighbors)
-        { }
+        private readonly IGetNeighbors _getNeighbors;
+
+        public BreadthFirstSearch(IGetNeighbors getNeighbors)
+        {
+            _getNeighbors = getNeighbors;
+        }
 
         public PathfindingResult ShortestPath(GridNode[][] grid, Position startPosition)
         {
@@ -32,7 +36,7 @@ namespace Domain.Pathfinding.Implementation
 
                 currentNode.Visited = true;
 
-                var neighbors = GetNeighbors(grid, currentNode.Position);
+                var neighbors = _getNeighbors.GetNeighbors(grid, currentNode.Position);
 
                 foreach (var neighbor in neighbors)
                 {
