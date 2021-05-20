@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class DiagonalGrid : HorizontalGrid
+    public class HorizontalDiagonalGrid : HorizontalGrid
     {
-        public DiagonalGrid(GridNode[][] grid) : base(grid)
+        public HorizontalDiagonalGrid(GridNode[][] grid) : base(grid)
         { }
 
         public override List<GridNode> GetNeighbors(GridNode node)

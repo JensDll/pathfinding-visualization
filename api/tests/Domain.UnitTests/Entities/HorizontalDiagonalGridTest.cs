@@ -9,9 +9,9 @@ using Xunit;
 
 namespace Domain.UnitTests.Entities
 {
-    public class DiagonalGridTest
+    public class HorizontalDiagonalGridTest
     {
-        public static IEnumerable<object[]> GetNeighborsDiagonalData()
+        public static IEnumerable<object[]> TestData()
         {
             var grid = GridFactory.Produce(new[]
             {
@@ -34,7 +34,7 @@ namespace Domain.UnitTests.Entities
         }
 
         [Theory]
-        [MemberData(nameof(GetNeighborsDiagonalData))]
+        [MemberData(nameof(TestData))]
         public void GetNeighbors_horizontal_and_diagonal(Grid sut, GridNode target, Position[] expectedNeighbors)
         {
             var neighbors = sut.GetNeighbors(target);

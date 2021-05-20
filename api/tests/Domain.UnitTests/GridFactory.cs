@@ -71,7 +71,7 @@ namespace Domain.UnitTests
                     Start = start,
                     Finish = finish
                 },
-                GridType.Diagonal => new DiagonalGrid(grid)
+                GridType.Diagonal => new HorizontalDiagonalGrid(grid)
                 {
                     Start = start,
                     Finish = finish,

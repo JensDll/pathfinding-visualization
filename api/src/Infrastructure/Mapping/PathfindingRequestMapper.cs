@@ -42,7 +42,7 @@ namespace Infrastructure.Mapping
             ).ToArray();
 
             return pathfindingRequestDto.SearchDiagonal
-                ? new DiagonalGrid(grid) { Start = start, Finish = finish }
+                ? new HorizontalDiagonalGrid(grid) { Start = start, Finish = finish }
                 : new HorizontalGrid(grid) { Start = start, Finish = finish };
         }
     }
