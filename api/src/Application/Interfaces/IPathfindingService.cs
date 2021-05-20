@@ -1,18 +1,12 @@
 ﻿using Domain.Entities;
-using Domain.Enums;
-using Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Pathfinding;
 
 namespace Application.Interfaces
 {
     public interface IPathfindingService
     {
-        PathfindingResult BreadthFirstSearch(GridNode[][] grid, Position startPosition, bool searchDiagonal);
+        PathfindingResult BreadthFirstSearch(Grid grid);
 
-        PathfindingResult Dijkstra(GridNode[][] grid, Position startPosition, bool searchDiagonal);
+        PathfindingResult Dijkstra(Grid grid);
     }
 }

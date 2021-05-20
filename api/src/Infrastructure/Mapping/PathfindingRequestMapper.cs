@@ -13,31 +13,37 @@ namespace Infrastructure.Mapping
 {
     internal class PathfindingRequestMapper : IPathfindingRequestMapper
     {
-        public (GridNode[][] grid, Position startPosition) MapPathfindingRequestDto(PathfindingRequestDto pathfindingRequestDto)
+        public Grid MapPathfindingRequestDto(PathfindingRequestDto pathfindingRequestDto)
         {
-            Position startPosition = null;
+            GridNode start = null;
+            GridNode finish = null;
 
             GridNode[][] grid = pathfindingRequestDto.Grid.Select((row, rowIndex) =>
                 row.Select((nodeDto, colIndex) =>
                 {
-                    var postion = new Position(rowIndex, colIndex);
-
-                    if (nodeDto.Type is GridNodeTypeDto.Start)
-                        startPosition = postion;
-
-                    return new GridNode
+                    var node = new GridNode
                     {
                         Type = (GridNodeType)nodeDto.Type,
                         Visited = false,
                         Weight = nodeDto.Weight,
                         TotalWeight = 0,
-                        Position = postion,
+                        Position = new Position(rowIndex, colIndex),
                         PreviousGridNode = null
                     };
+
+                    if (node.Type == GridNodeType.Start)
+                        start = node;
+
+                    if (node.Type == GridNodeType.Finish)
+                        finish = node;
+
+                    return node;
                 }).ToArray()
             ).ToArray();
 
-            return (grid, startPosition);
+            return pathfindingRequestDto.SearchDiagonal
+                ? new DiagonalGrid(grid) { Start = start, Finish = finish }
+                : new HorizontalGrid(grid) { Start = start, Finish = finish };
         }
     }
 }
