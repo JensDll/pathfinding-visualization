@@ -3,6 +3,7 @@ using Domain.Enums;
 using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
@@ -76,7 +77,7 @@ namespace Domain.UnitTests
                     Start = start,
                     Finish = finish,
                 },
-                _ => throw new ArgumentException("Invalid grid type!")
+                _ => throw new InvalidEnumArgumentException("Invalid Grid type!")
             };
         }
     }

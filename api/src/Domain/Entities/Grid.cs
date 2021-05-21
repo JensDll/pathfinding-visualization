@@ -36,8 +36,5 @@ namespace Domain.Entities
         }
 
         public abstract List<GridNode> GetNeighbors(GridNode node);
-
-        protected static bool IsValidNode(GridNode node) =>
-            !node.Visited && node.Type != GridNodeType.Wall;
     }
 }

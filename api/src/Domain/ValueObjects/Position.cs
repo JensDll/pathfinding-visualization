@@ -8,21 +8,35 @@ namespace Domain.ValueObjects
 {
     public record Position(int Row, int Col)
     {
-        public Position TopLeft => this with { Row = Row - 1, Col = Col - 1 };
+        public static Position operator +(Position p1, Position p2) =>
+            new (p1.Row + p2.Row, p1.Col + p2.Col);
 
-        public Position Top => this with { Row = Row - 1 };
+        public static Position operator -(Position p1, Position p2) =>
+            new(p1.Row - p2.Row, p1.Col - p2.Col);
 
-        public Position TopRight => this with { Row = Row - 1, Col = Col + 1 };
+        public Position TopLeft => this + new Position(-1, -1);
 
-        public Position Right => this with { Col = Col + 1 };
+        public Position Top => this + new Position(-1, 0);
 
-        public Position BottomRight => this with { Row = Row + 1, Col = Col + 1 };
+        public Position TopRight => this + new Position(-1, 1);
 
-        public Position Bottom => this with { Row = Row + 1 };
+        public Position Right => this + new Position(0, 1);
 
-        public Position BottomLeft => this with { Row = Row + 1, Col = Col - 1 };
+        public Position BottomRight => this + new Position(1, 1);
 
-        public Position Left => this with { Col = Col - 1 };
+        public Position Bottom => this + new Position(1, 0);
+
+        public Position BottomLeft => this + new Position(1, -1);
+
+        public Position Left => this + new Position(0, -1);
+
+        public Position Absolute => new (Math.Abs(Row), Math.Abs(Col));
+
+        public int ManhattenDistance(Position p)
+        {
+            var v = (this - p).Absolute;
+            return v.Row + v.Col;
+        }
 
         public override string ToString()
         {

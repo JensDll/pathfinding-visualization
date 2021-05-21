@@ -27,6 +27,7 @@ namespace Infrastructure.Mapping
                         Visited = false,
                         Weight = nodeDto.Weight,
                         TotalWeight = 0,
+                        Heuristic = 0,
                         Position = new Position(rowIndex, colIndex),
                         PreviousGridNode = null
                     };

@@ -69,7 +69,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 #grid {
   top: 710px;
   position: absolute;

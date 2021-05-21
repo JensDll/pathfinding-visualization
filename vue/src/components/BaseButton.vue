@@ -7,23 +7,23 @@
     ]"
     :type="htmlType"
   >
-    <slot />
+    <slot></slot>
   </button>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {
     htmlType: {
-      type: String,
+      type: String as PropType<'button' | 'reset' | 'submit'>,
       default: 'button',
       validator: (htmlType: string) =>
         ['button', 'reset', 'submit'].includes(htmlType)
     },
     type: {
-      type: String,
+      type: String as PropType<'default' | 'primary' | 'danger'>,
       default: 'default',
       validator: (type: string) =>
         ['default', 'primary', 'danger'].includes(type)
@@ -32,7 +32,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .button {
   @apply block border outline-none shadow-none transition-colors duration-100;
   min-width: 6rem;

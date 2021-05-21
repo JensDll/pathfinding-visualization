@@ -54,7 +54,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="css" scoped>
+<style lang="postcss" scoped>
 .td {
   @apply relative border border-blue-100 bg-white text-center;
   width: 2.75rem;
