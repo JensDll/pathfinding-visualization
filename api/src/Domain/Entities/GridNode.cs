@@ -21,5 +21,19 @@ namespace Domain.Entities
         public Position Position { get; set; }
 
         public GridNode PreviousGridNode { get; set; }
+
+        public List<GridNode> ConstructShortestPath()
+        {
+            var shortestPath = new List<GridNode>();
+            ConstructShortestPathImpl(this, shortestPath);
+            return shortestPath;
+        }
+
+        private void ConstructShortestPathImpl(GridNode node, List<GridNode> shortestPath)
+        {
+            if (node == null) return;
+            ConstructShortestPathImpl(node.PreviousGridNode, shortestPath);
+            shortestPath.Add(node);
+        }
     }
 }

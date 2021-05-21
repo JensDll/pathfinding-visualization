@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Pathfinding.Common;
 using Domain.Pathfinding.Implementation;
 using Domain.ValueObjects;
 using System;
@@ -21,6 +20,7 @@ namespace Domain.UnitTests.Pathfinding.Implementation
                     "W 9 1",
                     "F 1 1"
                 },
+                GridType.Horizontal,
                 new Position[] { new(0, 0), new(0, 1), new(0, 2), new(1, 2), new(2, 2), new(2, 1), new(2, 0) }
             ),
             (
@@ -31,6 +31,7 @@ namespace Domain.UnitTests.Pathfinding.Implementation
                     "S 1 W F",
                     "1 1 9 1"
                 },
+                GridType.Horizontal,
                 new Position[] { new(2, 0), new(2, 1), new(1, 1), new(0, 1), new(0, 2), new(0, 3), new(1, 3), new(2, 3) }
             )
         );
@@ -43,6 +44,7 @@ namespace Domain.UnitTests.Pathfinding.Implementation
                     "W 9 1",
                     "F 1 1"
                 },
+                GridType.Diagonal,
                 new Position[] { new(0, 0), new(0, 1), new(1, 2), new(2, 1), new(2, 0) }
             ),
             (
@@ -53,6 +55,7 @@ namespace Domain.UnitTests.Pathfinding.Implementation
                     "S W W F",
                     "W 9 1 1"
                 },
+                GridType.Diagonal,
                 new Position[] { new(2, 0), new(1, 1), new(0, 2), new(1, 3), new(2, 3) }
             )
         );
@@ -65,6 +68,7 @@ namespace Domain.UnitTests.Pathfinding.Implementation
                     "W W 1",
                     "F W 1"
                 },
+                GridType.Horizontal,
                 new Position[] { new(0, 0), new(0, 1), new(0, 2), new(1, 2), new(2, 2) }
             ),
             (
@@ -75,36 +79,37 @@ namespace Domain.UnitTests.Pathfinding.Implementation
                     "W 1 1 W",
                     "W W W F"
                 },
+                GridType.Horizontal,
                 new Position[] { new(1, 1), new(1, 2), new(2, 1), new(2, 2) }
             )
         );
 
         [Theory]
         [MemberData(nameof(SHORTEST_PATH_HORIZONTAL))]
-        public void BreadthFirstSearch_ShouldFindShortestPath_Horizonatal(GridNode[][] grid, Position start, Position[] expectedShortestPath)
+        public void BreadthFirstSearch_ShouldFindShortestPath_Horizonatal(Grid grid, Position[] expectedShortestPath)
         {
-            var sut = new Dijkstra(new GetNeighborsHorizontal());
-            var pathfindingResult = sut.ShortestPath(grid, start);
+            var sut = new Dijkstra(grid);
+            var pathfindingResult = sut.ShortestPath();
 
             Assert.Equal(expectedShortestPath, pathfindingResult.ShortestPath.Select(node => node.Position));
         }
 
         [Theory]
         [MemberData(nameof(SHORTEST_PATH_DIAGONAL))]
-        public void BreadthFirstSearch_ShouldFindShortestPath_Diagonal(GridNode[][] grid, Position start, Position[] expectedShortestPath)
+        public void BreadthFirstSearch_ShouldFindShortestPath_Diagonal(Grid grid, Position[] expectedShortestPath)
         {
-            var sut = new Dijkstra(new GetNeighborsDiagonal());
-            var pathfindingResult = sut.ShortestPath(grid, start);
+            var sut = new Dijkstra(grid);
+            var pathfindingResult = sut.ShortestPath();
 
             Assert.Equal(expectedShortestPath, pathfindingResult.ShortestPath.Select(node => node.Position));
         }
 
         [Theory]
         [MemberData(nameof(BLOCKED_PATH))]
-        public void BreadthFirstSearch_ShouldVisitAllUnblockedPositions(GridNode[][] grid, Position start, Position[] expectedVisitedPositions)
+        public void BreadthFirstSearch_ShouldVisitAllUnblockedPositions(Grid grid, Position[] expectedVisitedPositions)
         {
-            var sut = new Dijkstra(new GetNeighborsHorizontal());
-            var visitedPositions = sut.ShortestPath(grid, start).VisitedNodes.Select(node => node.Position);
+            var sut = new Dijkstra(grid);
+            var visitedPositions = sut.ShortestPath().VisitedNodes.Select(node => node.Position);
 
             Assert.Equal(expectedVisitedPositions.Length, visitedPositions.Count());
             Assert.All(expectedVisitedPositions, pos => Assert.Contains(pos, visitedPositions));
