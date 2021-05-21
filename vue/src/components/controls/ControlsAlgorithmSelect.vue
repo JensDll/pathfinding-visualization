@@ -114,7 +114,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
 .algorithms:focus {
   @apply border-blue-500;
   box-shadow: 0 0 3px theme('colors.blue.500');
