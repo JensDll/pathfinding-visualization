@@ -11,34 +11,40 @@ Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
 Eine geringe Kopplung wird nach diesem Prinzip erreicht.
 SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls trivial umgesetzt sein.
 Das Verwenden von \acs{di} hilft auch in diesen Bereichen Verstößen vorzubeugen.
-Ein Beispiel kann gegeben werden für das \textbf{O} (Open\,/\,Closed Principle)
-in S\textbf{O}LID. Die umgesetzten Wegfinde-Algorithmen benötigen eine Methode
-\texttt{GetNeighbors}, welche durch das folgende
-Interface beschrieben werden kann.
+Ein Beispiel kann gegeben werden für das \textbf{L} (Liskov Substitution Principle)
+in SO\textbf{L}ID. Die umgesetzten Wegfinde-Algorithmen benötigen eine
+Funktion, um von einem Knoten aus die nächsten zu besuchenden
+Knoten auszuwählen. Die Methode wird \texttt{GetNeighbors}
+genannt und ist definiert in der abstrakten \textbf{Grid} Entität-Klasse,
+wie im folgenden Programmausschnitt zu sehen ist.
 
-\begin{lstlisting}[caption={GetNeighbors Interface},label={code:i-get-neighbors}]
-public interface IGetNeighbors
+\begin{lstlisting}[caption={Die \textbf{Grid} Entität-Klasse},label={code:grid-entity}]
+public abstract class Grid
 {
-    List<GridNode> GetNeighbors(GridNode[][] grid, Position position);
+    public abstract List<GridNode> GetNeighbors(GridNode node);
 }
 \end{lstlisting}
-Es spielt für den Algorithmus keine Rolle, wie diese Knoten berechnet werden.
+Subklassen, die von \textbf{Grid} ableiten, müssen diese Methode überschreiben.
+Für den Algorithmus spielt es keine Rolle, wie die konkrete Umsetzung aussieht.
 Zum Beispiel könnte eine Implementierung die horizontal liegenden Nachbarn liefern,
-eine andere die diagonal liegenden und eine weitere beide. Der Algorithmus muss bei
-einem Austausch dieser Funktion nicht verändert werden. Ähnliches Verhalten kann
+eine andere die diagonal liegenden und eine weitere beide. Der Algorithmus bleibt
+bei einem Austausch gleich. Ähnliches Verhalten kann
 beobachtet werden, wenn es um die Wegfinde-Verfahren selbst geht.
 Jede Wegfinde-Klasse besitzt eine Methode \texttt{ShortestPath}
 und muss das folgende Interface implementieren.
 \begin{lstlisting}[caption={Wegfinde-Algorithmus Interface},label={code:i-pathfinding}]
 public interface IPathfindingAlgorithm
 {
-    PathfindingResult ShortestPath(GridNode[][] grid, Position startPosition);
+    PathfindingResult ShortestPath();
 }
 \end{lstlisting}
 Eine weitere Klasse, die Wegfinde-Funktionalität benötigt, ist dadurch nicht abhängig
-von einer bestimmten Implementierung. Die folgenden zwei Zeilen sind
-äquivalent.
-\begin{lstlisting}[caption={Abstraktion der Wegfinde-Algorithmen}]
-IPathfindingAlgorithm bfs = new BreadthFirstSearch();
-IPathfindingAlgorithm dijkstra = new Dijkstra();
+von einer bestimmten Implementierung. Die beiden letzten Zeilen
+in \autoref{code:pathfinding-abstracttion} sind äquivalent.
+\newpage
+\begin{lstlisting}[caption={Abstraktion der Wegfinde-Algorithmen},
+label={code:pathfinding-abstracttion}]
+Grid grid = new Subklasse();
+IPathfindingAlgorithm bfs = new BreadthFirstSearch(grid);
+IPathfindingAlgorithm dijkstra = new Dijkstra(grid);
 \end{lstlisting}

@@ -4,25 +4,26 @@ Die Domänensprache des Projekts umfasst die folgenden Begriffe:
       \item \textbf{Grid} $\sim$ Das Gitter auf dem der kürzeste Weg gesucht und
             angezeigt wird.
       \item \textbf{GridNode} $\sim$ Knoten (engl. \textit{node}),
-            welcher eine Position auf dem Gitter beschreibt. Das
-            Gitter besteht aus mehreren Knoten. Ein Knoten hat neben
-            primitiven Werten (wie Gewicht), außerdem die
+            welcher eine Position auf dem Gitter beschreibt. Ein
+            Gitter besteht aus mehreren Knoten. Knoten haben neben
+            primitiven Werten wie Gewicht, außerdem die
             folgenden Eigenschaften:
             \begin{itemize}[topsep=0pt]
                   \item \textbf{GridNodeType} $\sim$ Der Typ des Knotens mit Werten
-                        wie Start, Ziel oder Wand.
+                        wie Start, Ziel, Wand oder Standard.
                   \item \textbf{Position} $\sim$ Die Koordinate des Knotens in der
-                        Form $(Zeile,Spalte)$ (engl. $(row,column)$).
+                        Form $(Zeile,Spalte)$.
             \end{itemize}
 \end{itemize}
-Die meisten Begriffe wie \textbf{GridNode} werden im Programmcode als Entitäten bezeichnet.
-\textbf{Position} ist ein \ac{vo}. Es macht mehr Sinn Punkte anhand ihrer
+Die meisten Begriffe wie \textbf{Grid} und \textbf{GridNode} werden
+im Programmcode als Entitäten bezeichnet.
+\textbf{Position} hingegen ist ein \ac{vo}. Es macht mehr Sinn Punkte anhand ihrer
 Werte zu unterscheiden und nicht anhand des gleichen Verweises.
 \acp{vo} können in C\# mit dem in Version 9.0 neu eingeführten
 Datensatztyp (engl. \textit{record type}) sehr bequem definiert werden.
-Methoden um Wertgleichheit sicherzustellen,
+Methoden um die Wertgleichheit sicherzustellen,
 werden durch den Compiler automatisch erzeugt.
-Die Definition des \textbf{Position} \ac{vo} ist in \autoref{code:position}
+Eine gekürzte Definition des \textbf{Position} \ac{vo} ist in \autoref{code:position}
 zu sehen.
 \begin{lstlisting}[caption={Der Datensatztyp einer Koordinate},label={code:position}]
 public record Position(int Row, int Col);

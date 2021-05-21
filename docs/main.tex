@@ -12,6 +12,8 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{amsmath}
 
+\usepackage{xcolor}
+
 \usepackage{enumitem}
 \setlist{itemsep=0pt}
 
@@ -31,6 +33,7 @@
 \lstdefinelanguage[]{my-language}[Sharp]{C}
   {
     morekeywords={record},
+    morecomment=[l][\color{OliveGreen}]{//},
     keywordstyle=\color{blue},
     basicstyle={\scriptsize\fontencoding{T1}\fontfamily{fvm}\selectfont},
     stringstyle=\color{red}
@@ -39,7 +42,7 @@
 \lstset{
   columns=fullflexible,
   language=my-language,
-  emph={[1]PathfindingResult, GridNode, Position},
+  emph={[1]PathfindingResult, GridNode, Position, List, Subklasse, Grid},
   emphstyle={[1]\color{PineGreen}},
   emph={[2]IPathfindingAlgorithm, IGetNeighbors},
   emphstyle={[2]\color{DarkOrchid}}
