@@ -25,5 +25,12 @@ export const pathfindingService = {
       .execute('/pathfinding/dijkstra')
       .post(JSON.stringify(request))
       .json().promise;
+  },
+  aStar(request: PathfindingRequest) {
+    return apiClient
+      .useFetch<PathfindingResponse>()
+      .execute('/pathfinding/a-star')
+      .post(JSON.stringify(request))
+      .json().promise;
   }
 };

@@ -37,6 +37,12 @@ namespace Domain.Entities
 
         public abstract List<GridNode> GetNeighbors(GridNode node);
 
+        public int ManhattenDistance(Position p1, Position p2)
+        {
+            var p = p1 - p2;
+            return p.Row + p.Col;
+        }
+
         protected static bool IsValidNode(GridNode node) =>
             !node.Visited && node.Type != GridNodeType.Wall;
     }
