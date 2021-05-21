@@ -16,15 +16,15 @@
     <div class="flex justify-between">
       <select
         id="select-algorithm"
-        v-model="selectedAlgorithm"
+        v-model="selectedAlgorithmValue"
         class="algorithms border outline-none p-3 mr-16"
       >
         <option
-          v-for="(algorithm, index) in algorithms"
+          v-for="(algorithm, index) in algorithms.keys()"
           :key="index"
           :value="algorithm"
         >
-          {{ algorithm.name }}
+          {{ algorithm }}
         </option>
       </select>
       <BaseButton
@@ -33,24 +33,23 @@
         :disabled="animating"
         @click="$emit('animate')"
       >
-        {{ selectedAlgorithm.name }}
+        {{ selectedAlgorithm }}
       </BaseButton>
     </div>
   </div>
   <div class="flex items-end"></div>
-  <div v-if="selectedAlgorithm.name === 'A*'" class="mt-4 text-sm">
+  <div v-if="selectedAlgorithm === 'A*'" class="mt-4 text-sm">
     Using Manhattan distance as the heuristic function
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
+import {
+  gridModuleActions,
+  gridModuleState
+} from '../../store/modules/gridModule/gridModule';
 import BaseButton from '../BaseButton.vue';
-
-type Algorithm = {
-  name: 'Breadth-First-Search' | 'Dijkstra' | 'A*';
-  weighted: boolean;
-};
 
 export default defineComponent({
   components: {
@@ -64,20 +63,30 @@ export default defineComponent({
     searchDiagonal: {
       type: Boolean,
       required: true
+    },
+    selectedAlgorithm: {
+      type: String as PropType<'Breadth-First-Search' | 'Dijkstra' | 'A*'>,
+      required: true
     }
   },
-  emits: ['animate', 'update:searchDiagonal'],
+  emits: ['animate', 'update:searchDiagonal', 'update:selectedAlgorithm'],
   setup(props, { emit }) {
-    const algorithms = ref<Algorithm[]>([
-      { name: 'Breadth-First-Search', weighted: false },
-      { name: 'Dijkstra', weighted: true },
-      { name: 'A*', weighted: true }
+    const algorithms = new Map<string, boolean>([
+      ['Breadth-First-Search', false],
+      ['Dijkstra', true],
+      ['A*', true]
     ]);
-    const selectedAlgorithm = ref<Algorithm>(algorithms.value[0]);
 
     return {
       algorithms,
-      selectedAlgorithm,
+      selectedAlgorithmValue: computed<string>({
+        get() {
+          return props.selectedAlgorithm;
+        },
+        set(value) {
+          emit('update:selectedAlgorithm', value);
+        }
+      }),
       searchDiagonalValue: computed<boolean>({
         get() {
           return props.searchDiagonal;
@@ -87,6 +96,20 @@ export default defineComponent({
         }
       })
     };
+  },
+  computed: {
+    ...gridModuleState
+  },
+  watch: {
+    selectedAlgorithm(selectedAlgorithm: string) {
+      const weighted = this.algorithms.get(selectedAlgorithm);
+      if (this.weight.hidden === weighted) {
+        this.toggleWeightHidden();
+      }
+    }
+  },
+  methods: {
+    ...gridModuleActions
   }
 });
 </script>

@@ -5,8 +5,10 @@
     <ControlsWeights class="mb-16" />
     <ControlsAnimationSpeed class="mb-16" />
     <ControlsAlgorithmSelect
-      v-model:search-diagonal="serachDiagonal"
+      v-model:search-diagonal="searchDiagonal"
+      v-model:selected-algorithm="selectedAlgorithm"
       :animating="animating"
+      @animate="startAnimation()"
     />
   </div>
 </template>
@@ -19,6 +21,11 @@ import ControlsButtons from './ControlsButtons.vue';
 import ControlsWeights from './ControlsWeights.vue';
 import ControlsAnimationSpeed from './ControlsAnimationSpeed.vue';
 import ControlsAlgorithmSelect from './ControlsAlgorithmSelect.vue';
+import { pathfindingService } from '../../api/pathfindingService';
+import {
+  gridModuleActions,
+  gridModuleState
+} from '../../store/modules/gridModule/gridModule';
 
 export default defineComponent({
   components: {
@@ -32,7 +39,10 @@ export default defineComponent({
     const animating = ref(false);
     const isDraggable = ref(false);
     const controls = ref() as Ref<HTMLElement>;
-    const serachDiagonal = ref(false);
+    const searchDiagonal = ref(false);
+    const selectedAlgorithm = ref<'Breadth-First-Search' | 'Dijkstra' | 'A*'>(
+      'Breadth-First-Search'
+    );
 
     onMounted(() => {
       useDraggable(controls.value, isDraggable);
@@ -42,8 +52,55 @@ export default defineComponent({
       animating,
       controls,
       isDraggable,
-      serachDiagonal
+      searchDiagonal,
+      selectedAlgorithm
     };
+  },
+  computed: {
+    ...gridModuleState
+  },
+  methods: {
+    async startAnimation() {
+      this.animating = true;
+
+      switch (this.selectedAlgorithm) {
+        case 'Breadth-First-Search': {
+          const { isValid, data } = await pathfindingService.breadthFirstSearch(
+            {
+              grid: this.grid,
+              searchDiagonal: this.searchDiagonal
+            }
+          );
+          if (isValid.value && data.value) {
+            await this.animate(data.value);
+          }
+          break;
+        }
+        case 'Dijkstra': {
+          const { isValid, data } = await pathfindingService.dijkstra({
+            grid: this.grid,
+            searchDiagonal: this.searchDiagonal
+          });
+          if (isValid.value && data.value) {
+            await this.animate(data.value);
+          }
+          break;
+        }
+        case 'A*': {
+          const { isValid, data } = await pathfindingService.aStar({
+            grid: this.grid,
+            searchDiagonal: this.searchDiagonal
+          });
+          if (isValid.value && data.value) {
+            await this.animate(data.value);
+          }
+          break;
+        }
+      }
+
+      this.animating = false;
+    },
+    ...gridModuleActions
   }
 });
 </script>

@@ -1,4 +1,5 @@
-import { createStore } from 'vuex';
+import { InjectionKey } from 'vue';
+import { createStore, Store, useStore as _useStore } from 'vuex';
 import {
   GridModuleState,
   createGridModule
@@ -7,6 +8,9 @@ import {
 export type RootState = {
   gridModule: GridModuleState;
 };
+
+const storeKey: InjectionKey<Store<RootState>> = Symbol();
+export const useStore = () => _useStore(storeKey);
 
 export const store = createStore({
   modules: {
