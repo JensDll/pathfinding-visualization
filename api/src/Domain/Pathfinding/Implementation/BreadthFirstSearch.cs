@@ -1,5 +1,4 @@
 ﻿
-using Domain.Pathfinding.Common;
 using Domain.Pathfinding.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
@@ -12,23 +11,21 @@ using Domain.ValueObjects;
 
 namespace Domain.Pathfinding.Implementation
 {
-    public class BreadthFirstSearch : PathfindingAlgorithmBase, IPathfindingAlgorithm
+    public class BreadthFirstSearch : IPathfindingAlgorithm
     {
-        private readonly IGetNeighbors _getNeighbors;
+        private readonly Grid _grid;
 
-        public BreadthFirstSearch(IGetNeighbors getNeighbors)
+        public BreadthFirstSearch(Grid grid)
         {
-            _getNeighbors = getNeighbors;
+            _grid = grid;
         }
 
-        public PathfindingResult ShortestPath(GridNode[][] grid, Position startPosition)
+        public PathfindingResult ShortestPath()
         {
-            var startNode = grid[startPosition.Row][startPosition.Col];
-            startNode.Visited = true;
+            _grid.Start.Visited = true;
 
-            var visitedNodes = new List<GridNode> { startNode };
-            var shortestPath = new List<GridNode>();
-            var queue = new Queue<GridNode>(new[] { startNode });
+            var visitedNodes = new List<GridNode> { _grid.Start };
+            var queue = new Queue<GridNode>(new[] { _grid.Start });
 
             while (queue.Count > 0)
             {
@@ -36,7 +33,7 @@ namespace Domain.Pathfinding.Implementation
 
                 currentNode.Visited = true;
 
-                var neighbors = _getNeighbors.GetNeighbors(grid, currentNode.Position);
+                var neighbors = _grid.GetNeighbors(currentNode);
 
                 foreach (var neighbor in neighbors)
                 {
@@ -46,14 +43,12 @@ namespace Domain.Pathfinding.Implementation
                     visitedNodes.Add(neighbor);
                     queue.Enqueue(neighbor);
 
-                    if (neighbor.Type is GridNodeType.Finish)
+                    if (neighbor.Type == GridNodeType.Finish)
                     {
-                        ConstructShortestPath(neighbor, shortestPath);
-
                         return new PathfindingResult
                         {
                             VisitedNodes = visitedNodes,
-                            ShortestPath = shortestPath
+                            ShortestPath = neighbor.ConstructShortestPath()
                         };
                     }
                 }
@@ -62,7 +57,7 @@ namespace Domain.Pathfinding.Implementation
             return new PathfindingResult
             {
                 VisitedNodes = visitedNodes,
-                ShortestPath = shortestPath
+                ShortestPath = new List<GridNode>()
             };
         }
     }

@@ -10,6 +10,6 @@ namespace Domain.Pathfinding.Interfaces
 {
     public interface IPathfindingAlgorithm
     {
-        PathfindingResult ShortestPath(GridNode[][] grid, Position startPosition);
+        PathfindingResult ShortestPath();
     }
 }

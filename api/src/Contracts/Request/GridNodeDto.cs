@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace Contracts.Request
 {
-    public record GridNodeDto(GridNodeTypeDto Type, int Weight);
+    public record GridNodeDto
+    {
+        public GridNodeTypeDto Type { get; init; }
+
+        public int Weight { get; init; }
+    };
 
     public class GridNodeDtoValidator : AbstractValidator<GridNodeDto>
     {

@@ -1,33 +1,20 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Domain.Enums;
-using Domain.Pathfinding.Common;
+using Domain.Pathfinding;
 using Domain.Pathfinding.Implementation;
-using Domain.Pathfinding.Interfaces;
-using Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
     internal class PathfindingService : IPathfindingService
     {
-        public PathfindingResult BreadthFirstSearch(GridNode[][] grid, Position startPosition, bool searchDiagonal)
+        public PathfindingResult BreadthFirstSearch(Grid grid)
         {
-            return new BreadthFirstSearch(GetSearchType(searchDiagonal)).ShortestPath(grid, startPosition);
+            return new BreadthFirstSearch(grid).ShortestPath();
         }
 
-        public PathfindingResult Dijkstra(GridNode[][] grid, Position startPosition, bool searchDiagonal)
+        public PathfindingResult Dijkstra(Grid grid)
         {
-            return new Dijkstra(GetSearchType(searchDiagonal)).ShortestPath(grid, startPosition);
+            return new Dijkstra(grid).ShortestPath();
         }
-
-        private static IGetNeighbors GetSearchType(bool searchDiagonal) =>
-            searchDiagonal
-                ? new GetNeighborsDiagonal()
-                : new GetNeighborsHorizontal();
     }
 }

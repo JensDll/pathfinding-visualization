@@ -8,7 +8,12 @@ using System.Threading.Tasks;
 
 namespace Contracts.Request
 {
-    public record PathfindingRequestDto(GridNodeDto[][] Grid, bool SearchDiagonal);
+    public record PathfindingRequestDto
+    {
+        public GridNodeDto[][] Grid { get; init; }
+
+        public bool SearchDiagonal { get; init; }
+    };
 
     public class PathfindingRequestDtoValidator : AbstractValidator<PathfindingRequestDto>
     {

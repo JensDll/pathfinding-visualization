@@ -1,30 +1,26 @@
-﻿using Domain.Pathfinding.Common;
-using Domain.Pathfinding.Interfaces;
+﻿using Domain.Pathfinding.Interfaces;
 using Domain.Common;
 using Domain.Entities;
 using Domain.Enums;
 using System.Collections.Generic;
-using Domain.ValueObjects;
 
 namespace Domain.Pathfinding.Implementation
 {
-    public class Dijkstra : PathfindingAlgorithmBase, IPathfindingAlgorithm
+    public class Dijkstra : IPathfindingAlgorithm
     {
-        private readonly IGetNeighbors _getNeighbors;
+        private readonly Grid _grid;
 
-        public Dijkstra(IGetNeighbors getNeighbors)
+        public Dijkstra(Grid grid)
         {
-           _getNeighbors = getNeighbors;
+            _grid = grid;
         }
 
-        public PathfindingResult ShortestPath(GridNode[][] grid, Position startPosition)
+        public PathfindingResult ShortestPath()
         {
-            var startNode = grid[startPosition.Row][startPosition.Col];
-            startNode.Visited = true;
+            _grid.Start.Visited = true;
 
             var visitedNodes = new List<GridNode>();
-            var shortestPath = new List<GridNode>();
-            var minHeap = new Heap<GridNode>((n1, n2) => n1.TotalWeight - n2.TotalWeight).Add(startNode);
+            var minHeap = new Heap<GridNode>((n1, n2) => n1.TotalWeight - n2.TotalWeight).Add(_grid.Start);
 
             while (minHeap.Count > 0)
             {
@@ -32,20 +28,18 @@ namespace Domain.Pathfinding.Implementation
 
                 visitedNodes.Add(currentNode);
 
-                if (currentNode.Type is GridNodeType.Finish)
+                if (currentNode.Type == GridNodeType.Finish)
                 {
-                    ConstructShortestPath(currentNode, shortestPath);
-
                     return new PathfindingResult
                     {
                         VisitedNodes = visitedNodes,
-                        ShortestPath = shortestPath
+                        ShortestPath = currentNode.ConstructShortestPath()
                     };
                 }
 
                 currentNode.Visited = true;
 
-                var neighbors = _getNeighbors.GetNeighbors(grid, currentNode.Position);
+                var neighbors = _grid.GetNeighbors(currentNode);
 
                 foreach (var neighbor in neighbors)
                 {
@@ -59,7 +53,7 @@ namespace Domain.Pathfinding.Implementation
             return new PathfindingResult
             {
                 VisitedNodes = visitedNodes,
-                ShortestPath = shortestPath
+                ShortestPath = new List<GridNode>()
             };
         }
     }
