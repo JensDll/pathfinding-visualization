@@ -32,7 +32,7 @@ namespace Domain.ValueObjects
 
         public Position Absolute => new (Math.Abs(Row), Math.Abs(Col));
 
-        public int ManhattenDistance(Position p)
+        public int ManhattanDistance(Position p)
         {
             var v = (this - p).Absolute;
             return v.Row + v.Col;

@@ -51,7 +51,7 @@ namespace Domain.Pathfinding.Implementation
                 {
                     neighbor.Visited = true;
                     neighbor.TotalWeight += neighbor.Weight + currentNode.TotalWeight;
-                    neighbor.Heuristic = neighbor.Position.ManhattenDistance(_grid.Finish.Position);
+                    neighbor.Heuristic = neighbor.Position.ManhattanDistance(_grid.Finish.Position);
                     neighbor.PreviousGridNode = currentNode;
                     minHeap.Add(neighbor);
                 }

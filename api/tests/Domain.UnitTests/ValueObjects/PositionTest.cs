@@ -89,7 +89,7 @@ namespace Domain.UnitTests.ValueObjects
             yield return new Position[] { new(1, 1), new(1, 1) };
         }
 
-        public static IEnumerable<object[]> ManhattenDistanceData()
+        public static IEnumerable<object[]> ManhattanDistanceData()
         {
             yield return new object[] { new Position(1, 1), new Position(1, 1), 0 };
             yield return new object[] { new Position(1, 1), new Position(2, 2), 2 };
@@ -175,10 +175,10 @@ namespace Domain.UnitTests.ValueObjects
         }
 
         [Theory]
-        [MemberData(nameof(ManhattenDistanceData))]
+        [MemberData(nameof(ManhattanDistanceData))]
         public void ManhattenDistance(Position p1, Position p2, int expected)
         {
-            Assert.Equal(expected, p1.ManhattenDistance(p2));
+            Assert.Equal(expected, p1.ManhattanDistance(p2));
         }
     }
 }
