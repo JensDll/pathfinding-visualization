@@ -35,7 +35,7 @@ namespace Domain.UnitTests.Common
 
         [Theory]
         [MemberData(nameof(HeapTestData))]
-        public void MinHeap_ShouldWorkWhenPassedAnEnumerable(int[] testData, int[] expectedValues)
+        public void MinHeap_when_passed_an_enumerable(int[] testData, int[] expectedValues)
         {
             Heap<int> sut = new(testData);
 
@@ -45,7 +45,7 @@ namespace Domain.UnitTests.Common
 
         [Theory]
         [MemberData(nameof(HeapTestData))]
-        public void MinHeap_ShouldWorkWhenAddedManual(int[] testData, int[] expectedValues)
+        public void MinHeap_when_added_manuel(int[] testData, int[] expectedValues)
         {
             Heap<int> sut = new();
 
@@ -60,7 +60,7 @@ namespace Domain.UnitTests.Common
 
         [Theory]
         [MemberData(nameof(HeapTestData))]
-        public void MaxHeap_ShouldWorkWhenPassedAnEnumerable(int[] testData, int[] expectedValues)
+        public void MaxHeap_when_passed_an_enumerable(int[] testData, int[] expectedValues)
         {
             Heap<int> sut = new(testData, (a, b) =>
             {
@@ -75,7 +75,7 @@ namespace Domain.UnitTests.Common
 
         [Theory]
         [MemberData(nameof(HeapTestData))]
-        public void MaxHeap_ShouldWorkWhenAddedManual(int[] testData, int[] expectedValues)
+        public void MaxHeap_when_added_manuel(int[] testData, int[] expectedValues)
         {
             Heap<int> sut = new((a, b) =>
             {

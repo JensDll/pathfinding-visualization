@@ -86,7 +86,7 @@ namespace Domain.UnitTests.Pathfinding.Implementation
 
         [Theory]
         [MemberData(nameof(SHORTEST_PATH_HORIZONTAL))]
-        public void BreadthFirstSearch_ShouldFindShortestPath_Horizonatal(Grid grid, Position[] expectedShortestPath)
+        public void BreadthFirstSearch_should_find_the_shortest_path_horizontal(Grid grid, Position[] expectedShortestPath)
         {
             var sut = new BreadthFirstSearch(grid);
             var pathfindingResult = sut.ShortestPath();
@@ -96,7 +96,7 @@ namespace Domain.UnitTests.Pathfinding.Implementation
 
         [Theory]
         [MemberData(nameof(SHORTEST_PATH_DIAGONAL))]
-        public void BreadthFirstSearch_ShouldFindShortestPath_Diagonal(Grid grid, Position[] expectedShortestPath)
+        public void BreadthFirstSearch_should_find_the_shortest_path_diagonal(Grid grid, Position[] expectedShortestPath)
         {
             var sut = new BreadthFirstSearch(grid);
             var pathfindingResult = sut.ShortestPath();
@@ -106,7 +106,7 @@ namespace Domain.UnitTests.Pathfinding.Implementation
 
         [Theory]
         [MemberData(nameof(BLOCKED_PATH))]
-        public void BreadthFirstSearch_ShouldVisitAllUnblockedPositions(Grid grid, Position[] expectedVisitedPositions)
+        public void BreadthFirstSearch_should_visit_all_unblocked_positions(Grid grid, Position[] expectedVisitedPositions)
         {
             var sut = new BreadthFirstSearch(grid);
             var visitedPositions = sut.ShortestPath().VisitedNodes.Select(node => node.Position);
