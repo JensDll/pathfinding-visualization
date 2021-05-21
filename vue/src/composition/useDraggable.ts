@@ -1,6 +1,10 @@
-import { onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, Ref } from 'vue';
 
-export function useDraggable(element: HTMLElement, margin = 0) {
+export function useDraggable(
+  element: HTMLElement,
+  draggable: Ref<boolean>,
+  margin = 0
+) {
   let x = 0;
   let y = 0;
 
@@ -26,11 +30,32 @@ export function useDraggable(element: HTMLElement, margin = 0) {
     document.addEventListener('mouseup', removeListeners);
   };
 
+  element.onmousedown = e => {
+    if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
+      onMouseDown(e);
+    }
+  };
+
+  element.onmouseenter = () => {
+    element.focus();
+  };
+
+  element.onmouseleave = () => {
+    element.blur();
+    draggable.value = false;
+  };
+
+  element.onkeydown = e => {
+    if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
+      draggable.value = true;
+    }
+  };
+
+  element.onkeyup = () => {
+    draggable.value = false;
+  };
+
   onBeforeUnmount(() => {
     removeListeners();
   });
-
-  return {
-    onMouseDown
-  };
 }

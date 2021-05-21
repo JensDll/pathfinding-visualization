@@ -14,7 +14,7 @@ import {
   gridModuleActions,
   gridModuleState,
   GridNode
-} from '../store/modules/gridModule/gridModule';
+} from '../../store/modules/gridModule/gridModule';
 
 export default defineComponent({
   props: {

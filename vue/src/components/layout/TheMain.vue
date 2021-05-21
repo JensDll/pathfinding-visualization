@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts">
-import Grid from '../Grid.vue';
-import Controls from '../Controls.vue';
+import Grid from '../grid/Grid.vue';
+import Controls from '../controls/Controls.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
