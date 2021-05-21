@@ -1,5 +1,4 @@
-﻿using Domain.Extensions;
-using Domain.ValueObjects;
+﻿using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
