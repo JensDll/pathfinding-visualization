@@ -18,7 +18,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .main {
   grid-area: main;
 }

@@ -14,6 +14,7 @@
 		}
 	],
 	"settings": {
+		"volar.tsPlugin": true,
 		"editor.tabSize": 2,
 		"editor.insertSpaces": true,
 	},

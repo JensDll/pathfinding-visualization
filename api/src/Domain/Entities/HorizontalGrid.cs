@@ -23,22 +23,38 @@ namespace Domain.Entities
 
             if (col > 0)
             {
-                neighbors.AddIf(this[position.Left], IsValidNode);
+                node = this[position.Left];
+                if (node.NotVisitedNotWall())
+                {
+                    neighbors.Add(node);
+                }
             }
 
             if (row > 0)
             {
-                neighbors.AddIf(this[position.Top], IsValidNode);
+                node = this[position.Top];
+                if (node.NotVisitedNotWall())
+                {
+                    neighbors.Add(node);
+                }
             }
 
             if (col < lastCol)
             {
-                neighbors.AddIf(this[position.Right], IsValidNode);
+                node = this[position.Right];
+                if (node.NotVisitedNotWall())
+                {
+                    neighbors.Add(node);
+                }
             }
 
             if (row < lastRow)
             {
-                neighbors.AddIf(this[position.Bottom], IsValidNode);
+                node = this[position.Bottom];
+                if (node.NotVisitedNotWall())
+                {
+                    neighbors.Add(node);
+                }
             }
 
             return neighbors;

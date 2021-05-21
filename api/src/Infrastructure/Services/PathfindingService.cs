@@ -16,5 +16,10 @@ namespace Infrastructure.Services
         {
             return new Dijkstra(grid).ShortestPath();
         }
+
+        public PathfindingResult AStar(Grid grid)
+        {
+            return new AStar(grid).ShortestPath();
+        }
     }
 }

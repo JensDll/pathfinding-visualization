@@ -122,7 +122,7 @@ import { pathfindingService } from '../api/pathfindingService';
 import BaseButton from '../components/BaseButton.vue';
 
 type Algorithm = {
-  name: 'Breadth-First-Search' | 'Dijkstra';
+  name: 'Breadth-First-Search' | 'Dijkstra' | 'A*';
   weighted: boolean;
 };
 
@@ -133,6 +133,10 @@ const algorithms: Algorithm[] = [
   },
   {
     name: 'Dijkstra',
+    weighted: true
+  },
+  {
+    name: 'A*',
     weighted: true
   }
 ];
@@ -308,6 +312,18 @@ export default defineComponent({
 
           break;
         }
+        case 'A*': {
+          const { isValid, data } = await pathfindingService.aStar({
+            grid: this.grid,
+            searchDiagonal: this.searchDiagonal
+          });
+
+          if (isValid.value && data.value) {
+            await this.animate(data.value);
+          }
+
+          break;
+        }
       }
 
       this.animating = false;
@@ -317,7 +333,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .controls {
   z-index: 20;
   position: absolute;

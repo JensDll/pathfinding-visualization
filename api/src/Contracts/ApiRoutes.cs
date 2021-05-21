@@ -15,6 +15,8 @@ namespace Contracts
             public const string BreadthFirstSearch = Base + "/pathfinding/breadth-first-search";
 
             public const string Dijkstra = Base + "/pathfinding/dijkstra";
+
+            public const string AStar = Base + "/pathfinding/a-star";
         }
     }
 }

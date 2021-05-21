@@ -18,9 +18,13 @@ namespace Domain.Entities
 
         public int TotalWeight { get; set; }
 
+        public int Heuristic { get; set; }
+
         public Position Position { get; set; }
 
         public GridNode PreviousGridNode { get; set; }
+
+        public bool NotVisitedNotWall() => !Visited && Type != GridNodeType.Wall;
 
         public List<GridNode> ConstructShortestPath()
         {
