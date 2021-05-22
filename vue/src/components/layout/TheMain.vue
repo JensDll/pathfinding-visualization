@@ -1,7 +1,18 @@
 <template>
-  <main class="main px-8 pb-8 768:px-12 1024:px-16 1280:px-20 1800:px-32">
-    <Controls />
-    <Grid />
+  <main class="main px-8 pb-8 md:px-16 lg:px-24 2xl:px-32 3xl:px-40">
+    <div
+      class="
+        grid
+        gap-8
+        justify-items-start
+        2xl:grid-flow-col
+        2xl:items-start
+        2xl:justify-between
+      "
+    >
+      <Controls class="" />
+      <Grid class="" />
+    </div>
   </main>
 </template>
 

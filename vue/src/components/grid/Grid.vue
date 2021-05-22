@@ -1,10 +1,5 @@
 <template>
-  <div
-    id="grid"
-    ref="gridRef"
-    :class="{ 'cursor-move': cursorMove }"
-    tabindex="0"
-  >
+  <div id="grid" ref="gridRef" tabindex="0">
     <table>
       <tbody>
         <tr v-for="(row, r) in grid" :key="r">
@@ -12,11 +7,16 @@
         </tr>
       </tbody>
     </table>
+    <div
+      v-show="isDraggable"
+      class="absolute inset-0 bg-white opacity-50 cursor-grab"
+      :class="{ 'cursor-grabbing': dragging }"
+    ></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, Ref, ref } from 'vue';
+import { defineComponent, Ref, ref } from 'vue';
 import { useDraggable } from '../../composition';
 import { gridModuleState } from '../../store/modules/gridModule/gridModule';
 import GridNode from './GridNode.vue';
@@ -27,15 +27,13 @@ export default defineComponent({
   },
   setup() {
     const gridRef = ref() as Ref<HTMLElement>;
-    const cursorMove = ref(false);
 
-    onMounted(() => {
-      useDraggable(gridRef.value, cursorMove);
-    });
+    const { isDraggable, dragging } = useDraggable(gridRef);
 
     return {
       gridRef,
-      cursorMove
+      isDraggable,
+      dragging
     };
   },
   computed: {
@@ -46,19 +44,11 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 #grid {
-  top: 860px;
-  position: absolute;
   overflow: auto;
   resize: both;
   outline: none;
+  background-color: white;
   border: 10px solid theme('colors.blue.50');
   padding: 20px;
-}
-
-@screen 1800 {
-  #grid {
-    top: unset;
-    left: 750px;
-  }
 }
 </style>

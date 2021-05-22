@@ -7,10 +7,10 @@
       items-end
       px-8
       py-8
-      768:px-12
-      1024:px-16
-      1280:px-20
-      1800:px-32
+      md:px-16
+      lg:px-24
+      2xl:px-32
+      3xl:px-40
     "
   >
     <div class="text-lg font-semibold">Pathfinding Visualization</div>

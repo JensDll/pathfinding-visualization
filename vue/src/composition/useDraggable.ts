@@ -1,61 +1,75 @@
-import { onBeforeUnmount, Ref } from 'vue';
+import { onBeforeUnmount, onMounted, Ref, ref } from 'vue';
 
-export function useDraggable(
-  element: HTMLElement,
-  draggable: Ref<boolean>,
-  margin = 0
-) {
-  let x = 0;
-  let y = 0;
+export function useDraggable(templateRef: Ref<HTMLElement>) {
+  const isDraggable = ref(false);
+  const dragging = ref(false);
 
-  const onDrag = (e: MouseEvent) => {
-    e.preventDefault();
-    element.style.top = `${element.offsetTop + e.clientY - y - margin}px`;
-    element.style.left = `${element.offsetLeft + e.clientX - x - margin}px`;
-    x = e.clientX;
-    y = e.clientY;
-  };
+  onMounted(() => {
+    const element = templateRef.value;
 
-  const removeListeners = () => {
-    document.removeEventListener('mousemove', onDrag);
-    document.removeEventListener('mouseup', removeListeners);
-  };
+    let initialX = 0;
+    let initialY = 0;
+    let dx = 0;
+    let dy = 0;
 
-  const onMouseDown = (e: MouseEvent) => {
-    e.preventDefault();
-    x = e.clientX;
-    y = e.clientY;
+    const onDrag = (e: MouseEvent) => {
+      e.preventDefault();
 
-    document.addEventListener('mousemove', onDrag);
-    document.addEventListener('mouseup', removeListeners);
-  };
+      dx = e.clientX - initialX;
+      dy = e.clientY - initialY;
 
-  element.onmousedown = e => {
-    if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
-      onMouseDown(e);
-    }
-  };
+      element.style.transform = `translate(${dx}px,${dy}px)`;
+    };
 
-  element.onmouseenter = () => {
-    element.focus();
-  };
+    const removeListeners = () => {
+      dragging.value = false;
+      document.removeEventListener('mousemove', onDrag);
+      document.removeEventListener('mouseup', removeListeners);
+    };
 
-  element.onmouseleave = () => {
-    element.blur();
-    draggable.value = false;
-  };
+    const onMouseDown = (e: MouseEvent) => {
+      e.preventDefault();
 
-  element.onkeydown = e => {
-    if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
-      draggable.value = true;
-    }
-  };
+      initialX = e.clientX - dx;
+      initialY = e.clientY - dy;
 
-  element.onkeyup = () => {
-    draggable.value = false;
-  };
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup', removeListeners);
+    };
 
-  onBeforeUnmount(() => {
-    removeListeners();
+    element.onmousedown = e => {
+      if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
+        dragging.value = true;
+        onMouseDown(e);
+      }
+    };
+
+    element.onmouseenter = () => {
+      element.focus();
+    };
+
+    element.onmouseleave = () => {
+      element.blur();
+      isDraggable.value = false;
+    };
+
+    element.onkeydown = e => {
+      if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
+        isDraggable.value = true;
+      }
+    };
+
+    element.onkeyup = () => {
+      isDraggable.value = false;
+    };
+
+    onBeforeUnmount(() => {
+      removeListeners();
+    });
   });
+
+  return {
+    isDraggable,
+    dragging
+  };
 }
