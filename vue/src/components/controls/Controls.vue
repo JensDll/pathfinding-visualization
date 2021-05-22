@@ -1,5 +1,5 @@
 <template>
-  <div ref="controls" class="controls" :class="{ 'cursor-move': isDraggable }">
+  <div id="controls" ref="controls" tabindex="0">
     <ControlsGridDimensions class="mb-16" />
     <ControlsButtons class="mb-16" />
     <ControlsWeights class="mb-16" />
@@ -10,11 +10,16 @@
       :animating="animating"
       @animate="startAnimation()"
     />
+    <div
+      v-show="isDraggable"
+      class="absolute inset-0 bg-white opacity-50 cursor-grab"
+      :class="{ 'cursor-grabbing': dragging }"
+    ></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, Ref } from 'vue';
+import { defineComponent, ref, Ref } from 'vue';
 import { useDraggable } from '../../composition';
 import ControlsGridDimensions from './ControlsGridDimensions.vue';
 import ControlsButtons from './ControlsButtons.vue';
@@ -37,21 +42,19 @@ export default defineComponent({
   },
   setup() {
     const animating = ref(false);
-    const isDraggable = ref(false);
     const controls = ref() as Ref<HTMLElement>;
     const searchDiagonal = ref(false);
     const selectedAlgorithm = ref<'Breadth-First-Search' | 'Dijkstra' | 'A*'>(
       'Breadth-First-Search'
     );
 
-    onMounted(() => {
-      useDraggable(controls.value, isDraggable);
-    });
+    const { isDraggable, dragging } = useDraggable(controls);
 
     return {
       animating,
       controls,
       isDraggable,
+      dragging,
       searchDiagonal,
       selectedAlgorithm
     };
@@ -106,9 +109,9 @@ export default defineComponent({
 </script>
 
 <style lang="postcss" scoped>
-.controls {
-  z-index: 20;
+#controls {
   position: absolute;
+  z-index: 20;
   outline: none;
   background: white;
   border: 10px solid theme('colors.blue.50');
