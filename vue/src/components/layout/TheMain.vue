@@ -1,17 +1,8 @@
 <template>
-  <main class="main px-8 pb-8 md:px-16 lg:px-24 2xl:px-32 3xl:px-40">
-    <div
-      class="
-        grid
-        gap-8
-        justify-items-start
-        2xl:grid-flow-col
-        2xl:items-start
-        2xl:justify-between
-      "
-    >
-      <Controls class="" />
-      <Grid class="" />
+  <main class="main px-8 pb-16 md:px-16 lg:px-24 2xl:px-32 3xl:px-40">
+    <div class="relative h-full">
+      <Controls />
+      <Grid />
     </div>
   </main>
 </template>

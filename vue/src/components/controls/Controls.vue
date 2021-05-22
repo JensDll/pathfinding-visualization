@@ -110,6 +110,7 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 #controls {
+  position: absolute;
   z-index: 20;
   outline: none;
   background: white;

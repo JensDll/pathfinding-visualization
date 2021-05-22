@@ -44,11 +44,28 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 #grid {
+  position: absolute;
+  top: 720px;
   overflow: auto;
   resize: both;
   outline: none;
   background-color: white;
   border: 10px solid theme('colors.blue.50');
   padding: 20px;
+}
+
+@screen 2xl {
+  #grid {
+    top: 0;
+    right: 0;
+  }
+}
+
+@screen 3xl {
+  #grid {
+    top: 0;
+    left: 600px;
+    right: unset;
+  }
 }
 </style>
