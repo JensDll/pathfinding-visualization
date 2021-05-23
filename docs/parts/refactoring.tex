@@ -3,7 +3,7 @@ Es wurden im Laufe des Projekts verschiedene Refactorings durchgeführt.
 Viele waren eher kleinerer Natur, doch einige haben auch größere Änderungen
 mit sich gebracht.
 In den folgenden Abschnitten wird jeweils ein Problem beschrieben und
-gezeigt wie es durch eine Anpassung der Programmstruktur gelöst werden kann.
+gezeigt, wie es durch eine Anpassung der Programmstruktur gelöst werden kann.
 
 \section{Lange Parameterliste}
 Um einen Wegfinde-Algorithmus zu verwenden, wurden zuvor die
@@ -67,13 +67,13 @@ zu tun haben und wahrscheinlich besser aufgehoben
 wären in einer eigenen Entität mit verwandter Bedeutung. Die Methoden,
 um benachbarte Knoten zu bestimmen, wurden wie in \autoref{part:programming-principles}
 bereits beschrieben, in die \textbf{Grid} Klasse ausgelagert.
-Da für die Berechnung des kürzesten Wegs immer Knoten benötigt werden, wurde diese
+Da für die Berechnung des kürzesten Wegs immer ein Ausgangsknoten benötigt wird, wurde diese
 Funktion als Teil der \textbf{GridNode} Entität aufgenommen. Die zu der Klasse 
 hinzugefügten Methoden sind in \autoref{code:grid-node-entity} zu sehen.
 \begin{lstlisting}[caption={\textbf{GridNode} Entität}, label={code:grid-node-entity}]
 public class GridNode
 {
-    // Eingenschaften ...
+    // Eigenschaften der Klasse ...
 
     public List<GridNode> ConstructShortestPath()
     {
