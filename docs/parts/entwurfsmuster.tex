@@ -1,0 +1,26 @@
+\part{Entwurfsmuster}
+Wegen der zur Zeit eher geringen Komplexität des Projektes hat es sich
+nicht ergeben, dass eine Umsetzung von Entwurfsmustern sinnvoll erscheint.
+Es ist unklar, ob die erzwungene Verwendung eines Musters
+die Lesbarkeit des aktuellen Programmcodes verbessern würde.
+Auf Seiten der Unittests kann aber dennoch ein Beispiel gegeben werden.
+Es wird hier eine Form des Erbauermusters verwendet, um
+komplexe Objekte für den Einsatz in Testmethoden zu erzeugen.
+Konkret handelt es sich um die \inlinecode[\colorClasses]{GridFactory}
+Klasse, welche anhand einer Zeichenkettenmatrix \inlinecode[\colorClasses]{Grid}
+Objekte erzeugt (\ref{code:grid-entity}).
+Die statische Klasse besitzt eine Methode \lstinline{Produce}
+und nimmt entgegen ein \lstinline{string[]} sowie den Typ des
+zu erstellenden Gitters. Die gekürzte Version der Klasse ist in
+\autoref{code:grid-factory} zu sehen.
+\begin{lstlisting}[caption={{\inlinecode[\colorClasses]{GridFactory}} Klasse},
+  label={code:grid-factory}]
+public static class GridFactory
+{
+    public static Grid Produce(string[] stringGrid, GridType gridType)
+    {
+        // ...
+        return grid;
+    }
+}
+\end{lstlisting}

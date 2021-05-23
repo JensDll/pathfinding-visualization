@@ -28,12 +28,13 @@ zu sehen.
 \begin{lstlisting}[caption={Der Datensatztyp einer Koordinate},label={code:position}]
 public record Position(int Row, int Col);
 \end{lstlisting}
-Datentransferobjekte werden ebenfalls als \textit{record type} definiert.
-Dies ist vor allem deshalb sinnvoll, da Verträge unveränderlich sein sollten
+Die meisten Datentransferobjekte werden ebenfalls als \textit{record type} definiert.
+Eigenschaften von \acp{dto} sind \inlinecode[\colorKeyword]{readonly},
+dies ist vor allem deshalb sinnvoll, da Verträge unveränderlich sein sollten
 und nur durch Mapping in eine ggf. veränderliche Datenstruktur gebracht werden.
 Wegfinde-Algorithmen sind Gegenstand des \textit{abstraction code} auf
 der Domänenebene. Sie werden als Teil eines \textit{service}
-zusammengefasst mit dem Namen \texttt{Path\-findingService} und
+zusammengefasst mit dem Namen \inlinecode[\colorClasses]{PathfindingService} und
 über diesen aufgerufen. Da für das Projekt nicht wirklich
 eine persistente Datenspeicherung nötig ist, werden keine
 Repositories verwendet.

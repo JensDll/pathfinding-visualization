@@ -11,7 +11,7 @@
 \usepackage{setspace}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{amsmath}
-
+\usepackage{xifthen}
 \usepackage{xcolor}
 
 \usepackage{enumitem}
@@ -19,7 +19,7 @@
 
 \usepackage{hyperref}
 \hypersetup{
-  colorlinks = true,
+  % colorlinks = true,
   linkcolor = Red,
   filecolor = Magenta,      
   urlcolor = Green,
@@ -30,22 +30,41 @@
 \usetikzlibrary{positioning, calc, arrows.meta, arrows}
 
 \usepackage{listings}
-\lstdefinelanguage[]{my-language}[Sharp]{C}
+\newcommand{\inlinecode}[2][]{%
+  \begingroup
+  \scriptsize\fontencoding{T1}\fontfamily{fvm}\selectfont#1#2%
+  \endgroup}
+\newcommand{\colorClasses}{\color{PineGreen}}
+\newcommand{\colorInterfaces}{\color{DarkOrchid}}
+\newcommand{\colorMethods}{\color{Orange}}
+\newcommand{\colorKeyword}{\color{blue}}
+
+\lstdefinelanguage[]{myLanguage}[Sharp]{C}
   {
-    morekeywords={record},
+    escapechar=@,
+    morekeywords={record, var},
     morecomment=[l][\color{OliveGreen}]{//},
-    keywordstyle=\color{blue},
+    keywordstyle=\colorKeyword,
     basicstyle={\scriptsize\fontencoding{T1}\fontfamily{fvm}\selectfont},
     stringstyle=\color{red}
   }
   []
+
 \lstset{
   columns=fullflexible,
-  language=my-language,
-  emph={[1]PathfindingResult, GridNode, Position, List, Subklasse, Grid},
-  emphstyle={[1]\color{PineGreen}},
-  emph={[2]IPathfindingAlgorithm, IGetNeighbors},
-  emphstyle={[2]\color{DarkOrchid}}
+  language=myLanguage,
+  % Classes
+  emph={[1]PathfindingResult, GridNode, Position, List, Subklasse, Grid,
+    GetNeighborsDiagonal, GetNeighborsHorizontal, BreadthFirstSearch, Dijkstra,
+    PathfindingService, GridFactory, GridType, AlgorithmService},
+  emphstyle={[1]\colorClasses},
+  % Interfaces
+  emph={[2]IPathfindingAlgorithm, IGetNeighbors, IAlgorithmService},
+  emphstyle={[2]\colorInterfaces},
+  % Methods
+  emph={[3]ShortestPath, GetSearchType, GetNeighbors, Produce, ConstructShortestPath,
+  ConstructShortestPathImpl, Add},
+  emphstyle={[3]\colorMethods},
 }
 
 \renewcommand{\lstlistingname}{Quelltext}
@@ -95,4 +114,5 @@
 \input{parts/domain-driven-design.tex}
 \input{parts/programming-principles.tex}
 \input{parts/refactoring.tex}
+\input{parts/entwurfsmuster.tex}
 \end{document}

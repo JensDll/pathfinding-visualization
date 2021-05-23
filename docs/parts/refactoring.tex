@@ -1,1 +1,91 @@
 \part{Refactoring}
+Es wurden im Laufe des Projekts verschiedene Refactorings durchgeführt.
+Viele waren eher kleinerer Natur, doch einige haben auch größere Änderungen
+mit sich gebracht.
+In den folgenden Abschnitten wird jeweils ein Problem beschrieben und
+gezeigt wie es durch eine Anpassung der Programmstruktur gelöst werden kann.
+
+\section{Lange Parameterliste}
+Um einen Wegfinde-Algorithmus zu verwenden, wurden zuvor die
+drei Parameter \inlinecode{grid}, \inlinecode{startPosition} und
+\inlinecode{searchDiagonal} benötigt. Manche Verfahren verwendet zusätzlich außerdem
+noch die Zielposition. Der folgende Quelltext zeigt einen Ausschnitt aus der
+\inlinecode[\colorClasses]{Pathfind\-ingService} Klasse.
+\begin{lstlisting}[caption={Die alte Verwendung der Wegfinde-Klassen},label={code:use-pathfinding}]
+public PathfindingResult @\colorMethods Dijkstra@(GridNode[][] grid,
+    Position startPosition, bool searchDiagonal)
+{
+    return new Dijkstra(GetSearchType(searchDiagonal)).ShortestPath(grid, startPosition);
+}
+
+private static IGetNeighbors GetSearchType(bool searchDiagonal) =>
+    searchDiagonal
+        ? new GetNeighborsDiagonal()
+        : new GetNeighborsHorizontal();
+\end{lstlisting}
+Um die Parameterliste zu verkürzen und die Wegfinde-Algorithmen
+einheitlich zu halten, wurden die verschiedene Eigenschaften in der Klasse
+\inlinecode[\colorClasses]{Grid} zusammengefasst.
+Diese ist bereits im vorherigen Abschnitt (\ref{code:grid-entity}) beschrieben worden.
+Die Polymorphie der \inlinecode[\colorMethods]{GetNeighbors} Methode
+ist jetzt nicht mehr über das Interface \inlinecode[\colorInterfaces]{IGetNeighbors}
+gegeben, sondern über die Subklassen der abstrakte Klasse
+\inlinecode[\colorClasses]{Grid} (vgl. Liskov Substitution Principle).
+Die Änderungen wurden im folgenden
+\href{https://github.com/JensDll/pathfinding-visualization/pull/148}{Pull Request \#148}
+eingeführt.
+
+\section{Divergierende Änderungen}
+Besonders zu Beginn der Entwicklung gab es noch einige Klassen
+im Projekt mit mehr als einer oder unklarer Aufgabe.
+Ein Beispiel ist die \lstinline{AlgorithmService} Klasse,
+welche im folgenden Quelltext zu sehen ist.
+\begin{lstlisting}[caption={{\lstinline{AlgorithmService}} Klasse},
+    label={code:alg-service}]
+public class AlgorithmService : IAlgorithmService
+{
+    public List<GridNode> GetNeighbors(GridNode[][] grid,
+        (int row, int col) point)
+    {
+        // ...
+    }
+
+    public List<GridNode> @\colorMethods GetNeighborsDiagonal@(GridNode[][] grid,
+        (int row, int col) point)
+    {
+        // ...
+    }
+
+    public void ConstructShortestPath(GridNode node, List<GridNode> shortestPath)
+    {
+        // ...
+    }
+}
+\end{lstlisting}
+Die Klasse besitzt drei Methoden, wobei diese nicht unbedingt etwas miteinander
+zu tun haben und wahrscheinlich besser aufgehoben
+wären in eigenen Entitäten mit verwandter Funktionalität. Die \lstinline{GetNeighbors}
+Methoden wurden wie bereits gezeigt in die \textbf{Grid} Entitäten ausgelagert.
+Da für das Berechnen des kürzesten Wegs Knoten benötigt werden, ist diese
+Funktion jetzt Teil der \textbf{GridNode} Entität. Die zu der Klasse
+hinzugefügten Methoden sind in \autoref{code:grid-node-entity} zu sehen.
+\begin{lstlisting}[caption={\lstinline{GridNode} Klasse}, label={code:grid-node-entity}]
+public class GridNode
+{
+    // Eingenschaften ...
+
+    public List<GridNode> ConstructShortestPath()
+    {
+        var shortestPath = new List<GridNode>();
+        ConstructShortestPathImpl(this, shortestPath);
+        return shortestPath;
+    }
+
+    private void ConstructShortestPathImpl(GridNode node, List<GridNode> shortestPath)
+    {
+        if (node == null) return;
+        ConstructShortestPathImpl(node.PreviousGridNode, shortestPath);
+        shortestPath.Add(node);
+    }
+}
+\end{lstlisting}

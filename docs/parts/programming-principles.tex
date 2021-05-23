@@ -9,28 +9,28 @@ können diese Interfaces der gesamten Anwendung zur Verfügung gestellt werden.
 Im Fall von einer Änderung kann so ein Austausch der
 Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
 Eine geringe Kopplung wird nach diesem Prinzip erreicht.
-SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls trivial umgesetzt sein.
+SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls umgesetzt sein.
 Das Verwenden von \acs{di} hilft auch in diesen Bereichen Verstößen vorzubeugen.
 Ein Beispiel kann gegeben werden für das \textbf{L} (Liskov Substitution Principle)
 in SO\textbf{L}ID. Die umgesetzten Wegfinde-Algorithmen benötigen eine
-Funktion, um von einem Knoten aus die nächsten zu besuchenden
-Knoten auszuwählen. Die Methode wird \texttt{GetNeighbors}
-genannt und ist definiert in der abstrakten \textbf{Grid} Entität-Klasse,
+Funktion, welche von einem gegebenen Knoten aus die nächsten zu besuchenden
+Knoten auswählt. Die Methode wird \inlinecode[\colorMethods]{GetNeighbors}
+genannt und ist definiert in der abstrakten Klasse \inlinecode[\colorClasses]{Grid},
 wie im folgenden Programmausschnitt zu sehen ist.
 
-\begin{lstlisting}[caption={Die \textbf{Grid} Entität-Klasse},label={code:grid-entity}]
+\begin{lstlisting}[caption={\textbf{Grid} Entität},label={code:grid-entity}]
 public abstract class Grid
 {
     public abstract List<GridNode> GetNeighbors(GridNode node);
 }
 \end{lstlisting}
-Subklassen, die von \textbf{Grid} ableiten, müssen diese Methode überschreiben.
+Subklassen, die von \inlinecode[\colorClasses]{Grid} ableiten, müssen diese Methode überschreiben.
 Für den Algorithmus spielt es keine Rolle, wie die konkrete Umsetzung aussieht.
 Zum Beispiel könnte eine Implementierung die horizontal liegenden Nachbarn liefern,
 eine andere die diagonal liegenden und eine weitere beide. Der Algorithmus bleibt
 bei einem Austausch gleich. Ähnliches Verhalten kann
 beobachtet werden, wenn es um die Wegfinde-Verfahren selbst geht.
-Jede Wegfinde-Klasse besitzt eine Methode \texttt{ShortestPath}
+Jede Wegfinde-Klasse besitzt eine Methode \inlinecode[\colorMethods]{ShortestPath}
 und muss das folgende Interface implementieren.
 \begin{lstlisting}[caption={Wegfinde-Algorithmus Interface},label={code:i-pathfinding}]
 public interface IPathfindingAlgorithm
