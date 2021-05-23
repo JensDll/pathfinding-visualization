@@ -64,12 +64,13 @@ public class AlgorithmService : IAlgorithmService
 \end{lstlisting}
 Die Klasse besitzt drei Methoden, wobei diese nicht unbedingt etwas miteinander
 zu tun haben und wahrscheinlich besser aufgehoben
-wären in eigenen Entitäten mit verwandter Funktionalität. Die \lstinline{GetNeighbors}
-Methoden wurden wie bereits gezeigt in die \textbf{Grid} Entitäten ausgelagert.
-Da für das Berechnen des kürzesten Wegs Knoten benötigt werden, ist diese
-Funktion jetzt Teil der \textbf{GridNode} Entität. Die zu der Klasse
+wären in einer eigenen Entität mit verwandter Bedeutung. Die Methoden,
+um benachbarte Knoten zu bestimmen, wurden wie in \autoref{part:programming-principles}
+bereits beschrieben, in die \textbf{Grid} Klasse ausgelagert.
+Da für die Berechnung des kürzesten Wegs immer Knoten benötigt werden, wurde diese
+Funktion als Teil der \textbf{GridNode} Entität aufgenommen. Die zu der Klasse 
 hinzugefügten Methoden sind in \autoref{code:grid-node-entity} zu sehen.
-\begin{lstlisting}[caption={\lstinline{GridNode} Klasse}, label={code:grid-node-entity}]
+\begin{lstlisting}[caption={\textbf{GridNode} Entität}, label={code:grid-node-entity}]
 public class GridNode
 {
     // Eingenschaften ...
@@ -89,3 +90,7 @@ public class GridNode
     }
 }
 \end{lstlisting}
+Die Änderungen wurden in
+\href{https://github.com/JensDll/pathfinding-visualization/pull/103}{Pull Request \#103}
+und \href{https://github.com/JensDll/pathfinding-visualization/pull/148}{\#148}
+durchgeführt.

@@ -24,3 +24,16 @@ public static class GridFactory
     }
 }
 \end{lstlisting}
+Um beispielsweise das Gitter aus \autoref{fig-pathfinding-example-weight}
+zu erzeugen, wird die Funktion mit den folgenden Parametern aufgerufen.
+\begin{lstlisting}[caption={Erzeugen eines Gitters durch
+  die \lstinline{GridFactory} Klasse}, label={code:grid-factory-example}]
+Grid grid = GridFactory.Produce(new string[]
+{
+    "1 1 1 1 1",
+    "1 1 99 1 1",
+    "S 1 W 1 F",
+    "1 1 W 1 1",
+    "1 1 1 1 1"
+}, GridType.Horizontal)
+\end{lstlisting}
