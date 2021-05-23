@@ -45,7 +45,7 @@ export default defineComponent({
   overflow-y: visible;
   height: 100vh;
   display: grid;
-  row-gap: 50px;
+  row-gap: 4rem;
   grid-template-rows: auto 1fr;
   grid-template-areas:
     'header'

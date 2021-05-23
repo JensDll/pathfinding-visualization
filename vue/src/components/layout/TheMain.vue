@@ -1,5 +1,5 @@
 <template>
-  <main class="main px-8 pb-16 md:px-16 lg:px-24 2xl:px-32 3xl:px-40">
+  <main class="main px-8 md:px-16 lg:px-24 2xl:px-32 3xl:px-40">
     <div class="relative h-full">
       <Controls />
       <Grid />

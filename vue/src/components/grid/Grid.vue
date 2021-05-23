@@ -45,7 +45,7 @@ export default defineComponent({
 <style lang="postcss" scoped>
 #grid {
   position: absolute;
-  top: 720px;
+  top: 750px;
   overflow: auto;
   resize: both;
   outline: none;
@@ -57,15 +57,7 @@ export default defineComponent({
 @screen 2xl {
   #grid {
     top: 0;
-    right: 0;
-  }
-}
-
-@screen 3xl {
-  #grid {
-    top: 0;
     left: 600px;
-    right: unset;
   }
 }
 </style>
