@@ -1,4 +1,4 @@
-\part{Clean Architecture}
+\part{Clean Architecture} \label{part:clean-architecture}
 Die Ordnerstruktur des API Projekts ist orientiert an den Schichten
 der \textit{Clean Architecture}
 mit Abhän\-gigkeiten von außen nach innen. Die konkret umgesetzten Schichten
@@ -23,9 +23,10 @@ und werden mit dem Suffix \texttt{Dto} gekennzeichnet. Datentransferobjekte
 tauchen nur unmittelbar im Bereich der Schnittstelle auf und
 sollten nie direkt in anderen Teilen der Anwendung verwendet werden.
 Durch Mapping werden \acp{dto} in Objekte der Domäne umgewandelt und umgekehrt:
-\begin{equation*}
+\begin{equation}
+  \label{eq:mapping}
   \text{\ac{dto}} \Longrightarrow \text{\textit{domain object}} \Longrightarrow \text{\ac{dto}}
-\end{equation*}
+\end{equation}
 Diese Abbildung sollte immer geschehen, auch wenn sich die Objekte
 sehr ähnlich sehen.
 Verträge und Domäne können sich so unabhängig voneinander weiterentwickeln,

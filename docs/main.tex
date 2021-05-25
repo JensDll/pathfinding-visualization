@@ -13,11 +13,13 @@
 \usepackage{amsmath}
 \usepackage{xifthen}
 \usepackage{xcolor}
+\usepackage{chngcntr}
+\counterwithin*{section}{part}
 
 \usepackage{enumitem}
 \setlist{itemsep=0pt}
 
-\usepackage{hyperref}
+\usepackage[unicode]{hyperref}
 \hypersetup{
   % colorlinks = true,
   linkcolor = Red,
@@ -57,14 +59,17 @@
   % Classes
   emph={[1]PathfindingResult, GridNode, Position, List, Subklasse, Grid,
     GetNeighborsDiagonal, GetNeighborsHorizontal, BreadthFirstSearch, Dijkstra,
-    PathfindingService, GridFactory, GridType, AlgorithmService},
+    PathfindingService, GridFactory, GridType, AlgorithmService, PathfindingRequestDto,
+    PathfindingResponseDto, HorizontalGrid, DiagonalGrid, AStar},
   emphstyle={[1]\colorClasses},
   % Interfaces
-  emph={[2]IPathfindingAlgorithm, IGetNeighbors, IAlgorithmService},
+  emph={[2]IPathfindingAlgorithm, IGetNeighbors, IAlgorithmService, IPathfindingResponseMapper,
+  IPathfindingRequestMapper, IPathfindingMapper, IPathfindingService},
   emphstyle={[2]\colorInterfaces},
   % Methods
   emph={[3]ShortestPath, GetSearchType, GetNeighbors, Produce, ConstructShortestPath,
-  ConstructShortestPathImpl, Add},
+  ConstructShortestPathImpl, Add, MapPathfindingRequestDto, MapPathfindingResult,
+  ManhattanDistance},
   emphstyle={[3]\colorMethods},
 }
 
@@ -98,6 +103,9 @@
 \newacronym{dto}{DTO}{\textit{data transfer object}}
 \newacronym{di}{DI}{\textit{dependency injection}}
 \newacronym{vo}{VO}{\textit{value object}}
+
+\newcommand{\ePosition}{\textbf{Position}}
+\newcommand{\eGrid}{\textbf{Grid}}
 
 \begin{document}
 \pagenumbering{Roman}

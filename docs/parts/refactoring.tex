@@ -9,28 +9,33 @@ gezeigt, wie es durch eine Anpassung der Programmstruktur gelöst werden kann.
 Um einen Wegfinde-Algorithmus zu verwenden, wurden zuvor die
 drei Parameter \inlinecode{grid}, \inlinecode{startPosition} und
 \inlinecode{searchDiagonal} benötigt. Manche Verfahren verwendet zusätzlich außerdem
-noch die Zielposition. Der folgende Quelltext zeigt einen Ausschnitt aus der
-\inlinecode[\colorClasses]{Pathfind\-ingService} Klasse.
-\begin{lstlisting}[caption={Die alte Verwendung der Wegfinde-Klassen},label={code:use-pathfinding}]
-public PathfindingResult @\colorMethods Dijkstra@(GridNode[][] grid,
-    Position startPosition, bool searchDiagonal)
+noch die Zielposition. Der folgende Quelltext zeigt einen Ausschnitt aus alten der
+\inlinecode[\colorClasses]{Pathfind\-ingService} Klasse
+(vgl. \autoref{code:pathfinding-service} für die neue Implementierung).
+\begin{lstlisting}[caption={Die alte \lstinline{PathfindingService} Klasse},
+    label={code:use-pathfinding}]
+internal class PathfindingService : IPathfindingService
 {
-    return new Dijkstra(GetSearchType(searchDiagonal)).ShortestPath(grid, startPosition);
-}
+    public PathfindingResult @\colorMethods Dijkstra@(GridNode[][] grid,
+        Position startPosition, bool searchDiagonal)
+    {
+        return new Dijkstra(GetSearchType(searchDiagonal))
+            .ShortestPath(grid, startPosition);
+    }
 
-private static IGetNeighbors GetSearchType(bool searchDiagonal) =>
-    searchDiagonal
-        ? new GetNeighborsDiagonal()
-        : new GetNeighborsHorizontal();
+    private static IGetNeighbors GetSearchType(bool searchDiagonal) =>
+        searchDiagonal
+            ? new GetNeighborsDiagonal()
+            : new GetNeighborsHorizontal();
+}
 \end{lstlisting}
 Um die Parameterliste zu verkürzen und die Wegfinde-Algorithmen
-einheitlich zu halten, wurden die verschiedene Eigenschaften in der Klasse
+einheitlich zu halten, wurden die verschiedenen Eigenschaften in der Klasse
 \inlinecode[\colorClasses]{Grid} zusammengefasst.
-Diese ist bereits im vorherigen Abschnitt (\ref{code:grid-entity}) beschrieben worden.
 Die Polymorphie der \inlinecode[\colorMethods]{GetNeighbors} Methode
 ist jetzt nicht mehr über das Interface \inlinecode[\colorInterfaces]{IGetNeighbors}
 gegeben, sondern über die Subklassen der abstrakte Klasse
-\inlinecode[\colorClasses]{Grid} (vgl. Liskov Substitution Principle).
+\inlinecode[\colorClasses]{Grid} (vgl. Liskov Substitution Principle \ref{sec:lsp}).
 Die Änderungen wurden im folgenden
 \href{https://github.com/JensDll/pathfinding-visualization/pull/148}{Pull Request \#148}
 eingeführt.
@@ -65,11 +70,12 @@ public class AlgorithmService : IAlgorithmService
 Die Klasse besitzt drei Methoden, wobei diese nicht unbedingt etwas miteinander
 zu tun haben und wahrscheinlich besser aufgehoben
 wären in einer eigenen Entität mit verwandter Bedeutung. Die Methoden,
-um benachbarte Knoten zu bestimmen, wurden wie in \autoref{part:programming-principles}
-bereits beschrieben, in die \textbf{Grid} Klasse ausgelagert.
+um benachbarte Knoten zu bestimmen, wurden wie in \autoref{sec:lsp}
+bereits beschrieben, in die Klasse \textbf{Grid} ausgelagert.
 Da für die Berechnung des kürzesten Wegs immer ein Ausgangsknoten benötigt wird, wurde diese
-Funktion als Teil der \textbf{GridNode} Entität aufgenommen. Die zu der Klasse 
-hinzugefügten Methoden sind in \autoref{code:grid-node-entity} zu sehen.
+Funktion als Teil der \textbf{GridNode}
+Entität aufgenommen (vgl. Information Expert \ref{sec:info-expert}).
+Die zu der Klasse hinzugefügten Methoden sind in \autoref{code:grid-node-entity} zu sehen.
 \begin{lstlisting}[caption={\textbf{GridNode} Entität}, label={code:grid-node-entity}]
 public class GridNode
 {

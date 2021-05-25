@@ -1,23 +1,63 @@
 \part{Programming Principles} \label{part:programming-principles}
 Es wurde versucht, während der Entwicklung
 verschiedene \textit{programming principles} einzuhalten.
-Vor allem das Erreichen von geringer Kopplung ist mit
-ASP.NET Core eine leichte Aufgabe.
-Die Funktionsweise von Klassen sollte durch Interfaces beschrieben werden.
-Durch den bereits standardmäßig vorhandenen \acl{di} \textit{container} (\acs{di}-Container)
-können diese Interfaces der gesamten Anwendung zur Verfügung gestellt werden.
-Im Fall von einer Änderung kann so ein Austausch der
-Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
-Eine geringe Kopplung wird nach diesem Prinzip erreicht.
-SOLID und DRY Prinzipien sollten auf Seiten des API Projekts ebenfalls umgesetzt sein.
-Das Verwenden von \acs{di} hilft auch in diesen Bereichen Verstößen vorzubeugen.
-Ein Beispiel kann gegeben werden für das \textbf{L} (Liskov Substitution Principle)
-in SO\textbf{L}ID. Die umgesetzten Wegfinde-Algorithmen benötigen eine
+Im Folgenden werden die aus der Vorlesung behandelten Muster untersucht und
+beschrieben, wie sie im Projekt umgesetzt wurden.
+
+\section{SOLID}
+
+\subsection{Single Responsibility Principle (S)}
+Als Beispiel wird hierfür auf die \lstinline{PathfindingService} Klasse
+in \autoref{code:pathfinding-service} verwiesen.
+\begin{lstlisting}[caption={\lstinline{PathfindingService} Klasse},
+    label={code:pathfinding-service}]
+internal class PathfindingService : IPathfindingService
+{
+    public PathfindingResult @\colorMethods BreadthFirstSearch@(Grid grid)
+    {
+        return new BreadthFirstSearch(grid).ShortestPath();
+    }
+
+    public PathfindingResult @\colorMethods Dijkstra@(Grid grid)
+    {
+        return new Dijkstra(grid).ShortestPath();
+    }
+
+    public PathfindingResult @\colorMethods AStar@(Grid grid)
+    {
+        return new AStar(grid).ShortestPath();
+    }
+}
+\end{lstlisting}
+Die Klasse muss nur genau dann geändert werden,
+wenn ein neuer Wegfinde-Algorithmus hinzugefügt wird.
+
+\subsection{Open\,/\,Closed Principle (O)}
+Jede Wegfinde-Klasse besitzt eine Methode \inlinecode[\colorMethods]{Short\-estPath}
+und muss das folgende Interface implementieren.
+\begin{lstlisting}[caption={Wegfinde-Algorithmus Interface},label={code:i-pathfinding}]
+public interface IPathfindingAlgorithm
+{
+    PathfindingResult ShortestPath();
+}
+\end{lstlisting}
+Eine weitere Klasse, die Wegfinde-Funktionalität benötigt, ist dadurch nicht abhängig
+von einer bestimmten Implementierung. Die folgenden zwei Zeilen sind äquivalent.
+\begin{lstlisting}[caption={Abstraktion der Wegfinde-Algorithmen},
+label={code:pathfinding-abstracttion}]
+IPathfindingAlgorithm bfs = new BreadthFirstSearch();
+IPathfindingAlgorithm dijkstra = new Dijkstra();
+\end{lstlisting}
+Neue Verfahren können hinzugefügt werden (\textit{open}), ohne das Klassen,
+die das \inlinecode[\colorInterfaces]{IPathfind\-ingAlgorithm} Interface verwenden,
+angepasst werden müssen (\textit{closed}).
+
+\subsection{Liskov Substitution Principle (L)} \label{sec:lsp}
+Die umgesetzten Wegfinde-Algorithmen benötigen eine
 Funktion, welche von einem gegebenen Knoten aus die nächsten zu besuchenden
 Knoten auswählt. Die Methode wird \inlinecode[\colorMethods]{GetNeighbors}
 genannt und ist definiert in der abstrakten Klasse \inlinecode[\colorClasses]{Grid},
 wie im folgenden Programmausschnitt zu sehen ist.
-
 \begin{lstlisting}[caption={\textbf{Grid} Entität},label={code:grid-entity}]
 public abstract class Grid
 {
@@ -27,24 +67,79 @@ public abstract class Grid
 Subklassen, die von \inlinecode[\colorClasses]{Grid} ableiten, müssen diese Methode überschreiben.
 Für den Algorithmus spielt es keine Rolle, wie die konkrete Umsetzung aussieht.
 Zum Beispiel könnte eine Implementierung die horizontal liegenden Nachbarn liefern,
-eine andere die diagonal liegenden und eine weitere beide. Der Algorithmus bleibt
-bei einem Austausch gleich. Ähnliches Verhalten kann
-beobachtet werden, wenn es um die Wegfinde-Verfahren selbst geht.
-Jede Wegfinde-Klasse besitzt eine Methode \inlinecode[\colorMethods]{ShortestPath}
-und muss das folgende Interface implementieren.
-\begin{lstlisting}[caption={Wegfinde-Algorithmus Interface},label={code:i-pathfinding}]
-public interface IPathfindingAlgorithm
+eine andere die diagonal liegenden und eine weitere beide. Die folgenden zwei Zeilen sind äquivalent.
+\begin{lstlisting}[caption={Abstraktion des Gitters}]
+    Grid grid = new HorizontalGrid();
+    Grid grid = new DiagonalGrid();
+\end{lstlisting}
+
+\newpage
+
+\subsection{Interface Segregation Principle (I)}
+Es können hier die beiden Interfaces gennant werden, welche das in \autoref{eq:mapping}
+gezeigte Mapping beschreiben.
+\begin{lstlisting}[caption={Request Mapper}]
+public interface IPathfindingRequestMapper
 {
-    PathfindingResult ShortestPath();
+    Grid MapPathfindingRequestDto(PathfindingRequestDto pathfindingRequestDto);
 }
 \end{lstlisting}
-Eine weitere Klasse, die Wegfinde-Funktionalität benötigt, ist dadurch nicht abhängig
-von einer bestimmten Implementierung. Die beiden letzten Zeilen
-in \autoref{code:pathfinding-abstracttion} sind äquivalent.
-\newpage
-\begin{lstlisting}[caption={Abstraktion der Wegfinde-Algorithmen},
-label={code:pathfinding-abstracttion}]
-Grid grid = new Subklasse();
-IPathfindingAlgorithm bfs = new BreadthFirstSearch(grid);
-IPathfindingAlgorithm dijkstra = new Dijkstra(grid);
+\begin{lstlisting}[caption={Response Mapper}]
+public interface IPathfindingResponseMapper
+{
+    PathfindingResponseDto MapPathfindingResult(PathfindingResult pathfindingResult);
+}
 \end{lstlisting}
+Anstatt ein Allzweck-Interface (z.\,B. \lstinline{IPathfindingMapper}) umzusetzen,
+werden zwei kleinere Interfaces verwendet, getrennt nach Anfrage und Antwort.
+
+\subsection{Dependency Inversion Principle (D)}
+Gelöst durch die in \autoref{part:clean-architecture} beschriebene Architektur.
+API (\textit{high level}) und Infrastrukturebene (\textit{low level})
+sind beide abhängig von den Abstraktionen auf der Anwendungsebene.
+
+\section{GRASP}
+\subsection{Information Expert} \label{sec:info-expert}
+Für eine neue Aufgabe ist derjenige zuständig, der schon das meiste Wissen für die Aufgabe
+mitbringt. Beispiel: Manhattan Distanz zwischen zwei Punkten bestimmen.
+Diese Funktion ist Teil der \ePosition{} Entität,
+da hier schon die Hälfte des benötigten Wissens vorhanden ist.
+\begin{lstlisting}[caption={Manhattan Distanz}]
+public record Position(int Row, int Col)
+{
+    public int ManhattanDistance(Position p)
+    {
+        var v = (this - p).Absolute;
+        return v.Row + v.Col;
+    }
+}
+\end{lstlisting}
+
+\subsection{Geringe Kopplung}
+Die Funktionsweise von Klassen sollte durch Interfaces beschrieben werden.
+Klassen haben keine direkten Abhängigkeiten, sondern werden durch \ac{di}
+im Konstruktor zur Verfügung gestellt.
+Im Fall von einer Änderung kann so ein Austausch der
+Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
+Eine geringe Kopplung wird nach diesem Prinzip erreicht.
+
+\subsection{Hohe Kohäsion}
+Es wird hierbei auf die Klassen der Wegfinde-Algorithmen verwiesen.
+\begin{lstlisting}[caption={\lstinline{BreadthFirstSearch} Algorithmus}]
+public class BreadthFirstSearch : IPathfindingAlgorithm
+{
+    private readonly Grid _grid;
+
+    public BreadthFirstSearch(Grid grid)
+    {
+        _grid = grid;
+    }
+
+    public PathfindingResult ShortestPath()
+    {
+        // ...
+    }
+}
+\end{lstlisting}
+Die Instanzvariable von \lstinline{BreadthFirstSearch}
+wird in allen (in diesem Fall einer) Methode genutzt.
