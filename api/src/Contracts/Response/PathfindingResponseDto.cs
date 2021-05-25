@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.Response
 {
-    public record PathfindingResponseDto
+    public class PathfindingResponseDto
     {
         public IEnumerable<PositionDto> VisitedPositions { get; init; }
 

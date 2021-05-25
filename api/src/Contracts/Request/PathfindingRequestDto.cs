@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.Request
 {
-    public record PathfindingRequestDto
+    public class PathfindingRequestDto
     {
         public GridNodeDto[][] Grid { get; init; }
 

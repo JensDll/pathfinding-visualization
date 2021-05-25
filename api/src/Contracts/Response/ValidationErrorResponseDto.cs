@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.Response
 {
-    public record ValidationErrorResponseDto
+    public class ValidationErrorResponseDto
     {
         public IEnumerable<string> ErrorMessages { get; init; }
     }

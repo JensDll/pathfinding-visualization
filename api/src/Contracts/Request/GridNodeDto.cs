@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.Request
 {
-    public record GridNodeDto
+    public class GridNodeDto
     {
         public GridNodeTypeDto Type { get; init; }
 
