@@ -7,8 +7,8 @@ beschrieben, wie sie im Projekt umgesetzt wurden.
 \section{SOLID}
 
 \subsection{Single Responsibility Principle (S)}
-Als Beispiel wird hierfür auf die \lstinline{PathfindingService} Klasse
-in \autoref{code:pathfinding-service} verwiesen.
+Es wird hier als Beispiel die \lstinline{PathfindingService} Klasse
+beschrieben, welche in \autoref{code:pathfinding-service} zu sehen ist.
 \begin{lstlisting}[caption={\lstinline{PathfindingService} Klasse},
     label={code:pathfinding-service}]
 internal class PathfindingService : IPathfindingService
@@ -30,7 +30,7 @@ internal class PathfindingService : IPathfindingService
 }
 \end{lstlisting}
 Die Klasse muss nur genau dann geändert werden,
-wenn ein neuer Wegfinde-Algorithmus hinzugefügt wird.
+wenn ein neuer Algorithmus hinzugefügt wird.
 
 \subsection{Open\,/\,Closed Principle (O)}
 Jede Wegfinde-Klasse besitzt eine Methode \inlinecode[\colorMethods]{Short\-estPath}
@@ -48,8 +48,8 @@ label={code:pathfinding-abstracttion}]
 IPathfindingAlgorithm bfs = new BreadthFirstSearch();
 IPathfindingAlgorithm dijkstra = new Dijkstra();
 \end{lstlisting}
-Neue Verfahren können hinzugefügt werden (\textit{open}), ohne das Klassen,
-die das \inlinecode[\colorInterfaces]{IPathfind\-ingAlgorithm} Interface verwenden,
+Neue Verfahren können hinzugefügt werden (\textit{open}), ohne das die Klassen,
+die Wegfinde-Funktionalität verwenden,
 angepasst werden müssen (\textit{closed}).
 
 \subsection{Liskov Substitution Principle (L)} \label{sec:lsp}
@@ -73,8 +73,6 @@ eine andere die diagonal liegenden und eine weitere beide. Die folgenden zwei Ze
     Grid grid = new DiagonalGrid();
 \end{lstlisting}
 
-\newpage
-
 \subsection{Interface Segregation Principle (I)}
 Es können hier die beiden Interfaces gennant werden, welche das in \autoref{eq:mapping}
 gezeigte Mapping beschreiben.
@@ -90,8 +88,8 @@ public interface IPathfindingResponseMapper
     PathfindingResponseDto MapPathfindingResult(PathfindingResult pathfindingResult);
 }
 \end{lstlisting}
-Anstatt ein Allzweck-Interface (z.\,B. \lstinline{IPathfindingMapper}) umzusetzen,
-werden zwei kleinere Interfaces verwendet, getrennt nach Anfrage und Antwort.
+Anstatt ein großes Allzweck-Interface (wie z.\,B. \lstinline{IPathfindingMapper})
+umzusetzen, werden zwei kleinere Interfaces verwendet, getrennt nach Anfrage und Antwort.
 
 \subsection{Dependency Inversion Principle (D)}
 Gelöst durch die in \autoref{part:clean-architecture} beschriebene Architektur.
@@ -124,7 +122,9 @@ Implementierung mit minimalem Aufwand (eine Zeile) erfolgen.
 Eine geringe Kopplung wird nach diesem Prinzip erreicht.
 
 \subsection{Hohe Kohäsion}
-Es wird hierbei auf die Klassen der Wegfinde-Algorithmen verwiesen.
+Es werden für dieses Prinzip die Klassen der Wegfinde-Algorithmen genannt
+und hier am Beispiel von \lstinline{BreadthFirstSearch} erklärt.
+\newpage
 \begin{lstlisting}[caption={\lstinline{BreadthFirstSearch} Algorithmus}]
 public class BreadthFirstSearch : IPathfindingAlgorithm
 {
@@ -142,4 +142,4 @@ public class BreadthFirstSearch : IPathfindingAlgorithm
 }
 \end{lstlisting}
 Die Instanzvariable von \lstinline{BreadthFirstSearch}
-wird in allen (in diesem Fall einer) Methode genutzt.
+wird in allen (in diesem Fall einer) Methode verwendet.

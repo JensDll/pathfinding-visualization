@@ -36,15 +36,16 @@ Die Polymorphie der \inlinecode[\colorMethods]{GetNeighbors} Methode
 ist jetzt nicht mehr über das Interface \inlinecode[\colorInterfaces]{IGetNeighbors}
 gegeben, sondern über die Subklassen der abstrakte Klasse
 \inlinecode[\colorClasses]{Grid} (vgl. Liskov Substitution Principle \ref{sec:lsp}).
-Die Änderungen wurden im folgenden
+Die Änderungen wurden in
 \href{https://github.com/JensDll/pathfinding-visualization/pull/148}{Pull Request \#148}
-eingeführt.
+durchgeführt.
 
 \section{Divergierende Änderungen}
 Besonders zu Beginn der Entwicklung gab es noch einige Klassen
 im Projekt mit mehr als einer oder unklarer Aufgabe.
 Ein Beispiel ist die \lstinline{AlgorithmService} Klasse,
 welche im folgenden Quelltext zu sehen ist.
+\newpage
 \begin{lstlisting}[caption={{\lstinline{AlgorithmService}} Klasse},
     label={code:alg-service}]
 public class AlgorithmService : IAlgorithmService
@@ -70,12 +71,13 @@ public class AlgorithmService : IAlgorithmService
 Die Klasse besitzt drei Methoden, wobei diese nicht unbedingt etwas miteinander
 zu tun haben und wahrscheinlich besser aufgehoben
 wären in einer eigenen Entität mit verwandter Bedeutung. Die Methoden,
-um benachbarte Knoten zu bestimmen, wurden wie in \autoref{sec:lsp}
+um benachbarte Knoten zu bestimmen, wurden wie in \ref{sec:lsp}
 bereits beschrieben, in die Klasse \textbf{Grid} ausgelagert.
 Da für die Berechnung des kürzesten Wegs immer ein Ausgangsknoten benötigt wird, wurde diese
 Funktion als Teil der \textbf{GridNode}
 Entität aufgenommen (vgl. Information Expert \ref{sec:info-expert}).
 Die zu der Klasse hinzugefügten Methoden sind in \autoref{code:grid-node-entity} zu sehen.
+\newpage
 \begin{lstlisting}[caption={\textbf{GridNode} Entität}, label={code:grid-node-entity}]
 public class GridNode
 {
